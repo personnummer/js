@@ -1,4 +1,4 @@
-var assert       = require('assert'),
+var assert         = require('assert'),
     isPersonnummer = require('./lib/is-personnummer');
 
 it('should validate personnummer with control digit', function () {
