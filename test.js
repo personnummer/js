@@ -26,6 +26,18 @@ it('should not validate wrong personnummer or wrong types', function () {
   assert.equal(false, isPersonnummer(1122334455));
   assert.equal(false, isPersonnummer('112233-4455'));
   assert.equal(false, isPersonnummer('19112233-4455'));
+  assert.equal(false, isPersonnummer('9999999999'));
+  assert.equal(false, isPersonnummer('199999999999'));
+  assert.equal(false, isPersonnummer('9913131315'));
+  assert.equal(false, isPersonnummer('9911311232'));
+  assert.equal(false, isPersonnummer('9902291237'));
+  assert.equal(false, isPersonnummer('19990919_3766'));
+  assert.equal(false, isPersonnummer('990919_3766'));
+  assert.equal(false, isPersonnummer('199909193776'));
+  assert.equal(false, isPersonnummer('Just a string'));
+  assert.equal(false, isPersonnummer('990919+3776'));
+  assert.equal(false, isPersonnummer('990919-3776'));
+  assert.equal(false, isPersonnummer('9909193776'));
 });
 
 it('should validate co-ordination numbers', function () {
