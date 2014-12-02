@@ -1,7 +1,7 @@
 {
   "name": "is-personnummer",
   "description": "Validate Swedish personal identity numbers",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "homepage": "https://github.com/frozzare/is-personnummer",
   "author": {
@@ -19,9 +19,9 @@
   "scripts": {
     "test": "mocha"
   },
-  "main": "lib/is-personnummer",
+  "main": "index",
   "files": [
-    "lib/is-personnummer.js"
+    "index.js"
   ],
   "devDependencies": {
     "mocha": "*"

@@ -62,7 +62,7 @@ function testDate (year, month, day) {
  * @return {boolean}
  */
 
-module.exports = function (str) {
+function isPersonnummer (str) {
   if (typeof str !== 'number' && typeof str !== 'string') {
     return false;
   }
@@ -100,3 +100,19 @@ module.exports = function (str) {
 
   return valid && testDate(+year, +month, +day - 60);
 }
+
+/**
+ * Export the module for AMD, Browser and Node.
+ */
+
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
+  } else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = factory();
+  } else {
+    root.exports = factory();
+  }
+}(this, function () {
+  return isPersonnummer;
+}));
