@@ -1,0 +1,34 @@
+{
+  "name": "is-personnummer",
+  "description": "Validate Swedish personal identity numbers",
+  "version": "1.0.0",
+  "license": "MIT",
+  "homepage": "https://github.com/frozzare/is-personnummer",
+  "author": {
+    "name": "Fredrik Forsmo",
+    "email": "fredrik.forsmo@gmail.com",
+    "url": "http://forsmo.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/frozzare/is-personnummer.git"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "main": "lib/is-personnummer",
+  "files": [
+    "lib/is-personnummer.js"
+  ],
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "keywords": [
+    "personnummer",
+    "personal",
+    "identity"
+  ]
+}
