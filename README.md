@@ -17,17 +17,21 @@ $ bower install is-personnummer
 ## Example
 
 ```javascript
+$ node
 var isPersonnummer = require('is-personnummer');
 
-// Some examples that will equal true.
-console.log(isPersonnummer('510818-9167'));   // true
-console.log(isPersonnummer('19130401+2931')); // true
-console.log(isPersonnummer('196408233234'));  // true
-
-// Some examples that will equal false.
-console.log(isPersonnummer('510818-916'));   // false
-console.log(isPersonnummer('19130401+293')); // false
-console.log(isPersonnummer('19640823323'));  // false
+> isPersonnummer('510818-9167');
+true
+> isPersonnummer('19130401+2931')
+true
+> isPersonnummer('196408233234')
+true
+> isPersonnummer('510818-916')
+false
+> isPersonnummer('19130401+293')
+false
+> isPersonnummer('19640823323')
+false
 ```
 
 See [test.js](test.js) for more examples.
