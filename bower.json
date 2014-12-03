@@ -2,7 +2,7 @@
   "name": "is-personnummer",
   "description": "Validate Swedish personal identity numbers",
   "main": "is-personnummer.js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage": "https://github.com/frozzare/is-personnummer",
   "authors": [
     "Fredrik Forsmo <fredrik.forsmo@gmail.com>"
