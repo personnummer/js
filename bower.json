@@ -1,12 +1,12 @@
 {
   "name": "is-personnummer",
+  "description": "Validate Swedish personal identity numbers",
   "main": "index.js",
   "version": "1.0.4",
   "homepage": "https://github.com/frozzare/is-personnummer",
   "authors": [
     "Fredrik Forsmo <fredrik.forsmo@gmail.com>"
   ],
-  "description": "Validate Swedish personal identity numbers",
   "moduleType": [
     "amd",
     "globals",
@@ -22,7 +22,6 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "test.js"
   ]
 }
