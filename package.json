@@ -19,9 +19,9 @@
   "scripts": {
     "test": "mocha"
   },
-  "main": "index",
+  "main": "is-personnummer",
   "files": [
-    "index.js"
+    "is-personnummer.js"
   ],
   "devDependencies": {
     "mocha": "*"
