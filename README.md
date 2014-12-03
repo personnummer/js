@@ -8,7 +8,7 @@ Install the module with npm:
 $ npm install is-personnummer
 ```
 
-or with Bower, with AMD and browser export support:
+or with Bower, with AMD and browser support:
 
 ```
 $ bower install is-personnummer
