@@ -2,7 +2,17 @@
 
 Validate Swedish personal identity numbers.
 
-Install the module with: `npm install is-personnummer`
+Install the module with npm:
+
+```
+$ npm install is-personnummer
+```
+
+or with Bower, with AMD and browser export support:
+
+```
+$ bower install is-personnummer
+```
 
 ## Example
 
