@@ -1,5 +1,5 @@
 var assert         = require('assert'),
-    isPersonnummer = require('./lib/is-personnummer');
+    isPersonnummer = require('./index');
 
 it('should validate personnummer with control digit', function () {
   assert.equal(true, isPersonnummer(6403273813));
