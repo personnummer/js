@@ -22,8 +22,6 @@
   }
 }(this, function () {
 
-
-
   /**
    * The Luhn algorithm.
    *
