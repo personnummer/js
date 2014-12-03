@@ -34,9 +34,7 @@
     var v   = 0,
         sum = 0;
 
-    if (typeof str === 'number') {
-      str += '';
-    }
+    str += '';
 
     for (var i = 0, l = str.length; i < l; i++) {
       v = str[i];
