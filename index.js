@@ -18,7 +18,7 @@
   } else if (typeof module !== 'undefined' && module.exports) {
     module.exports = factory();
   } else {
-    root.exports = factory();
+    root.isPersonnummer = factory();
   }
 }(this, function () {
 
