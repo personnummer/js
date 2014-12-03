@@ -18,8 +18,8 @@ $ bower install is-personnummer
 
 ```javascript
 $ node
-var isPersonnummer = require('is-personnummer');
-
+> var isPersonnummer = require('is-personnummer');
+undefined
 > isPersonnummer('510818-9167');
 true
 > isPersonnummer('19130401+2931')
