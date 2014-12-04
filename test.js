@@ -47,5 +47,5 @@ it('should validate co-ordination numbers', function () {
 
 it('should not validate wrong co-ordination numbers', function () {
   assert.equal(false, isPersonnummer('900161-0017'));
-  assert.equal(false, isPersonnummer('900191-0017'));
+  assert.equal(false, isPersonnummer('640893-3231'));
 });
