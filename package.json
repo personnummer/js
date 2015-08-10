@@ -1,7 +1,7 @@
 {
   "name": "is-personnummer",
   "description": "Validate Swedish personal identity numbers",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "license": "MIT",
   "homepage": "https://github.com/frozzare/is-personnummer",
   "author": {
