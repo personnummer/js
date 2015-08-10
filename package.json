@@ -9,6 +9,7 @@
     "email": "fredrik.forsmo@gmail.com",
     "url": "http://forsmo.me"
   },
+  "bin": "cli.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/frozzare/is-personnummer.git"
@@ -23,6 +24,9 @@
   "files": [
     "is-personnummer.js"
   ],
+  "dependencies": {
+    "meow": "^3.3.0"
+  },
   "devDependencies": {
     "mocha": "*"
   },
