@@ -14,7 +14,7 @@ or with Bower, with AMD and browser support:
 $ bower install is-personnummer
 ```
 
-or as a cli:
+or as cli:
 
 ```
 $ npm install -g is-personnummer
