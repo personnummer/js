@@ -14,6 +14,14 @@ or with Bower, with AMD and browser support:
 $ bower install is-personnummer
 ```
 
+or as a cli:
+
+```
+$ npm install -g is-personnummer
+$ is-personnummer 510818-9167
+$ true
+```
+
 ## Example
 
 ```javascript
