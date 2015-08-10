@@ -31,8 +31,8 @@
    */
 
   function luhn (str) {
-    var v   = 0,
-        sum = 0;
+    var v   = 0;
+    var sum = 0;
 
     str += '';
 
@@ -81,20 +81,20 @@
 
     str += '';
 
-    var reg     = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/,
-        match   = reg.exec(str);
+    var reg     = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/;
+    var match   = reg.exec(str);
 
     if (!match) {
       return false;
     }
 
-    var century = match[1],
-        year    = match[2],
-        month   = match[3],
-        day     = match[4],
-        sep     = match[5],
-        num     = match[6],
-        check   = match[7];
+    var century = match[1];
+    var year    = match[2];
+    var month   = match[3];
+    var day     = match[4];
+    var sep     = match[5];
+    var num     = match[6];
+    var check   = match[7];
 
     if (sep === undefined) {
       sep = '-';
