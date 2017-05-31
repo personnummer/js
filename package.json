@@ -9,6 +9,9 @@
     "email": "fredrik.forsmo@gmail.com",
     "url": "http://forsmo.me"
   },
+  "contributors": [
+    "Mattias Hagberg <hello@mattias.pw> (https://www.mattias.pw)"
+  ],
   "bin": "cli.js",
   "repository": {
     "type": "git",

@@ -7,6 +7,9 @@
   "authors": [
     "Fredrik Forsmo <fredrik.forsmo@gmail.com>"
   ],
+  "contributors": [
+    "Mattias Hagberg <hello@mattias.pw> (https://www.mattias.pw)"
+  ],
   "moduleType": [
     "amd",
     "globals",
