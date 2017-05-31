@@ -26,7 +26,7 @@
     "is-personnummer.js"
   ],
   "dependencies": {
-    "meow": "^3.3.0"
+    "meow": "^3.7.0"
   },
   "devDependencies": {
     "mocha": "*"

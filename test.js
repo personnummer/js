@@ -7,6 +7,8 @@ it('should validate personnummer with control digit', function () {
   assert.equal(true, isPersonnummer('19900101-0017'));
   assert.equal(true, isPersonnummer('19130401+2931'));
   assert.equal(true, isPersonnummer('196408233234'));
+  assert.equal(true, isPersonnummer('000101-0107'));
+  assert.equal(true, isPersonnummer('0001010107'));
 });
 
 it('should not validate personnummer without control digit', function () {

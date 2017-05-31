@@ -20,5 +20,5 @@ var cli  = meow({
 if (!cli.input[0]) {
   console.log(cli.help);
 } else {
-  console.log(pnr(cli.input[0]));
+  console.log(pnr(process.argv[process.argv.length -1]));
 }
