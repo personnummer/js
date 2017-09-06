@@ -1,6 +1,6 @@
 # is-personnummer [![Build Status](https://secure.travis-ci.org/frozzare/is-personnummer.png?branch=master)](http://travis-ci.org/frozzare/is-personnummer)
 
-Validate Swedish personal identity numbers.
+Validate Swedish social security numbers.
 
 Install the module with npm:
 
