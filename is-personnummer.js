@@ -2,7 +2,7 @@
  * is-personnummer
  * https://github.com/frozzare/is-personnummer
  *
- * Copyright (c) 2014 Fredrik Forsmo
+ * Copyright (c) 2014-2017 Fredrik Forsmo
  * Licensed under the MIT license.
  */
 
@@ -11,7 +11,6 @@
 /**
  * Export the module for AMD, Browser and Node.
  */
-
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
@@ -29,7 +28,6 @@
    *
    * @return {number}
    */
-
   function luhn (str) {
     var v   = 0;
     var sum = 0;
@@ -58,7 +56,6 @@
    *
    * @return {boolean}
    */
-
   function testDate (year, month, day) {
     month -= 1;
     var date = new Date(year, month, day);
@@ -67,13 +64,12 @@
 
 
   /**
-   * Validate Swedish personal identity numbers.
+   * Validate Swedish social security numbers.
    *
    * @param {string|number} str
    *
    * @return {boolean}
    */
-
   return function (str) {
     if (typeof str !== 'number' && typeof str !== 'string') {
       return false;
