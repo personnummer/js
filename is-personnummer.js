@@ -1,11 +1,3 @@
-/**
- * is-personnummer
- * https://github.com/frozzare/is-personnummer
- *
- * Copyright (c) 2014-2017 Fredrik Forsmo
- * Licensed under the MIT license.
- */
-
 'use strict';
 
 /**
