@@ -3,7 +3,7 @@
   "description": "Validate Swedish social security numbers",
   "version": "1.1.2",
   "license": "MIT",
-  "homepage": "https://github.com/frozzare/is-personnummer",
+  "homepage": "https://github.com/personnummer/js",
   "author": {
     "name": "Fredrik Forsmo",
     "email": "fredrik.forsmo@gmail.com",
@@ -12,7 +12,7 @@
   "bin": "cli.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/frozzare/is-personnummer.git"
+    "url": "git://github.com/personnummer/js.git"
   },
   "engines": {
     "node": ">= 0.8.0"
