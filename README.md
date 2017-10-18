@@ -46,4 +46,4 @@ See [test.js](test.js) for more examples.
 
 ## License
 
-MIT © [Fredrik Forsmo](https://github.com/frozzare)
+MIT
