@@ -18,7 +18,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "ava"
   },
   "main": "is-personnummer",
   "files": [
@@ -29,7 +29,7 @@
     "meow": "^3.7.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "ava": "^2.1.0"
   },
   "keywords": [
     "personnummer",
