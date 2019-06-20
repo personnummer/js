@@ -1,5 +1,10 @@
+sudo: false
 language: node_js
 node_js:
-  - '4'
-  - '6'
-  - '8'
+  - 8
+  - 9
+  - 10
+cache:
+  directories:
+  - node_modules
+script: npm run test

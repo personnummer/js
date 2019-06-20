@@ -17,7 +17,7 @@
     "build": "babel src -d ./lib",
     "lint": "semistandard src test",
     "prepare": "npm run build",
-    "test": "mocha"
+    "test": "ava"
   },
   "main": "./lib/personnummer.js",
   "dependencies": {
@@ -26,8 +26,8 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.2",
-    "mocha": "*",
-    "semistandard": "^13.0.1"
+    "semistandard": "^13.0.1",
+    "ava": "^2.1.0"
   },
   "keywords": [
     "personnummer",
