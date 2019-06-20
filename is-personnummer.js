@@ -88,10 +88,6 @@
       sep = '-';
     }
 
-    if (year.length === 4) {
-      year = year.substr(2)
-    }
-
     var valid = luhn(year + month + day + num) === +check && !!check;
 
     if (valid && testDate(+year, +month, +day)) {
