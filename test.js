@@ -71,4 +71,6 @@ test('should format input valus as personnummer', t => {
   t.is('190001010107', personnummer.format('000101+0107', true))
 });
 
-//self.assertRaises(ValueError, personnummer.format, "19990919_3766")
+test('should not format input value as personnummer', t => {
+  t.is('', personnummer.format('19990919_3766'));
+});
