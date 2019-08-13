@@ -154,3 +154,30 @@ module.exports.valid = (ssn, includeCoordinationNumber) => {
 
   return valid && testDate(parts.century + parts.year, +parts.month, +parts.day - 60);
 };
+
+/**
+ * Get age from a Swedish social security number.
+ *
+ * @param {string|int} ssn
+ * @param {boolean} includeCoordinationNumber
+ *
+ * @return {int}
+ */
+module.exports.getAge = (ssn, includeCoordinationNumber) => {
+  if (typeof includeCoordinationNumber === 'undefined') {
+    includeCoordinationNumber = true;
+  }
+
+  if (!this.valid(ssn, includeCoordinationNumber)) {
+    return 0;
+  }
+
+  const parts = getParts(ssn);
+  let day = +parts.day;
+
+  if (includeCoordinationNumber && day >= 61 && day < 91) {
+    day -= 60;
+  }
+
+  return Math.floor((new Date() - new Date(parts.century + parts.year, parts.month, day).getTime()) / 3.15576e+10);
+};

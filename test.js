@@ -77,3 +77,21 @@ test('should format input valus as personnummer', t => {
 test('should not format input value as personnummer', t => {
   t.is('', personnummer.format('19990919_3766'));
 });
+
+test('test get age', t => {
+  t.is(55, personnummer.getAge(6403273813));
+  t.is(67, personnummer.getAge('510818-9167'));
+  t.is(29, personnummer.getAge('19900101-0017'));
+  t.is(106, personnummer.getAge('19130401+2931'));
+  t.is(19, personnummer.getAge('200002296127'));
+});
+
+test('test get age with co-ordination numbers', t => {
+  t.is(48, personnummer.getAge('701063-2391'));
+  t.is(54, personnummer.getAge('640883-3231'));
+});
+
+test('test get age and exclude co-ordination numbers', t => {
+  t.is(0, personnummer.getAge('701063-2391', false));
+  t.is(0, personnummer.getAge('640883-3231', false));
+});
