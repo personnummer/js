@@ -35,7 +35,7 @@ const luhn = str => {
 const testDate = (year, month, day) => {
   month -= 1;
   const date = new Date(year, month, day);
-  return !(date.getYear() !== year || date.getMonth() !== month || date.getDate() !== day);
+  return !('' + date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day);
 };
 
 /**
@@ -128,8 +128,8 @@ module.exports.format = (ssn, longFormat) => {
  *
  * @return {boolean}
  */
-module.exports.valid = (str, includeCoordinationNumber) => {
-  if (typeof str !== 'number' && typeof str !== 'string') {
+module.exports.valid = (ssn, includeCoordinationNumber) => {
+  if (typeof ssn !== 'number' && typeof ssn !== 'string') {
     return false;
   }
 
@@ -137,14 +137,14 @@ module.exports.valid = (str, includeCoordinationNumber) => {
     includeCoordinationNumber = true;
   }
 
-  const parts = getParts(str);
+  const parts = getParts(ssn);
   if (!Object.keys(parts).length) {
     return false;
   }
 
   const valid = luhn(parts.year + parts.month + parts.day + parts.num) === +parts.check && !!parts.check;
 
-  if (valid && testDate(+parts.year, +parts.month, +parts.day)) {
+  if (valid && testDate(parts.century + parts.year, +parts.month, +parts.day)) {
     return valid;
   }
 
@@ -152,5 +152,5 @@ module.exports.valid = (str, includeCoordinationNumber) => {
     return false;
   }
 
-  return valid && testDate(+parts.year, +parts.month, +parts.day - 60);
+  return valid && testDate(parts.century + parts.year, +parts.month, +parts.day - 60);
 };
