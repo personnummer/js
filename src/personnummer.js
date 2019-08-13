@@ -1,5 +1,5 @@
 /**
- * The Luhn algorithm.
+ * Calculates the Luhn checksum of a string of digits.
  *
  * @param {string|number} str
  *
@@ -24,7 +24,7 @@ const luhn = str => {
 };
 
 /**
- * Test date if lunh is true.
+ * Test if the input parameters are a valid date or not.
  *
  * @param {int} year
  * @param {int} month
@@ -39,7 +39,89 @@ const testDate = (year, month, day) => {
 };
 
 /**
- * Validate Swedish social security numbers.
+ * Parse a Swedish social security number and get the parts.
+ *
+ * @param {string|int} ssn
+ *
+ * @return {object}
+ */
+const getParts = (ssn) => {
+  ssn += '';
+
+  const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/;
+  const match = reg.exec(ssn);
+
+  if (!match) {
+    return {};
+  }
+
+  let century = match[1];
+  let year = match[2];
+  let month = match[3];
+  let day = match[4];
+  let sep = match[5];
+  let num = match[6];
+  let check = match[7];
+
+  if (sep !== '-' && sep !== '+') {
+    if ((typeof century === 'undefined' || !century.length) || (new Date).getFullYear() - parseInt(century + year, 10) < 100) {
+      sep = '-';
+    } else {
+      sep = '+';
+    }
+  }
+
+  if (typeof century === 'undefined' || !century.length) {
+    const d = new Date;
+    let baseYear = 0;
+
+    if (sep === '+') {
+      baseYear = d.getFullYear() - 100;
+    } else {
+      baseYear = d.getFullYear();
+    }
+
+    century = ('' + (baseYear - ((baseYear - year) % 100))).substr(0, 2);
+  }
+
+  return {
+    'century': century,
+    'year': year,
+    'month': month,
+    'day': day,
+    'sep': sep,
+    'num': num,
+    'check': check
+  };
+}
+
+/**
+ * Format a Swedish social security number as one of the official formats,
+ * A long format or a short format.
+ *
+ * If the input number could not be parsed a empty string will be returned.
+ *
+ * @param {string} ssn
+ * @param {boolean} longFormat
+ *
+ * @return {string}
+ */
+module.exports.format = (ssn, longFormat) => {
+  if (!this.valid(ssn)) {
+    return '';
+  }
+
+  const parts = getParts(ssn);
+
+  if (longFormat) {
+    return `${parts.century}${parts.year}${parts.month}${parts.day}${parts.num}${parts.check}`;
+  }
+
+  return `${parts.year}${parts.month}${parts.day}${parts.sep}${parts.num}${parts.check}`;
+};
+
+/**
+ * Validate a Swedish social security number.
  *
  * @param {string|number} str
  * @param {boolean} includeCoordinationNumber
@@ -55,30 +137,14 @@ module.exports.valid = (str, includeCoordinationNumber) => {
     includeCoordinationNumber = true;
   }
 
-  str += '';
-
-  const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/;
-  const match = reg.exec(str);
-
-  if (!match) {
+  const parts = getParts(str);
+  if (!Object.keys(parts).length) {
     return false;
   }
 
-  let century = match[1];
-  let year = match[2];
-  let month = match[3];
-  let day = match[4];
-  let sep = match[5];
-  let num = match[6];
-  let check = match[7];
+  const valid = luhn(parts.year + parts.month + parts.day + parts.num) === +parts.check && !!parts.check;
 
-  if (sep === undefined) {
-    sep = '-';
-  }
-
-  const valid = luhn(year + month + day + num) === +check && !!check;
-
-  if (valid && testDate(+year, +month, +day)) {
+  if (valid && testDate(+parts.year, +parts.month, +parts.day)) {
     return valid;
   }
 
@@ -86,5 +152,5 @@ module.exports.valid = (str, includeCoordinationNumber) => {
     return false;
   }
 
-  return valid && testDate(+year, +month, +day - 60);
+  return valid && testDate(+parts.year, +parts.month, +parts.day - 60);
 };
