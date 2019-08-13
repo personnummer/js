@@ -78,22 +78,27 @@ test('should not format input value as personnummer', t => {
   t.is('', personnummer.format('19990919_3766'));
 });
 
-
-function getAge(d) {
-  return Math.floor((new Date() - d.getTime()) / 3.15576e+10);
-}
-
 test('test get age', t => {
-  t.is(getAge(new Date(1964, 2, 27)), personnummer.getAge(6403273813));
-  t.is(getAge(new Date(1951, 7, 18)), personnummer.getAge('510818-9167'));
-  t.is(getAge(new Date(1990, 0, 1)), personnummer.getAge('19900101-0017'));
-  t.is(getAge(new Date(1913, 3, 1)), personnummer.getAge('19130401+2931'));
-  t.is(getAge(new Date(2000, 1, 29)), personnummer.getAge('200002296127'));
+  const oldNow = Date.now;
+  Date.now = () => new Date(2019, 7, 13);
+
+  t.is(55, personnummer.getAge(6403273813));
+  t.is(67, personnummer.getAge('510818-9167'));
+  t.is(29, personnummer.getAge('19900101-0017'));
+  t.is(106, personnummer.getAge('19130401+2931'));
+  t.is(19, personnummer.getAge('200002296127'));
+
+  Date.now = oldNow;
 });
 
 test('test get age with co-ordination numbers', t => {
-  t.is(getAge(new Date(1970, 9, 63)), personnummer.getAge('701063-2391'));
-  t.is(getAge(new Date(1964, 7, 83)), personnummer.getAge('640883-3231'));
+  const oldNow = Date.now;
+  Date.now = () => new Date(2019, 7, 13);
+
+  t.is(48, personnummer.getAge('701063-2391'));
+  t.is(54, personnummer.getAge('640883-3231'));
+
+  Date.now = oldNow;
 });
 
 test('test get age and exclude co-ordination numbers', t => {

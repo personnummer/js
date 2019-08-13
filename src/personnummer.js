@@ -179,5 +179,5 @@ module.exports.getAge = (ssn, includeCoordinationNumber) => {
     day -= 60;
   }
 
-  return Math.floor((new Date() - new Date(parts.century + parts.year, parts.month, day).getTime()) / 3.15576e+10);
+  return Math.floor((Date.now() - new Date(parts.century + parts.year, parts.month, day).getTime()) / 3.15576e+10);
 };
