@@ -12,6 +12,7 @@ test('should validate personnummer with control digit', t => {
   t.is(true, personnummer.valid('200002296127'));
   t.is(true, personnummer.valid('200002296127'));
   t.is(true, personnummer.valid('200002283422'));
+  t.is(true, personnummer.valid('101010-1010'));
 });
 
 test('should not validate personnummer without control digit', t => {
