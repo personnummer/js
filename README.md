@@ -1,45 +1,23 @@
-# is-personnummer [![Build Status](https://secure.travis-ci.org/personnummer/js.png?branch=master)](http://travis-ci.org/personnummer/js)
+# personnummer [![Build Status](https://secure.travis-ci.org/personnummer/js.png?branch=master)](http://travis-ci.org/personnummer/js)
 
 Validate Swedish social security numbers.
 
 Install the module with npm:
 
 ```
-npm install is-personnummer
-```
-
-or with Bower, with AMD and browser support:
-
-```
-bower install is-personnummer
-```
-
-or as cli:
-
-```
-npm install -g is-personnummer
-is-personnummer 510818-9167
-true
+npm install --save personnummer
 ```
 
 ## Example
 
 ```javascript
-node
-> var isPersonnummer = require('is-personnummer');
-undefined
-> isPersonnummer('510818-9167');
-true
-> isPersonnummer('19130401+2931')
-true
-> isPersonnummer('196408233234')
-true
-> isPersonnummer('510818-916')
-false
-> isPersonnummer('19130401+293')
-false
-> isPersonnummer('19640823323')
-false
+const personnummer = require('personnummer');
+
+personnummer.valid(6403273813);
+//=> true
+
+personnummer.valid('19130401+2931')
+//=> true
 ```
 
 See [test.js](test.js) for more examples.

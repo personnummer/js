@@ -1,39 +1,43 @@
 {
-  "name": "is-personnummer",
+  "name": "personnummer",
   "description": "Validate Swedish social security numbers",
-  "version": "1.1.3",
+  "version": "2.0.0",
   "license": "MIT",
   "homepage": "https://github.com/personnummer/js",
   "author": {
     "name": "Fredrik Forsmo",
     "email": "fredrik.forsmo@gmail.com",
-    "url": "http://forsmo.me"
+    "url": "https://frozzare.com"
   },
-  "bin": "cli.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/personnummer/js.git"
   },
-  "engines": {
-    "node": ">= 0.8.0"
-  },
   "scripts": {
+    "build": "babel src -d ./lib",
+    "lint": "semistandard src test",
+    "prepare": "npm run build",
     "test": "ava"
   },
-  "main": "is-personnummer",
-  "files": [
-    "cli.js",
-    "is-personnummer.js"
-  ],
+  "main": "./lib/personnummer.js",
   "dependencies": {
-    "meow": "^3.7.0"
+    "babel-preset-env": "^1.7.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^10.0.2",
+    "semistandard": "^13.0.1",
     "ava": "^2.1.0"
   },
   "keywords": [
     "personnummer",
     "personal",
-    "identity"
-  ]
+    "identity",
+    "social",
+    "security",
+    "numbers"
+  ],
+  "semistandard": {
+    "parser": "babel-eslint"
+  }
 }
