@@ -5,35 +5,19 @@ Validate Swedish social security numbers.
 Install the module with npm:
 
 ```
-npm install is-personnummer
-```
-
-or as cli:
-
-```
-npm install -g is-personnummer
-is-personnummer 510818-9167
-true
+npm install --save personnummer
 ```
 
 ## Example
 
 ```javascript
 node
-> var isPersonnummer = require('is-personnummer');
+> var personnummer = require('personnummer');
 undefined
-> isPersonnummer('510818-9167');
+> personnummer.valid(6403273813);
 true
-> isPersonnummer('19130401+2931')
+> personnummer.valid('19130401+2931')
 true
-> isPersonnummer('196408233234')
-true
-> isPersonnummer('510818-916')
-false
-> isPersonnummer('19130401+293')
-false
-> isPersonnummer('19640823323')
-false
 ```
 
 See [test.js](test.js) for more examples.
