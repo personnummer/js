@@ -11,12 +11,13 @@ npm install --save personnummer
 ## Example
 
 ```javascript
-> var personnummer = require('personnummer');
-undefined
-> personnummer.valid(6403273813);
-true
-> personnummer.valid('19130401+2931')
-true
+var personnummer = require('personnummer');
+
+personnummer.valid(6403273813);
+//=> true
+
+personnummer.valid('19130401+2931')
+//=> true
 ```
 
 See [test.js](test.js) for more examples.
