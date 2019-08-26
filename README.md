@@ -11,7 +11,6 @@ npm install --save personnummer
 ## Example
 
 ```javascript
-node
 > var personnummer = require('personnummer');
 undefined
 > personnummer.valid(6403273813);
