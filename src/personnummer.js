@@ -95,89 +95,91 @@ const getParts = (ssn) => {
   };
 }
 
-/**
- * Format a Swedish social security number as one of the official formats,
- * A long format or a short format.
- *
- * If the input number could not be parsed a empty string will be returned.
- *
- * @param {string} ssn
- * @param {boolean} longFormat
- *
- * @return {string}
- */
-module.exports.format = (ssn, longFormat) => {
-  if (!this.valid(ssn)) {
-    return '';
+module.exports = {
+  /**
+   * Format a Swedish social security number as one of the official formats,
+   * A long format or a short format.
+   *
+   * If the input number could not be parsed a empty string will be returned.
+   *
+   * @param {string} ssn
+   * @param {boolean} longFormat
+   *
+   * @return {string}
+   */
+  format(ssn, longFormat) {
+    if (!this.valid(ssn)) {
+      return '';
+    }
+
+    const parts = getParts(ssn);
+
+    if (longFormat) {
+      return `${parts.century}${parts.year}${parts.month}${parts.day}${parts.num}${parts.check}`;
+    }
+
+    return `${parts.year}${parts.month}${parts.day}${parts.sep}${parts.num}${parts.check}`;
+  },
+
+  /**
+   * Get age from a Swedish social security number.
+   *
+   * @param {string|int} ssn
+   * @param {boolean} includeCoordinationNumber
+   *
+   * @return {int}
+   */
+  getAge(ssn, includeCoordinationNumber) {
+    if (typeof includeCoordinationNumber === 'undefined') {
+      includeCoordinationNumber = true;
+    }
+
+    if (!this.valid(ssn, includeCoordinationNumber)) {
+      return 0;
+    }
+
+    const parts = getParts(ssn);
+    let day = +parts.day;
+
+    if (includeCoordinationNumber && day >= 61 && day < 91) {
+      day -= 60;
+    }
+
+    return Math.floor((Date.now() - new Date(parts.century + parts.year, parts.month, day).getTime()) / 3.15576e+10);
+  },
+
+  /**
+   * Validate a Swedish social security number.
+   *
+   * @param {string|number} str
+   * @param {boolean} includeCoordinationNumber
+   *
+   * @return {boolean}
+   */
+  valid(ssn, includeCoordinationNumber) {
+    if (typeof ssn !== 'number' && typeof ssn !== 'string') {
+      return false;
+    }
+
+    if (typeof includeCoordinationNumber === 'undefined') {
+      includeCoordinationNumber = true;
+    }
+
+    const parts = getParts(ssn);
+    if (!Object.keys(parts).length) {
+      return false;
+    }
+
+    const valid = luhn(parts.year + parts.month + parts.day + parts.num) === +parts.check && !!parts.check;
+
+    if (valid && testDate(parts.century + parts.year, +parts.month, +parts.day)) {
+      return valid;
+    }
+
+    if (!includeCoordinationNumber) {
+      return false;
+    }
+
+    return valid && testDate(parts.century + parts.year, +parts.month, +parts.day - 60);
   }
-
-  const parts = getParts(ssn);
-
-  if (longFormat) {
-    return `${parts.century}${parts.year}${parts.month}${parts.day}${parts.num}${parts.check}`;
-  }
-
-  return `${parts.year}${parts.month}${parts.day}${parts.sep}${parts.num}${parts.check}`;
-};
-
-/**
- * Validate a Swedish social security number.
- *
- * @param {string|number} str
- * @param {boolean} includeCoordinationNumber
- *
- * @return {boolean}
- */
-module.exports.valid = (ssn, includeCoordinationNumber) => {
-  if (typeof ssn !== 'number' && typeof ssn !== 'string') {
-    return false;
-  }
-
-  if (typeof includeCoordinationNumber === 'undefined') {
-    includeCoordinationNumber = true;
-  }
-
-  const parts = getParts(ssn);
-  if (!Object.keys(parts).length) {
-    return false;
-  }
-
-  const valid = luhn(parts.year + parts.month + parts.day + parts.num) === +parts.check && !!parts.check;
-
-  if (valid && testDate(parts.century + parts.year, +parts.month, +parts.day)) {
-    return valid;
-  }
-
-  if (!includeCoordinationNumber) {
-    return false;
-  }
-
-  return valid && testDate(parts.century + parts.year, +parts.month, +parts.day - 60);
-};
-
-/**
- * Get age from a Swedish social security number.
- *
- * @param {string|int} ssn
- * @param {boolean} includeCoordinationNumber
- *
- * @return {int}
- */
-module.exports.getAge = (ssn, includeCoordinationNumber) => {
-  if (typeof includeCoordinationNumber === 'undefined') {
-    includeCoordinationNumber = true;
-  }
-
-  if (!this.valid(ssn, includeCoordinationNumber)) {
-    return 0;
-  }
-
-  const parts = getParts(ssn);
-  let day = +parts.day;
-
-  if (includeCoordinationNumber && day >= 61 && day < 91) {
-    day -= 60;
-  }
-
-  return Math.floor((Date.now() - new Date(parts.century + parts.year, parts.month, day).getTime()) / 3.15576e+10);
 };
