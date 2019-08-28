@@ -107,7 +107,7 @@ const getParts = (ssn) => {
  * @return {string}
  */
 module.exports.format = (ssn, longFormat) => {
-  if (!this.valid(ssn)) {
+  if (!module.exports.valid(ssn)) {
     return '';
   }
 
@@ -168,7 +168,7 @@ module.exports.getAge = (ssn, includeCoordinationNumber) => {
     includeCoordinationNumber = true;
   }
 
-  if (!this.valid(ssn, includeCoordinationNumber)) {
+  if (!module.exports.valid(ssn, includeCoordinationNumber)) {
     return 0;
   }
 
