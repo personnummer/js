@@ -130,10 +130,6 @@ module.exports = {
    * @return {int}
    */
   getAge(ssn, includeCoordinationNumber) {
-    if (typeof includeCoordinationNumber === 'undefined') {
-      includeCoordinationNumber = true;
-    }
-
     if (!this.valid(ssn, includeCoordinationNumber)) {
       return 0;
     }
@@ -191,13 +187,9 @@ module.exports = {
    *
    * @return {boolean}
    */
-  valid(ssn, includeCoordinationNumber) {
+  valid(ssn, includeCoordinationNumber = true) {
     if (typeof ssn !== 'number' && typeof ssn !== 'string') {
       return false;
-    }
-
-    if (typeof includeCoordinationNumber === 'undefined') {
-      includeCoordinationNumber = true;
     }
 
     const parts = getParts(ssn);
