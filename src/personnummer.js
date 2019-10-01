@@ -149,6 +149,41 @@ module.exports = {
   },
 
   /**
+   * Check if a Swedish social security number is for a female.
+   *
+   * @param {string|number} ssn
+   * @param {boolean} includeCoordinationNumber
+   *
+   * @throws Error when input value is not valid.
+   *
+   * @return {boolean}
+   */
+  isFemale(ssn, includeCoordinationNumber) {
+    return !this.isMale(ssn, includeCoordinationNumber)
+  },
+
+  /**
+   * Check if a Swedish social security number is for a male.
+   *
+   * @param {string|number} ssn
+   * @param {boolean} includeCoordinationNumber
+   *
+   * @throws Error when input value is not valid.
+   *
+   * @return {boolean}
+   */
+  isMale(ssn, includeCoordinationNumber) {
+    if (!this.valid(ssn, includeCoordinationNumber)) {
+      throw new Error('Invalid swedish social security number');
+    }
+
+    const parts = getParts(ssn);
+    const genderDigit = parts['num'].substr(-1);
+
+    return genderDigit % 2 === 1;
+  },
+
+  /**
    * Validate a Swedish social security number.
    *
    * @param {string|number} str
