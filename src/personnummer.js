@@ -174,9 +174,9 @@ module.exports = {
     }
 
     const parts = getParts(ssn);
-    const genderDigit = parts['num'].substr(-1);
+    const sexDigit = parts['num'].substr(-1);
 
-    return genderDigit % 2 === 1;
+    return sexDigit % 2 === 1;
   },
 
   /**
