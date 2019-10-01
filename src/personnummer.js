@@ -130,10 +130,6 @@ module.exports = {
    * @return {int}
    */
   getAge(ssn, includeCoordinationNumber) {
-    if (typeof includeCoordinationNumber === 'undefined') {
-      includeCoordinationNumber = true;
-    }
-
     if (!this.valid(ssn, includeCoordinationNumber)) {
       return 0;
     }
@@ -149,6 +145,41 @@ module.exports = {
   },
 
   /**
+   * Check if a Swedish social security number is for a female.
+   *
+   * @param {string|number} ssn
+   * @param {boolean} includeCoordinationNumber
+   *
+   * @throws Error when input value is not valid.
+   *
+   * @return {boolean}
+   */
+  isFemale(ssn, includeCoordinationNumber) {
+    return !this.isMale(ssn, includeCoordinationNumber)
+  },
+
+  /**
+   * Check if a Swedish social security number is for a male.
+   *
+   * @param {string|number} ssn
+   * @param {boolean} includeCoordinationNumber
+   *
+   * @throws Error when input value is not valid.
+   *
+   * @return {boolean}
+   */
+  isMale(ssn, includeCoordinationNumber) {
+    if (!this.valid(ssn, includeCoordinationNumber)) {
+      throw new Error('Invalid swedish social security number');
+    }
+
+    const parts = getParts(ssn);
+    const sexDigit = parts['num'].substr(-1);
+
+    return sexDigit % 2 === 1;
+  },
+
+  /**
    * Validate a Swedish social security number.
    *
    * @param {string|number} str
@@ -156,13 +187,9 @@ module.exports = {
    *
    * @return {boolean}
    */
-  valid(ssn, includeCoordinationNumber) {
+  valid(ssn, includeCoordinationNumber = true) {
     if (typeof ssn !== 'number' && typeof ssn !== 'string') {
       return false;
-    }
-
-    if (typeof includeCoordinationNumber === 'undefined') {
-      includeCoordinationNumber = true;
     }
 
     const parts = getParts(ssn);
