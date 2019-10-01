@@ -1,4 +1,4 @@
-# personnummer [![Build Status](https://secure.travis-ci.org/personnummer/js.png?branch=master)](http://travis-ci.org/personnummer/js)
+# personnummer [![Build Status](https://github.com/personnummer/js/workflows/build/badge.svg)](https://github.com/personnummer/js/actions)
 
 Validate Swedish social security numbers.
 
