@@ -1,6 +1,28 @@
 import test from 'ava';
 import personnummer from './src/personnummer';
 
+const invalidNumbers = [
+  null,
+  [],
+  true,
+  false,
+  100101001,
+  '112233-4455',
+  '19112233-4455',
+  '9999999999',
+  '199999999999',
+  '9913131315',
+  '9911311232',
+  '9902291237',
+  '19990919_3766',
+  '990919_3766',
+  '199909193776',
+  'Just a string',
+  '990919+3776',
+  '990919-3776',
+  '9909193776',
+];
+
 test('should validate personnummer with control digit', t => {
   t.is(true, personnummer.valid(6403273813));
   t.is(true, personnummer.valid('510818-9167'));
@@ -23,27 +45,9 @@ test('should not validate personnummer without control digit', t => {
 });
 
 test('should not validate wrong personnummer or wrong types', t => {
-  t.is(false, personnummer.valid(undefined));
-  t.is(false, personnummer.valid(null));
-  t.is(false, personnummer.valid([]));
-  t.is(false, personnummer.valid({}));
-  t.is(false, personnummer.valid(false));
-  t.is(false, personnummer.valid(true));
-  t.is(false, personnummer.valid(1122334455));
-  t.is(false, personnummer.valid('112233-4455'));
-  t.is(false, personnummer.valid('19112233-4455'));
-  t.is(false, personnummer.valid('9999999999'));
-  t.is(false, personnummer.valid('199999999999'));
-  t.is(false, personnummer.valid('9913131315'));
-  t.is(false, personnummer.valid('9911311232'));
-  t.is(false, personnummer.valid('9902291237'));
-  t.is(false, personnummer.valid('19990919_3766'));
-  t.is(false, personnummer.valid('990919_3766'));
-  t.is(false, personnummer.valid('199909193776'));
-  t.is(false, personnummer.valid('Just a string'));
-  t.is(false, personnummer.valid('990919+3776'));
-  t.is(false, personnummer.valid('990919-3776'));
-  t.is(false, personnummer.valid('9909193776'));
+  invalidNumbers.forEach(n => {
+    t.is(false, personnummer.valid(n));
+  });
 });
 
 test('should validate co-ordination numbers', t => {
@@ -76,7 +80,9 @@ test('should format input valus as personnummer', t => {
 });
 
 test('should not format input value as personnummer', t => {
-  t.is('', personnummer.format('19990919_3766'));
+  invalidNumbers.forEach(n => {
+    t.is('', personnummer.format(n));
+  });
 });
 
 test('test get age', t => {
@@ -105,4 +111,34 @@ test('test get age with co-ordination numbers', t => {
 test('test get age and exclude co-ordination numbers', t => {
   t.is(0, personnummer.getAge('701063-2391', false));
   t.is(0, personnummer.getAge('640883-3231', false));
+});
+
+test('test sex', t => {
+  t.is(true, personnummer.isMale(6403273813, false));
+  t.is(false, personnummer.isFemale(6403273813, false));
+  t.is(true, personnummer.isFemale('510818-9167', false));
+  t.is(false, personnummer.isMale('510818-9167', false));
+});
+
+test('test sex with co-ordination numbers', t => {
+  t.is(true, personnummer.isMale('701063-2391'));
+  t.is(false, personnummer.isFemale('701063-2391'));
+  t.is(true, personnummer.isFemale('640883-3223'));
+  t.is(false, personnummer.isMale('640883-3223'));
+});
+
+test('test sex with invalid numbers', t => {
+  invalidNumbers.forEach(n => {
+    try {
+      personnummer.isMale(n);
+    } catch (e) {
+      t.pass();
+    }
+
+    try {
+      personnummer.isFemale(n);
+    } catch (e) {
+      t.pass();
+    }
+  });
 });
