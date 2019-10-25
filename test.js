@@ -61,27 +61,36 @@ test('should not validate wrong co-ordination numbers', t => {
 });
 
 test('should format input valus as personnummer', t => {
-  t.is('640327-3813', personnummer.format(6403273813))
-  t.is('510818-9167', personnummer.format('510818-9167'))
-  t.is('900101-0017', personnummer.format('19900101-0017'))
-  t.is('130401+2931', personnummer.format('19130401+2931'))
-  t.is('640823-3234', personnummer.format('196408233234'))
-  t.is('000101-0107', personnummer.format('0001010107'))
-  t.is('000101-0107', personnummer.format('000101-0107'))
-  t.is('130401+2931', personnummer.format('191304012931'))
-  t.is('196403273813', personnummer.format(6403273813, true))
-  t.is('195108189167', personnummer.format('510818-9167', true))
-  t.is('199001010017', personnummer.format('19900101-0017', true))
-  t.is('191304012931', personnummer.format('19130401+2931', true))
-  t.is('196408233234', personnummer.format('196408233234', true))
-  t.is('200001010107', personnummer.format('0001010107', true))
-  t.is('200001010107', personnummer.format('000101-0107', true))
-  t.is('190001010107', personnummer.format('000101+0107', true))
+  t.is('640327-3813', personnummer.format(6403273813));
+  t.is('510818-9167', personnummer.format('510818-9167'));
+  t.is('900101-0017', personnummer.format('19900101-0017'));
+  t.is('130401+2931', personnummer.format('19130401+2931'));
+  t.is('640823-3234', personnummer.format('196408233234'));
+  t.is('000101-0107', personnummer.format('0001010107'));
+  t.is('000101-0107', personnummer.format('000101-0107'));
+  t.is('130401+2931', personnummer.format('191304012931'));
+
+  const opts = {
+    longFormat: true,
+  };
+
+  t.is('196403273813', personnummer.format(6403273813, opts));
+  t.is('195108189167', personnummer.format('510818-9167', opts));
+  t.is('199001010017', personnummer.format('19900101-0017', opts));
+  t.is('191304012931', personnummer.format('19130401+2931', opts));
+  t.is('196408233234', personnummer.format('196408233234', opts));
+  t.is('200001010107', personnummer.format('0001010107', opts));
+  t.is('200001010107', personnummer.format('000101-0107', opts));
+  t.is('190001010107', personnummer.format('000101+0107', opts));
 });
 
 test('should not format input value as personnummer', t => {
   invalidNumbers.forEach(n => {
-    t.is('', personnummer.format(n));
+    try {
+      personnummer.format(n);
+    } catch (e) {
+      t.pass();
+    }
   });
 });
 
@@ -109,15 +118,28 @@ test('test get age with co-ordination numbers', t => {
 });
 
 test('test get age and exclude co-ordination numbers', t => {
-  t.is(0, personnummer.getAge('701063-2391', false));
-  t.is(0, personnummer.getAge('640883-3231', false));
+  const numbers = ['701063-2391', '640883-3231'];
+  const opts = {
+    coordinationNumber: false,
+  };
+
+  numbers.forEach(n => {
+    try {
+      personnummer.getAge(n, opts);
+    } catch (e) {
+      t.pass();
+    }
+  });
 });
 
-test('test sex', t => {
-  t.is(true, personnummer.isMale(6403273813, false));
-  t.is(false, personnummer.isFemale(6403273813, false));
-  t.is(true, personnummer.isFemale('510818-9167', false));
-  t.is(false, personnummer.isMale('510818-9167', false));
+test('test get age with invalid numbers', t => {
+  invalidNumbers.forEach(n => {
+    try {
+      personnummer.getAge(n);
+    } catch (e) {
+      t.pass();
+    }
+  });
 });
 
 test('test sex with co-ordination numbers', t => {
