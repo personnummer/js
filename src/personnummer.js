@@ -77,7 +77,7 @@ const getParts = (ssn) => {
   }
 
   if (sep !== '-' && sep !== '+') {
-    if ((typeof century === 'undefined' || !century.length) || (new Date).getFullYear() - parseInt(century + year, 10) < 100) {
+    if ((new Date).getFullYear() - parseInt(century + year, 10) < 100) {
       sep = '-';
     } else {
       sep = '+';
