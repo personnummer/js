@@ -79,6 +79,8 @@ test('should format input valus as personnummer', t => {
   t.is('190001010107', personnummer.format('000101+0107', true));
   t.is('130401+2931', personnummer.format('19130401-2931'));
   t.is('900101-0017', personnummer.format('19900101+0017'));
+  t.is('121212+1212', personnummer.format('19121212-1212'));
+  t.is('121212-1212', personnummer.format('20121212+1212'));
 });
 
 test('should not format input value as personnummer', t => {
