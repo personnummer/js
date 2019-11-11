@@ -60,7 +60,7 @@ test('should not validate wrong co-ordination numbers', t => {
   t.is(false, personnummer.valid('640893-3231'));
 });
 
-test('should format input valus as personnummer', t => {
+test('should format input values as personnummer', t => {
   t.is('640327-3813', personnummer.format(6403273813));
   t.is('510818-9167', personnummer.format('510818-9167'));
   t.is('900101-0017', personnummer.format('19900101-0017'));
@@ -82,6 +82,13 @@ test('should format input valus as personnummer', t => {
   t.is('200001010107', personnummer.format('0001010107', opts));
   t.is('200001010107', personnummer.format('000101-0107', opts));
   t.is('190001010107', personnummer.format('000101+0107', opts));
+});
+
+test('should format input values and replace separator with the right one', t => {
+  t.is('130401+2931', personnummer.format('19130401-2931'));
+  t.is('900101-0017', personnummer.format('19900101+0017'));
+  t.is('121212+1212', personnummer.format('19121212-1212'));
+  t.is('121212-1212', personnummer.format('20121212+1212'));
 });
 
 test('should not format input value as personnummer', t => {

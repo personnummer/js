@@ -75,14 +75,6 @@ const getParts = (ssn) => {
   let num = match[6];
   let check = match[7];
 
-  if (sep !== '-' && sep !== '+') {
-    if ((typeof century === 'undefined' || !century.length) || (new Date).getFullYear() - parseInt(century + year, 10) < 100) {
-      sep = '-';
-    } else {
-      sep = '+';
-    }
-  }
-
   if (typeof century === 'undefined' || !century.length) {
     const d = new Date;
     let baseYear = 0;
@@ -94,6 +86,19 @@ const getParts = (ssn) => {
     }
 
     century = ('' + (baseYear - ((baseYear - year) % 100))).substr(0, 2);
+  }
+
+  if (!sep) {
+    sep = '-';
+  }
+
+  // Set the right separator to match the full year.
+  // >= 100 should use + and < 100 should use -
+  const yearDiff = (new Date().getFullYear()) - parseInt(century + year, 10);
+  if (sep === '-' && yearDiff >= 100) {
+    sep = '+';
+  } else if (sep === '+' && yearDiff < 100) {
+    sep = '-';
   }
 
   return {
