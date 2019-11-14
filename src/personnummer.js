@@ -82,23 +82,17 @@ const getParts = (ssn) => {
     if (sep === '+') {
       baseYear = d.getFullYear() - 100;
     } else {
+      sep = '-';
       baseYear = d.getFullYear();
     }
 
     century = ('' + (baseYear - ((baseYear - year) % 100))).substr(0, 2);
-  }
-
-  if (!sep) {
-    sep = '-';
-  }
-
-  // Set the right separator to match the full year.
-  // >= 100 should use + and < 100 should use -
-  const yearDiff = (new Date().getFullYear()) - parseInt(century + year, 10);
-  if (sep === '-' && yearDiff >= 100) {
-    sep = '+';
-  } else if (sep === '+' && yearDiff < 100) {
-    sep = '-';
+  } else {
+    if ((new Date().getFullYear()) - parseInt(century + year, 10) < 100) {
+      sep = '-';
+    } else {
+      sep = '+';
+    }
   }
 
   return {
