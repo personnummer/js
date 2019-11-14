@@ -175,7 +175,7 @@ module.exports = {
 
     const input = parts.century + parts.year + '-' + parts.month + '-' + day;
 
-    return diffInYears(new Date(), new Date(input));
+    return diffInYears(new Date(Date.now()), new Date(input));
   },
 
   /**
