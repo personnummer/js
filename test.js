@@ -16,8 +16,10 @@ const invalidNumbers = [
 ];
 
 test('should validate personnummer with control digit', t => {
+  t.is(true, personnummer.valid(8507099805));
   t.is(true, personnummer.valid('198507099805'));
   t.is(true, personnummer.valid('198507099813'));
+  t.is(true, personnummer.valid('850709-9813'));
   t.is(true, personnummer.valid('196411139808'));
 });
 
