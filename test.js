@@ -18,8 +18,10 @@ const invalidNumbers = [
 describe('validation', () => {
   test('should validate personnummer with control digit', () => {
     const numbers = [
+      8507099805,
       '198507099805',
       '198507099813',
+      '850709-9813',
       '196411139808',
     ];
 
