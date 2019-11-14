@@ -1,4 +1,37 @@
 /**
+ * Compare the two dates and return -1, 0 or 1.
+ *
+ * @param {Date} dateLeft
+ * @param {Date} dateRight
+ *
+ * @return {numbers}
+ */
+const compareAsc = (dateLeft, dateRight) => {
+  const diff = dateLeft.getTime() - dateRight.getTime()
+  return diff < 0 ? -1 : diff > 0 ? 1 : diff;
+};
+
+/**
+ * Get the number of full years between the given dates.
+ *
+ * @param {Date} dateLeft
+ * @param {Date} dateRight
+ *
+ * @return {numbers}
+ */
+export const diffInYears = (dateLeft, dateRight) => {
+  const sign = compareAsc(dateLeft, dateRight);
+  const yearDiff = Math.abs(dateLeft.getFullYear() - dateRight.getFullYear());
+
+  dateLeft.setFullYear(dateLeft.getFullYear() - sign * yearDiff);
+
+  const isLastYearNotFull = compareAsc(dateLeft, dateRight) === -sign
+  const result = sign * (yearDiff - isLastYearNotFull);
+
+  return result === 0 ? 0 : result;
+};
+
+/**
  * Calculates the Luhn checksum of a string of digits.
  *
  * @param {string|number} str

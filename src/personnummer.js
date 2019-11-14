@@ -1,5 +1,5 @@
 import { PersonnummerError } from './errors';
-import { luhn, testDate } from './utils';
+import { diffInYears, luhn, testDate } from './utils';
 
 class Personnummer {
   /**
@@ -116,12 +116,13 @@ class Personnummer {
 
     let day = +this.day;
 
-    // todo move?
     if (day >= 61 && day < 91) {
       day -= 60;
     }
 
-    return Math.floor((Date.now() - new Date(this.century + this.year, this.month, day).getTime()) / 3.15576e+10);
+    const input = this.century + this.year + '-' + this.month + '-' + day;
+
+    return diffInYears(new Date(Date.now()), new Date(input));
   }
 
   /**
