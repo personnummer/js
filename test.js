@@ -71,6 +71,7 @@ test('test get age', t => {
 
   t.is(34, personnummer.getAge('198507099805'));
   t.is(34, personnummer.getAge('198507099813'));
+  t.is(54, personnummer.getAge('196411139808'));
   t.is(106, personnummer.getAge('19121212+1212'));
 
   Date.now = oldNow;
