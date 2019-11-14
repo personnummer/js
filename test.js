@@ -18,10 +18,9 @@ const invalidNumbers = [
 describe('validation', () => {
   test('should validate personnummer with control digit', () => {
     const numbers = [
-      9001010017,
-      '900101-0017',
       '198507099805',
       '198507099813',
+      '196411139808',
     ];
 
     numbers.forEach(n => {
@@ -31,10 +30,9 @@ describe('validation', () => {
 
   test('should not validate personnummer without control digit', () => {
     const numbers = [
-      900101001,
-      '900101-001',
-      '19900101-001',
       '19850709980',
+      '19850709981',
+      '19641113980',
     ];
 
     numbers.forEach(n => {
@@ -56,13 +54,12 @@ describe('validation', () => {
   });
 
   test('should not validate wrong co-ordination numbers', () => {
-    expect(personnummer.valid('900161-0017')).toBe(false);
+    expect(personnummer.valid('198567099805')).toBe(false);
   });
 });
 
 describe('format', () => {
   test('should format input values as personnummer', () => {
-    expect(personnummer.format(9001010017)).toBe('900101-0017');
     expect(personnummer.format('19850709-9805')).toBe('850709-9805');
     expect(personnummer.format('198507099813')).toBe('850709-9813');
 
@@ -70,20 +67,13 @@ describe('format', () => {
       longFormat: true,
     };
 
-    expect(personnummer.format(9001010017, opts)).toBe('199001010017');
     expect(personnummer.format('19850709-9805', opts)).toBe('198507099805');
     expect(personnummer.format('198507099813', opts)).toBe('198507099813');
   });
 
   test('should format input values and replace separator with the right one', () => {
-    expect(personnummer.format('19900101+0017')).toBe('900101-0017');
+    expect(personnummer.format('19850709+9805')).toBe('850709-9805');
     expect(personnummer.format('19121212-1212')).toBe('121212+1212');
-  });
-
-  test('should not format invalid input values as personnummer', () => {
-    expect(() => {
-      personnummer.format(n);
-    }).toThrow();
   });
 });
 
