@@ -16,18 +16,15 @@ const invalidNumbers = [
 ];
 
 test('should validate personnummer with control digit', t => {
-  t.is(true, personnummer.valid(9001010017));
-  t.is(true, personnummer.valid('900101-0017'));
-  t.is(true, personnummer.valid('19900101-0017'));
   t.is(true, personnummer.valid('198507099805'));
   t.is(true, personnummer.valid('198507099813'));
+  t.is(true, personnummer.valid('196411139808'));
 });
 
 test('should not validate personnummer without control digit', t => {
-  t.is(false, personnummer.valid(900101001));
-  t.is(false, personnummer.valid('900101-001'));
-  t.is(false, personnummer.valid('19900101-001'));
   t.is(false, personnummer.valid('19850709980'));
+  t.is(false, personnummer.valid('19850709981'));
+  t.is(false, personnummer.valid('19641113980'));
 });
 
 test('should not validate wrong personnummer or wrong types', t => {
@@ -44,23 +41,19 @@ test('should validate co-ordination numbers', t => {
 });
 
 test('should not validate wrong co-ordination numbers', t => {
-  t.is(false, personnummer.valid('900161-0017'));
+  t.is(false, personnummer.valid('198567099805'));
 });
 
 test('should format input values as personnummer', t => {
-  t.is('900101-0017', personnummer.format(9001010017));
-  t.is('900101-0017', personnummer.format('19900101-0017'));
   t.is('850709-9805', personnummer.format('19850709-9805'));
   t.is('850709-9813', personnummer.format('198507099813'));
 
-  t.is('199001010017', personnummer.format(9001010017, true));
-  t.is('199001010017', personnummer.format('19900101-0017', true));
   t.is('198507099805', personnummer.format('19850709-9805', true));
   t.is('198507099813', personnummer.format('198507099813', true));
 });
 
 test('should format input values and replace separator with the right one', t => {
-  t.is('900101-0017', personnummer.format('19900101+0017'));
+  t.is('850709-9805', personnummer.format('19850709+9805'));
   t.is('121212+1212', personnummer.format('19121212-1212'));
 });
 
@@ -75,7 +68,6 @@ test('test get age', t => {
   Date.now = () => new Date(2019, 7, 13);
 
   t.is(34, personnummer.getAge('198507099805'));
-  t.is(29, personnummer.getAge('19900101-0017'));
   t.is(34, personnummer.getAge('198507099813'));
   t.is(106, personnummer.getAge('19121212+1212'));
 
