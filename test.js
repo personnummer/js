@@ -84,6 +84,7 @@ describe('age', () => {
     advanceTo(new Date(2019, 7, 13));
     expect(personnummer.getAge('198507099805')).toBe(34);
     expect(personnummer.getAge('198507099813')).toBe(34);
+    expect(personnummer.getAge('196411139808')).toBe(54);
     expect(personnummer.getAge('19121212+1212')).toBe(106);
     clear();
   });
