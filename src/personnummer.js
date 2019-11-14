@@ -128,7 +128,7 @@ module.exports = {
    *
    * @return {int}
    */
-  getAge(ssn, includeCoordinationNumber) {
+  getAge(ssn, includeCoordinationNumber = true) {
     if (!this.valid(ssn, includeCoordinationNumber)) {
       return 0;
     }
@@ -140,7 +140,9 @@ module.exports = {
       day -= 60;
     }
 
-    return Math.floor((Date.now() - new Date(parts.century + parts.year, parts.month, day).getTime()) / 3.15576e+10);
+    const input = parts.century + parts.year + '-' + parts.month + '-' + day;
+
+    return Math.floor(((Date.now() - new Date(input).getTime()) / 3.15576e+10));
   },
 
   /**
@@ -153,7 +155,7 @@ module.exports = {
    *
    * @return {boolean}
    */
-  isFemale(ssn, includeCoordinationNumber) {
+  isFemale(ssn, includeCoordinationNumber = true) {
     return !this.isMale(ssn, includeCoordinationNumber)
   },
 
@@ -167,7 +169,7 @@ module.exports = {
    *
    * @return {boolean}
    */
-  isMale(ssn, includeCoordinationNumber) {
+  isMale(ssn, includeCoordinationNumber = true) {
     if (!this.valid(ssn, includeCoordinationNumber)) {
       throw new Error('Invalid swedish social security number');
     }
