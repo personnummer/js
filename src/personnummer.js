@@ -50,63 +50,63 @@ const testDate = (year, month, day) => {
   return !('' + date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day);
 };
 
-/**
- * Parse a Swedish social security number and get the parts.
- *
- * @param {string|int} ssn
- *
- * @return {object}
- */
-const getParts = (ssn) => {
-  ssn += '';
+class Personnummer {
+  year = null;
+  month = null;
+  day = null;
+  controlNumbers = null;
 
-  const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/;
-  const match = reg.exec(ssn);
-
-  if (!match) {
-    return {};
+  constructor(ssn) {
+    this._parse(ssn)
   }
 
-  let century = match[1];
-  let year = match[2];
-  let month = match[3];
-  let day = match[4];
-  let sep = match[5];
-  let num = match[6];
-  let check = match[7];
+  _parse(ssn) {
+    ssn += '';
 
-  if (typeof century === 'undefined' || !century.length) {
-    const d = new Date;
-    let baseYear = 0;
+    const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/;
+    const match = reg.exec(ssn);
 
-    if (sep === '+') {
-      baseYear = d.getFullYear() - 100;
-    } else {
-      sep = '-';
-      baseYear = d.getFullYear();
+    if (!match) {
+      throw new PersonnummerError;
     }
 
-    century = ('' + (baseYear - ((baseYear - year) % 100))).substr(0, 2);
-  } else {
-    if ((new Date().getFullYear()) - parseInt(century + year, 10) < 100) {
-      sep = '-';
+    let century = match[1];
+    let year = match[2];
+    let month = match[3];
+    let day = match[4];
+    let sep = match[5];
+    let num = match[6];
+    let check = match[7];
+
+    if (typeof century === 'undefined' || !century.length) {
+      const d = new Date;
+      let baseYear = 0;
+
+      if (sep === '+') {
+        baseYear = d.getFullYear() - 100;
+      } else {
+        sep = '-';
+        baseYear = d.getFullYear();
+      }
+
+      century = ('' + (baseYear - ((baseYear - year) % 100))).substr(0, 2);
     } else {
-      sep = '+';
+      if ((new Date().getFullYear()) - parseInt(century + year, 10) < 100) {
+        sep = '-';
+      } else {
+        sep = '+';
+      }
     }
+
+    this.century = century;
+    this.year = year;
+    this.month = month;
+    this.day = day;
+    this.sep = sep;
+    this.num = num;
+    this.check = check;
   }
 
-  return {
-    'century': century,
-    'year': year,
-    'month': month,
-    'day': day,
-    'sep': sep,
-    'num': num,
-    'check': check
-  };
-}
-
-module.exports = {
   /**
    * Format a Swedish social security number as one of the official formats,
    * A long format or a short format.
@@ -118,79 +118,73 @@ module.exports = {
    *
    * @return {string}
    */
-  format(ssn, options = {}) {
-    if (!this.valid(ssn)) {
+  format(options = {}) {
+    if (!this.valid(options)) {
       throw new PersonnummerError;
     }
 
-    options = Object.assign({}, defaultOptions, options)
-
-    const parts = getParts(ssn);
+    options = Object.assign({}, defaultOptions, options);
 
     if (options.longFormat) {
-      return `${parts.century}${parts.year}${parts.month}${parts.day}${parts.num}${parts.check}`;
+      return `${this.century}${this.year}${this.month}${this.day}${this.num}${this.check}`;
     }
 
-    return `${parts.year}${parts.month}${parts.day}${parts.sep}${parts.num}${parts.check}`;
-  },
+    return `${this.year}${this.month}${this.day}${this.sep}${this.num}${this.check}`;
+  }
 
   /**
    * Get age from a Swedish social security number.
    *
-   * @param {string|int} ssn
    * @param {object} options
    *
    * @return {int}
    */
-  getAge(ssn, options = {}) {
-    if (!this.valid(ssn, options)) {
+  getAge(options = {}) {
+    if (!this.valid(options)) {
       throw new PersonnummerError;
     }
 
-    const parts = getParts(ssn);
-    let day = +parts.day;
+    let day = +this.day;
 
+    // todo move?
     if (day >= 61 && day < 91) {
       day -= 60;
     }
 
-    return Math.floor((Date.now() - new Date(parts.century + parts.year, parts.month, day).getTime()) / 3.15576e+10);
-  },
+    return Math.floor((Date.now() - new Date(this.century + this.year, this.month, day).getTime()) / 3.15576e+10);
+  }
 
   /**
    * Check if a Swedish social security number is for a female.
    *
-   * @param {string|number} ssn
    * @param {object} options
    *
    * @throws Error when input value is not valid.
    *
    * @return {boolean}
    */
-  isFemale(ssn, options = {}) {
-    return !this.isMale(ssn, options)
-  },
+  isFemale(options = {}) {
+    return !this.isMale(options)
+  }
 
   /**
    * Check if a Swedish social security number is for a male.
    *
-   * @param {string|number} ssn
    * @param {object} options
    *
    * @throws Error when input value is not valid.
    *
    * @return {boolean}
    */
-  isMale(ssn, options) {
-    if (!this.valid(ssn, options)) {
+  isMale(options) {
+    if (!this.valid(options)) {
       throw new PersonnummerError;
     }
 
-    const parts = getParts(ssn);
-    const sexDigit = parts['num'].substr(-1);
+    const sexDigit = this.num.substr(-1);
 
     return sexDigit % 2 === 1;
-  },
+  }
 
   /**
    * Validate a Swedish social security number.
@@ -200,21 +194,12 @@ module.exports = {
    *
    * @return {boolean}
    */
-  valid(ssn, options = {}) {
-    if (typeof ssn !== 'number' && typeof ssn !== 'string') {
-      return false;
-    }
-
+  valid(ssn) {
     options = Object.assign({}, defaultOptions, options)
 
-    const parts = getParts(ssn);
-    if (!Object.keys(parts).length) {
-      return false;
-    }
+    const valid = luhn(this.year + this.month + this.day + this.num) === +this.check && !!this.check;
 
-    const valid = luhn(parts.year + parts.month + parts.day + parts.num) === +parts.check && !!parts.check;
-
-    if (valid && testDate(parts.century + parts.year, +parts.month, +parts.day)) {
+    if (valid && testDate(this.century + this.year, +this.month, +this.day)) {
       return valid;
     }
 
@@ -222,6 +207,8 @@ module.exports = {
       return false;
     }
 
-    return valid && testDate(parts.century + parts.year, +parts.month, +parts.day - 60);
+    return valid && testDate(this.century + this.year, +this.month, +this.day - 60);
   }
-};
+}
+
+export default Personnummer;
