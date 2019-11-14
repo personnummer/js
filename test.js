@@ -1,5 +1,5 @@
-import test from 'ava';
-import personnummer from './src/personnummer';
+import { advanceTo, clear } from 'jest-date-mock';
+import personnummer from './src';
 
 const invalidNumbers = [
   null,
@@ -23,151 +23,120 @@ const invalidNumbers = [
   '9909193776',
 ];
 
-test('should validate personnummer with control digit', t => {
-  t.is(true, personnummer.valid(6403273813));
-  t.is(true, personnummer.valid('510818-9167'));
-  t.is(true, personnummer.valid('19900101-0017'));
-  t.is(true, personnummer.valid('19130401+2931'));
-  t.is(true, personnummer.valid('196408233234'));
-  t.is(true, personnummer.valid('000101-0107'));
-  t.is(true, personnummer.valid('0001010107'));
-  t.is(true, personnummer.valid('200002296127'));
-  t.is(true, personnummer.valid('200002296127'));
-  t.is(true, personnummer.valid('200002283422'));
-  t.is(true, personnummer.valid('101010-1010'));
-});
+describe('Personnummer tests', () => {
+  test('should validate personnummer with control digit', () => {
+    const numbers = [
+      6403273813,
+      '510818-9167',
+      '19900101-0017',
+      '19130401+2931',
+      '196408233234',
+      '000101-0107',
+      '0001010107',
+      '200002296127',
+      '200002283422',
+      '101010-1010'
+    ];
 
-test('should not validate personnummer without control digit', t => {
-  t.is(false, personnummer.valid(640327381));
-  t.is(false, personnummer.valid('510818-916'));
-  t.is(false, personnummer.valid('19900101-001'));
-  t.is(false, personnummer.valid('100101+001'));
-});
-
-test('should not validate wrong personnummer or wrong types', t => {
-  invalidNumbers.forEach(n => {
-    t.is(false, personnummer.valid(n));
+    numbers.forEach(n => {
+      expect(personnummer.valid(n)).toBe(true);
+    })
   });
-});
 
-test('should validate co-ordination numbers', t => {
-  t.is(true, personnummer.valid('701063-2391'));
-  t.is(true, personnummer.valid('640883-3231'));
-});
+  test('should not validate personnummer without control digit', () => {
+    const numbers = [
+      640327381,
+      '510818-916',
+      '19900101-001',
+      '100101+001',
+    ];
 
-test('should not validate wrong co-ordination numbers', t => {
-  t.is(false, personnummer.valid('900161-0017'));
-  t.is(false, personnummer.valid('640893-3231'));
-});
-
-test('should format input values as personnummer', t => {
-  t.is('640327-3813', personnummer.format(6403273813));
-  t.is('510818-9167', personnummer.format('510818-9167'));
-  t.is('900101-0017', personnummer.format('19900101-0017'));
-  t.is('130401+2931', personnummer.format('19130401+2931'));
-  t.is('640823-3234', personnummer.format('196408233234'));
-  t.is('000101-0107', personnummer.format('0001010107'));
-  t.is('000101-0107', personnummer.format('000101-0107'));
-  t.is('130401+2931', personnummer.format('191304012931'));
-
-  const opts = {
-    longFormat: true,
-  };
-
-  t.is('196403273813', personnummer.format(6403273813, opts));
-  t.is('195108189167', personnummer.format('510818-9167', opts));
-  t.is('199001010017', personnummer.format('19900101-0017', opts));
-  t.is('191304012931', personnummer.format('19130401+2931', opts));
-  t.is('196408233234', personnummer.format('196408233234', opts));
-  t.is('200001010107', personnummer.format('0001010107', opts));
-  t.is('200001010107', personnummer.format('000101-0107', opts));
-  t.is('190001010107', personnummer.format('000101+0107', opts));
-});
-
-test('should format input values and replace separator with the right one', t => {
-  t.is('130401+2931', personnummer.format('19130401-2931'));
-  t.is('900101-0017', personnummer.format('19900101+0017'));
-  t.is('121212+1212', personnummer.format('19121212-1212'));
-  t.is('121212-1212', personnummer.format('20121212+1212'));
-});
-
-test('should not format input value as personnummer', t => {
-  invalidNumbers.forEach(n => {
-    try {
-      personnummer.format(n);
-    } catch (e) {
-      t.pass();
-    }
+    numbers.forEach(n => {
+      expect(personnummer.valid(n)).toBe(false);
+    });
   });
-});
 
-test('test get age', t => {
-  const oldNow = Date.now;
-  Date.now = () => new Date(2019, 7, 13);
-
-  t.is(55, personnummer.getAge(6403273813));
-  t.is(67, personnummer.getAge('510818-9167'));
-  t.is(29, personnummer.getAge('19900101-0017'));
-  t.is(106, personnummer.getAge('19130401+2931'));
-  t.is(19, personnummer.getAge('200002296127'));
-
-  Date.now = oldNow;
-});
-
-test('test get age with co-ordination numbers', t => {
-  const oldNow = Date.now;
-  Date.now = () => new Date(2019, 7, 13);
-
-  t.is(48, personnummer.getAge('701063-2391'));
-  t.is(54, personnummer.getAge('640883-3231'));
-
-  Date.now = oldNow;
-});
-
-test('test get age and exclude co-ordination numbers', t => {
-  const numbers = ['701063-2391', '640883-3231'];
-  const opts = {
-    coordinationNumber: false,
-  };
-
-  numbers.forEach(n => {
-    try {
-      personnummer.getAge(n, opts);
-    } catch (e) {
-      t.pass();
-    }
+  test('should not validate wrong personnummer or wrong types', () => {
+    invalidNumbers.forEach(n => {
+      expect(personnummer.valid(n)).toBe(false);
+    });
   });
-});
 
-test('test get age with invalid numbers', t => {
-  invalidNumbers.forEach(n => {
-    try {
-      personnummer.getAge(n);
-    } catch (e) {
-      t.pass();
-    }
+  test('should validate co-ordination numbers', () => {
+    expect(personnummer.valid('701063-2391')).toBe(true);
+    expect(personnummer.valid('640883-3231')).toBe(true);
   });
-});
 
-test('test sex with co-ordination numbers', t => {
-  t.is(true, personnummer.isMale('701063-2391'));
-  t.is(false, personnummer.isFemale('701063-2391'));
-  t.is(true, personnummer.isFemale('640883-3223'));
-  t.is(false, personnummer.isMale('640883-3223'));
-});
+  test('should not validate wrong co-ordination numbers', () => {
+    expect(personnummer.valid('900161-0017')).toBe(false);
+    expect(personnummer.valid('640893-3231')).toBe(false);
+  });
 
-test('test sex with invalid numbers', t => {
-  invalidNumbers.forEach(n => {
-    try {
-      personnummer.isMale(n);
-    } catch (e) {
-      t.pass();
-    }
+  test('should format input values as personnummer', () => {
+    expect(personnummer.format(6403273813)).toBe('640327-3813');
+    expect(personnummer.format('510818-9167')).toBe('510818-9167');
+    expect(personnummer.format('19900101-0017')).toBe('900101-0017');
+    expect(personnummer.format('19130401+2931')).toBe('130401+2931');
+    expect(personnummer.format('196408233234')).toBe('640823-3234');
+    expect(personnummer.format('0001010107')).toBe('000101-0107');
+    expect(personnummer.format('000101-0107')).toBe('000101-0107');
+    expect(personnummer.format('191304012931')).toBe('130401+2931');
 
-    try {
-      personnummer.isFemale(n);
-    } catch (e) {
-      t.pass();
-    }
+    const opts = {
+      longFormat: true,
+    };
+
+    expect(personnummer.format(6403273813, opts)).toBe('196403273813');
+    expect(personnummer.format('510818-9167', opts)).toBe('195108189167');
+    expect(personnummer.format('19900101-0017', opts)).toBe('199001010017');
+    expect(personnummer.format('19130401+2931', opts)).toBe('191304012931');
+    expect(personnummer.format('196408233234', opts)).toBe('196408233234');
+    expect(personnummer.format('0001010107', opts)).toBe('200001010107');
+    expect(personnummer.format('000101-0107', opts)).toBe('200001010107');
+    expect(personnummer.format('000101+0107', opts)).toBe('190001010107');
+  });
+
+  test('should format input values and replace separator with the right one', () => {
+    expect(personnummer.format('19121212-1212')).toBe('121212+1212');
+    expect(personnummer.format('20121212+1212')).toBe('121212-1212');
+  });
+
+  test('should not format input value as personnummer', () => {
+    invalidNumbers.forEach(n => {
+      try {
+        personnummer.format(n);
+      } catch (e) {}
+    });
+  });
+
+  test('test get age', () => {
+    advanceTo(new Date(2019, 7, 13));
+    expect(personnummer.getAge(6403273813)).toBe(55);
+    expect(personnummer.getAge('510818-9167')).toBe(67);
+    expect(personnummer.getAge('19900101-0017')).toBe(29);
+    expect(personnummer.getAge('19130401+2931')).toBe(106);
+    expect(personnummer.getAge('200002296127')).toBe(19);
+    clear();
+  });
+
+  test('test sex with co-ordination numbers', () => {
+    advanceTo(new Date(2019, 7, 13));
+    expect(personnummer.isMale('701063-2391')).toBe(true);
+    expect(personnummer.isFemale('701063-2391')).toBe(false);
+    expect(personnummer.isFemale('640883-3223')).toBe(true);
+    expect(personnummer.isMale('640883-3223')).toBe(false);
+    clear();
+  });
+
+  test('test sex with invalid numbers', () => {
+    invalidNumbers.forEach(n => {
+      try {
+        personnummer.isMale(n);
+      } catch (e) {}
+
+      try {
+        personnummer.isFemale(n);
+      } catch (e) {}
+    });
   });
 });

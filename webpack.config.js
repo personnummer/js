@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   mode: process.env.NODE_ENV !== 'production' ? 'development' : 'production',
   module: {
@@ -14,5 +16,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'lib'),
     filename: 'index.js',
+    libraryTarget: 'umd',
+    library: 'lib',
+    umdNamedDefine: true,
+    globalObject: `(typeof self !== 'undefined' ? self : this)`
   }
 }

@@ -2,7 +2,6 @@
   "presets": [
     [
       "@jitesoft/main", {
-        "useBuiltIns": "entry"
       }
     ]
   ]

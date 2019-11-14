@@ -4,6 +4,6 @@ class PersonnummerError extends Error {
   }
 }
 
-module.exports = {
+export {
   PersonnummerError,
 };

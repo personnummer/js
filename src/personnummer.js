@@ -1,73 +1,44 @@
-const { PersonnummerError } = require('./errors')
-
-/**
- * Default options.
- *
- * @var {object}
- */
-const defaultOptions = {
-  coordinationNumber: true,
-  longFormat: false
-}
-
-/**
- * Calculates the Luhn checksum of a string of digits.
- *
- * @param {string|number} str
- *
- * @return {number}
- */
-const luhn = str => {
-  let v = 0;
-  let sum = 0;
-
-  str += '';
-
-  for (var i = 0, l = str.length; i < l; i++) {
-    v = str[i];
-    v *= 2 - i % 2;
-    if (v > 9) {
-      v -= 9;
-    }
-    sum += v;
-  }
-
-  return Math.ceil(sum / 10) * 10 - sum;
-};
-
-/**
- * Test if the input parameters are a valid date or not.
- *
- * @param {int} year
- * @param {int} month
- * @param {int} day
- *
- * @return {boolean}
- */
-const testDate = (year, month, day) => {
-  month -= 1;
-  const date = new Date(year, month, day);
-  return !('' + date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day);
-};
+import { PersonnummerError } from './errors';
+import { luhn, testDate } from './utils';
 
 class Personnummer {
+  /**
+   * Default options.
+   *
+   * @var {object}
+   */
+  #defaultOptions = {
+    coordinationNumber: true,
+    longFormat: false
+  }
+
   year = null;
   month = null;
   day = null;
   controlNumbers = null;
 
+  /**
+   * Personnummer constructor.
+   *
+   * @param {numbers|string} ssn
+   */
   constructor(ssn) {
-    this._parse(ssn)
+    this.#parse(ssn)
   }
 
-  _parse(ssn) {
+  /**
+   * Parse personnummer and set class properties.
+   *
+   * @param {numbers|string} ssn
+   */
+  #parse (ssn) {
     ssn += '';
 
     const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/;
     const match = reg.exec(ssn);
 
     if (!match) {
-      throw new PersonnummerError;
+      return;
     }
 
     let century = match[1];
@@ -113,7 +84,6 @@ class Personnummer {
    *
    * If the input number could not be parsed a empty string will be returned.
    *
-   * @param {string} ssn
    * @param {object} options
    *
    * @return {string}
@@ -123,7 +93,7 @@ class Personnummer {
       throw new PersonnummerError;
     }
 
-    options = Object.assign({}, defaultOptions, options);
+    options = Object.assign({}, this.#defaultOptions, options);
 
     if (options.longFormat) {
       return `${this.century}${this.year}${this.month}${this.day}${this.num}${this.check}`;
@@ -189,13 +159,12 @@ class Personnummer {
   /**
    * Validate a Swedish social security number.
    *
-   * @param {string|number} str
    * @param {object} options
    *
    * @return {boolean}
    */
-  valid(ssn) {
-    options = Object.assign({}, defaultOptions, options)
+  valid(options) {
+    options = Object.assign({}, this.#defaultOptions, options)
 
     const valid = luhn(this.year + this.month + this.day + this.num) === +this.check && !!this.check;
 
@@ -207,7 +176,7 @@ class Personnummer {
       return false;
     }
 
-    return valid && testDate(this.century + this.year, +this.month, +this.day - 60);
+    return valid && testDate(this.century + this.year, +this.month, (+this.day) - 60);
   }
 }
 
