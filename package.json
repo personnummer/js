@@ -14,20 +14,24 @@
     "url": "git://github.com/personnummer/js.git"
   },
   "scripts": {
-    "build": "babel src -d ./lib",
+    "build": "NODE_ENV=production webpack -p",
     "lint": "semistandard src test",
     "prepare": "npm run build",
     "test": "ava"
   },
   "main": "./lib/personnummer.js",
-  "dependencies": {},
-  "devDependencies": {
-    "@babel/cli": "^7.6.2",
-    "@babel/core": "^7.6.2",
+  "dependencies": {
+    "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.6.2",
-    "ava": "^2.1.0",
+    "@babel/runtime-corejs3": "^7.7.2",
+    "@jitesoft/babel-preset-main": "^1.7.3",
+    "ava": "^2.4.0",
     "babel-eslint": "^10.0.2",
-    "semistandard": "^13.0.1"
+    "babel-loader": "^8.0.6",
+    "core-js": "^3.4.1",
+    "semistandard": "^14.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   },
   "keywords": [
     "personnummer",
@@ -39,5 +43,8 @@
   ],
   "semistandard": {
     "parser": "babel-eslint"
+  },
+  "ava": {
+    "babel": {}
   }
 }

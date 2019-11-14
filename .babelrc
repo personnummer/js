@@ -1,12 +1,9 @@
 {
   "presets": [
     [
-      "@babel/preset-env",
-      {
-        "targets": "last 1 versions, ie >= 10, node >= 8",
-        "loose": true
+      "@jitesoft/main", {
+        "useBuiltIns": "entry"
       }
     ]
-  ],
-  "plugins": []
+  ]
 }
