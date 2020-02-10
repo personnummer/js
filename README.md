@@ -22,17 +22,6 @@ personnummer.valid('198507099805')
 
 See [test.js](test.js) for more examples.
 
-## Options
-
-```js
-{
-  // To disable co-ordination number check.
-  coordinationNumber: true,
-  // To enable long format when using format method.
-  longFormat: false
-}
-```
-
 ## License
 
 MIT

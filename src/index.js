@@ -5,7 +5,7 @@ import Personnummer from './personnummer';
  * 
  * @param {string} ssn 
  */
-export const parse = (ssn, options) => new Personnummer(ssn, options);
+const parse = (ssn, options) => new Personnummer(ssn, options);
 
 /**
  * Validate a Swedish social security number.
@@ -15,9 +15,10 @@ export const parse = (ssn, options) => new Personnummer(ssn, options);
  *
  * @return {boolean}
  */
-export const valid = (ssn, options) => parse(ssn, options).isValid();
+const valid = (ssn, options) => parse(ssn, options).isValid();
 
 export default {
+  Personnummer,
   parse,
   valid,
-}
+};
