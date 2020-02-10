@@ -12,7 +12,7 @@ const invalidNumbers = [
   '9999999999',
   '199999999999',
   '199909193776',
-  'Just a string',
+  'Just a string'
 ];
 
 describe('validation', () => {
@@ -22,19 +22,19 @@ describe('validation', () => {
       '198507099805',
       '198507099813',
       '850709-9813',
-      '196411139808',
+      '196411139808'
     ];
 
     numbers.forEach(n => {
       expect(personnummer.valid(n)).toBe(true);
-    })
+    });
   });
 
   test('should not validate personnummer without control digit', () => {
     const numbers = [
       '19850709980',
       '19850709981',
-      '19641113980',
+      '19641113980'
     ];
 
     numbers.forEach(n => {
@@ -81,7 +81,7 @@ describe('parse', () => {
       check: '2'
     });
   });
-})
+});
 
 describe('format', () => {
   test('should format input values as personnummer', () => {

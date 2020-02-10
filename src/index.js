@@ -2,8 +2,8 @@ import Personnummer from './personnummer';
 
 /**
  * Parse personnummer.
- * 
- * @param {string} ssn 
+ *
+ * @param {string} ssn
  */
 const parse = (ssn, options) => new Personnummer(ssn, options);
 
@@ -20,5 +20,5 @@ const valid = (ssn, options) => parse(ssn, options).isValid();
 export default {
   Personnummer,
   parse,
-  valid,
+  valid
 };

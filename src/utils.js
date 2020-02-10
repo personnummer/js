@@ -7,7 +7,7 @@
  * @return {numbers}
  */
 const compareAsc = (dateLeft, dateRight) => {
-  const diff = dateLeft.getTime() - dateRight.getTime()
+  const diff = dateLeft.getTime() - dateRight.getTime();
   return diff < 0 ? -1 : diff > 0 ? 1 : diff;
 };
 
@@ -25,7 +25,7 @@ export const diffInYears = (dateLeft, dateRight) => {
 
   dateLeft.setFullYear(dateLeft.getFullYear() - sign * yearDiff);
 
-  const isLastYearNotFull = compareAsc(dateLeft, dateRight) === -sign
+  const isLastYearNotFull = compareAsc(dateLeft, dateRight) === -sign;
   const result = sign * (yearDiff - isLastYearNotFull);
 
   return result === 0 ? 0 : result;
