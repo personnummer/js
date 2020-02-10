@@ -55,80 +55,73 @@ describe('validation', () => {
     expect(personnummer.valid('850769-9810')).toBe(true);
   });
 
+  test('should validate numbers to be co-ordination numbers', () => {
+    expect(personnummer.parse('198507699802').isCoordinationNumber()).toBe(true);
+    expect(personnummer.parse('850769-9802').isCoordinationNumber()).toBe(true);
+    expect(personnummer.parse('198507699810').isCoordinationNumber()).toBe(true);
+    expect(personnummer.parse('850769-9810').isCoordinationNumber()).toBe(true);
+  });
+
   test('should not validate wrong co-ordination numbers', () => {
     expect(personnummer.valid('198567099805')).toBe(false);
   });
 });
 
+describe('parse', () => {
+  test('should parse personnummer', () => {
+    expect(personnummer.parse('198507699802')).toEqual({
+      age: '34',
+      century: '19',
+      fullYear: '1985',
+      year: '85',
+      month: '07',
+      day: '69',
+      sep: '-',
+      num: '980',
+      check: '2'
+    });
+  });
+})
+
 describe('format', () => {
   test('should format input values as personnummer', () => {
-    expect(personnummer.format('19850709-9805')).toBe('850709-9805');
-    expect(personnummer.format('198507099813')).toBe('850709-9813');
-
-    const opts = {
-      longFormat: true,
-    };
-
-    expect(personnummer.format('19850709-9805', opts)).toBe('198507099805');
-    expect(personnummer.format('198507099813', opts)).toBe('198507099813');
+    expect(personnummer.parse('19850709-9805').format()).toBe('850709-9805');
+    expect(personnummer.parse('198507099813').format()).toBe('850709-9813');
+    expect(personnummer.parse('19850709-9805').format(true)).toBe('198507099805');
+    expect(personnummer.parse('198507099813').format(true)).toBe('198507099813');
   });
 
   test('should format input values and replace separator with the right one', () => {
-    expect(personnummer.format('19850709+9805')).toBe('850709-9805');
-    expect(personnummer.format('19121212-1212')).toBe('121212+1212');
+    expect(personnummer.parse('19850709+9805').format()).toBe('850709-9805');
+    expect(personnummer.parse('19121212-1212').format()).toBe('121212+1212');
   });
 });
 
 describe('age', () => {
   test('should get age', () => {
     advanceTo(new Date(2019, 7, 13));
-    expect(personnummer.getAge('198507099805')).toBe(34);
-    expect(personnummer.getAge('198507099813')).toBe(34);
-    expect(personnummer.getAge('196411139808')).toBe(54);
-    expect(personnummer.getAge('19121212+1212')).toBe(106);
+    expect(personnummer.parse('198507099805').age).toBe('34');
+    expect(personnummer.parse('198507099813').age).toBe('34');
+    expect(personnummer.parse('196411139808').age).toBe('54');
+    expect(personnummer.parse('19121212+1212').age).toBe('106');
     clear();
   });
 
   test('should get age with co-ordination numbers', () => {
     advanceTo(new Date(2019, 7, 13));
-    expect(personnummer.getAge('198507699810')).toBe(34);
-    expect(personnummer.getAge('198507699802')).toBe(34);
+    expect(personnummer.parse('198507699810').age).toBe('34');
+    expect(personnummer.parse('198507699802').age).toBe('34');
     clear();
-  });
-
-  test('should get age and exclude co-ordination numbers', () => {
-    const numbers = ['198507699810', '198507699802'];
-    const opts = {
-      coordinationNumber: false,
-    };
-
-    numbers.forEach(n => {
-      expect(() => {
-        personnummer.getAge(n, opts);
-      }).toThrow();
-    });
   });
 });
 
 describe('sex', () => {
   test('should test sex with co-ordination numbers', () => {
     advanceTo(new Date(2019, 7, 13));
-    expect(personnummer.isMale('198507099813')).toBe(true);
-    expect(personnummer.isFemale('198507099813')).toBe(false);
-    expect(personnummer.isFemale('198507699802')).toBe(true);
-    expect(personnummer.isMale('198507699802')).toBe(false);
+    expect(personnummer.parse('198507099813').isMale()).toBe(true);
+    expect(personnummer.parse('198507099813').isFemale()).toBe(false);
+    expect(personnummer.parse('198507699802').isFemale()).toBe(true);
+    expect(personnummer.parse('198507699802').isMale()).toBe(false);
     clear();
-  });
-
-  test('should test sex with invalid numbers', () => {
-    invalidNumbers.forEach(n => {
-      expect(() => {
-        personnummer.isMale(n);
-      }).toThrow();
-
-      expect(() => {
-        personnummer.isFemale(n);
-      }).toThrow();
-    });
   });
 });

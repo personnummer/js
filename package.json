@@ -21,17 +21,16 @@
   },
   "main": "./lib/personnummer.js",
   "dependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/preset-env": "^7.6.2",
-    "@babel/runtime-corejs3": "^7.7.2",
+    "@babel/core": "^7.8.4",
+    "@babel/runtime-corejs3": "^7.8.4",
     "@jitesoft/babel-preset-main": "^1.7.3",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
-    "core-js": "^3.4.1",
+    "core-js": "^3.6.4",
     "jest": "^24.9.0",
-    "jest-date-mock": "^1.0.7",
+    "jest-date-mock": "^1.0.8",
     "semistandard": "^14.2.0",
-    "webpack": "^4.41.2",
+    "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   },
   "keywords": [

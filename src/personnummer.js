@@ -2,20 +2,69 @@ import { PersonnummerError } from './errors';
 import { diffInYears, luhn, testDate } from './utils';
 
 class Personnummer {
-  /**
-   * Default options.
-   *
-   * @var {object}
-   */
-  #defaultOptions = {
-    coordinationNumber: true,
-    longFormat: false
-  }
 
-  year = null;
-  month = null;
-  day = null;
-  controlNumbers = null;
+  /**
+   * Personnummer age.
+   * 
+   * @var {string}
+   */
+  age = '';
+
+  /**
+   * Personnummer century.
+   * 
+   * @var {string}
+   */
+  century = '';
+
+  /**
+   * Personnummer full year.
+   * 
+   * @var {string}
+   */
+  fullYear = '';
+
+  /**
+   * Personnummer year.
+   * 
+   * @var {string}
+   */
+  year = '';
+
+  /**
+   * Personnummer month.
+   * 
+   * @var {string}
+   */
+  month = '';
+
+  /**
+   * Personnummer day.
+   * 
+   * @var {string}
+   */
+  day = '';
+
+  /**
+   * Personnummer seperator.
+   * 
+   * @var {string}
+   */
+  sep = '';
+
+  /**
+   * Personnumer first three of the last for numbers.
+   * 
+   * @var {string}
+   */
+  num = '';
+
+  /**
+   * The last number of the personnummer.
+   * 
+   * @var {string}
+   */
+  check = '';
 
   /**
    * Personnummer constructor.
@@ -71,11 +120,20 @@ class Personnummer {
 
     this.century = century;
     this.year = year;
+    this.fullYear = century + year;
     this.month = month;
     this.day = day;
     this.sep = sep;
     this.num = num;
     this.check = check;
+
+    let ageDay = +this.day;
+    if (ageDay >= 61 && ageDay < 91) {
+      ageDay -= 60;
+    }
+
+    const ageDate = this.century + this.year + '-' + this.month + '-' + ageDay;
+    this.age = '' + diffInYears(new Date(Date.now()), new Date(ageDate))
   }
 
   /**
@@ -84,18 +142,18 @@ class Personnummer {
    *
    * If the input number could not be parsed a empty string will be returned.
    *
-   * @param {object} options
+   * @param {boolean} longFormat
+   *
+   * @throws Error when input value is not valid.
    *
    * @return {string}
    */
-  format(options = {}) {
-    if (!this.valid(options)) {
+  format(longFormat = false) {
+    if (!this.isValid()) {
       throw new PersonnummerError;
     }
 
-    options = Object.assign({}, this.#defaultOptions, options);
-
-    if (options.longFormat) {
+    if (longFormat) {
       return `${this.century}${this.year}${this.month}${this.day}${this.num}${this.check}`;
     }
 
@@ -103,52 +161,35 @@ class Personnummer {
   }
 
   /**
-   * Get age from a Swedish social security number.
-   *
-   * @param {object} options
-   *
-   * @return {int}
+   * Check if a Swedish social security number is a coorindation number or not.
+   * 
+   * @return {boolean}
    */
-  getAge(options = {}) {
-    if (!this.valid(options)) {
-      throw new PersonnummerError;
-    }
-
-    let day = +this.day;
-
-    if (day >= 61 && day < 91) {
-      day -= 60;
-    }
-
-    const input = this.century + this.year + '-' + this.month + '-' + day;
-
-    return diffInYears(new Date(Date.now()), new Date(input));
+  isCoordinationNumber() {
+    const day = +this.day
+    return day >= 61 && day < 91
   }
 
   /**
    * Check if a Swedish social security number is for a female.
    *
-   * @param {object} options
-   *
    * @throws Error when input value is not valid.
    *
    * @return {boolean}
    */
-  isFemale(options = {}) {
-    return !this.isMale(options)
+  isFemale() {
+    return !this.isMale()
   }
 
   /**
    * Check if a Swedish social security number is for a male.
    *
-   * @param {object} options
-   *
    * @throws Error when input value is not valid.
    *
    * @return {boolean}
    */
-  isMale(options) {
-    if (!this.valid(options)) {
+  isMale() {
+    if (!this.isValid()) {
       throw new PersonnummerError;
     }
 
@@ -160,21 +201,13 @@ class Personnummer {
   /**
    * Validate a Swedish social security number.
    *
-   * @param {object} options
-   *
    * @return {boolean}
    */
-  valid(options) {
-    options = Object.assign({}, this.#defaultOptions, options)
-
+  isValid() {
     const valid = luhn(this.year + this.month + this.day + this.num) === +this.check && !!this.check;
 
     if (valid && testDate(this.century + this.year, +this.month, +this.day)) {
       return valid;
-    }
-
-    if (!options.coordinationNumber) {
-      return false;
     }
 
     return valid && testDate(this.century + this.year, +this.month, (+this.day) - 60);
