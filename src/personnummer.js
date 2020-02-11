@@ -53,7 +53,7 @@ class Personnummer {
   sep = '';
 
   /**
-   * Personnumer first three of the last for numbers.
+   * Personnumer first three of the last four numbers.
    * 
    * @var {string}
    */
@@ -161,7 +161,7 @@ class Personnummer {
   }
 
   /**
-   * Check if a Swedish social security number is a coorindation number or not.
+   * Check if a Swedish social security number is a coordination number or not.
    * 
    * @return {boolean}
    */

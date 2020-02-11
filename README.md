@@ -13,9 +13,6 @@ npm install --save personnummer
 ```javascript
 const personnummer = require('personnummer');
 
-personnummer.valid(8507099805);
-//=> true
-
 personnummer.valid('198507099805')
 //=> true
 ```
