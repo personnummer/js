@@ -69,7 +69,7 @@ class Personnummer {
   /**
    * Personnummer constructor.
    *
-   * @param {numbers|string} ssn
+   * @param {string} ssn
    */
   constructor(ssn) {
     this.#parse(ssn)
@@ -78,10 +78,12 @@ class Personnummer {
   /**
    * Parse personnummer and set class properties.
    *
-   * @param {numbers|string} ssn
+   * @param {string} ssn
    */
   #parse (ssn) {
-    ssn += '';
+    if (typeof ssn !== 'string') {
+      return;
+    }
 
     const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/;
     const match = reg.exec(ssn);
