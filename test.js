@@ -81,6 +81,17 @@ describe('parse', () => {
       check: '2'
     });
   });
+
+  test('should throw errors for bad inputs when parsing', () => {
+    invalidNumbers.forEach(n => {
+      try {
+        personnummer.parse(n);
+        expect(false).toBe(true);
+      } catch (e) {
+        expect(true).toBe(true);
+      }
+    });
+  })
 });
 
 describe('format', () => {
