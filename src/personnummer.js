@@ -5,63 +5,63 @@ class Personnummer {
 
   /**
    * Personnummer age.
-   * 
+   *
    * @var {string}
    */
   age = '';
 
   /**
    * Personnummer century.
-   * 
+   *
    * @var {string}
    */
   century = '';
 
   /**
    * Personnummer full year.
-   * 
+   *
    * @var {string}
    */
   fullYear = '';
 
   /**
    * Personnummer year.
-   * 
+   *
    * @var {string}
    */
   year = '';
 
   /**
    * Personnummer month.
-   * 
+   *
    * @var {string}
    */
   month = '';
 
   /**
    * Personnummer day.
-   * 
+   *
    * @var {string}
    */
   day = '';
 
   /**
    * Personnummer seperator.
-   * 
+   *
    * @var {string}
    */
   sep = '';
 
   /**
    * Personnumer first three of the last four numbers.
-   * 
+   *
    * @var {string}
    */
   num = '';
 
   /**
    * The last number of the personnummer.
-   * 
+   *
    * @var {string}
    */
   check = '';
@@ -70,26 +70,40 @@ class Personnummer {
    * Personnummer constructor.
    *
    * @param {string} ssn
+   * @param {object} options
    */
-  constructor(ssn) {
-    this.#parse(ssn)
+  constructor(ssn, options = {}) {
+    this.#parse(ssn, options);
+  }
+
+  /**
+   * Parse personnummer.
+   *
+   * @param {string} ssn
+   * @param {object} options
+   *
+   * @return {Personnummer}
+   */
+  static parse(ssn, options = {}) {
+    return new Personnummer(ssn, options);
   }
 
   /**
    * Parse personnummer and set class properties.
    *
    * @param {string} ssn
+   * @param {object} options
    */
-  #parse (ssn) {
+  #parse (ssn, options = {}) {
     if (typeof ssn !== 'string') {
-      return;
+      throw new PersonnummerError();
     }
 
     const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/;
     const match = reg.exec(ssn);
 
     if (!match) {
-      return;
+      throw new PersonnummerError();
     }
 
     let century = match[1];
@@ -135,7 +149,26 @@ class Personnummer {
     }
 
     const ageDate = this.century + this.year + '-' + this.month + '-' + ageDay;
-    this.age = '' + diffInYears(new Date(Date.now()), new Date(ageDate))
+    this.age = '' + diffInYears(new Date(Date.now()), new Date(ageDate));
+
+    if (!this.#valid()) {
+      throw new PersonnummerError();
+    }
+  }
+
+  /**
+   * Validate a Swedish social security number.
+   *
+   * @return {boolean}
+   */
+  #valid() {
+    const valid = luhn(this.year + this.month + this.day + this.num) === +this.check && !!this.check;
+
+    if (valid && testDate(this.century + this.year, +this.month, +this.day)) {
+      return valid;
+    }
+
+    return valid && testDate(this.century + this.year, +this.month, (+this.day) - 60);
   }
 
   /**
@@ -151,10 +184,6 @@ class Personnummer {
    * @return {string}
    */
   format(longFormat = false) {
-    if (!this.isValid()) {
-      throw new PersonnummerError;
-    }
-
     if (longFormat) {
       return `${this.century}${this.year}${this.month}${this.day}${this.num}${this.check}`;
     }
@@ -164,7 +193,7 @@ class Personnummer {
 
   /**
    * Check if a Swedish social security number is a coordination number or not.
-   * 
+   *
    * @return {boolean}
    */
   isCoordinationNumber() {
@@ -191,28 +220,9 @@ class Personnummer {
    * @return {boolean}
    */
   isMale() {
-    if (!this.isValid()) {
-      throw new PersonnummerError;
-    }
-
     const sexDigit = this.num.substr(-1);
 
     return sexDigit % 2 === 1;
-  }
-
-  /**
-   * Validate a Swedish social security number.
-   *
-   * @return {boolean}
-   */
-  isValid() {
-    const valid = luhn(this.year + this.month + this.day + this.num) === +this.check && !!this.check;
-
-    if (valid && testDate(this.century + this.year, +this.month, +this.day)) {
-      return valid;
-    }
-
-    return valid && testDate(this.century + this.year, +this.month, (+this.day) - 60);
   }
 }
 

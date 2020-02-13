@@ -15,7 +15,14 @@ const parse = (ssn, options) => new Personnummer(ssn, options);
  *
  * @return {boolean}
  */
-const valid = (ssn, options) => parse(ssn, options).isValid();
+const valid = (ssn, options) => {
+  try {
+    parse(ssn, options);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 export default {
   Personnummer,
