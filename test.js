@@ -69,17 +69,15 @@ describe('validation', () => {
 
 describe('parse', () => {
   test('should parse personnummer', () => {
-    expect(Personnummer.parse('198507699802')).toEqual({
-      age: '34',
-      century: '19',
-      fullYear: '1985',
-      year: '85',
-      month: '07',
-      day: '69',
-      sep: '-',
-      num: '980',
-      check: '2'
-    });
+    const p = Personnummer.parse('198507699802');
+    expect(p.age).toEqual('34')
+    expect(p.century).toEqual('19')
+    expect(p.fullYear).toEqual('1985')
+    expect(p.year).toEqual('85')
+    expect(p.month).toEqual('07')
+    expect(p.sep).toEqual('-')
+    expect(p.num).toEqual('980')
+    expect(p.check).toEqual('2')
   });
 
   test('should throw errors for bad inputs when parsing', () => {

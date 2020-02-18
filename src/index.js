@@ -8,63 +8,144 @@ class Personnummer {
    *
    * @var {string}
    */
-  age = '';
+  #age = '';
+
+  /**
+   * Get age.
+   *
+   * @return {string}
+   */
+  get age() {
+    return this.#age
+  }
 
   /**
    * Personnummer century.
    *
    * @var {string}
    */
-  century = '';
+  #century = '';
+
+  /**
+   * Get century.
+   *
+   * @return {string}
+   */
+  get century() {
+    return this.#century
+  }
 
   /**
    * Personnummer full year.
    *
    * @var {string}
    */
-  fullYear = '';
+  #fullYear = '';
+
+  /**
+   * Get age.
+   *
+   * @return {string}
+   */
+  get fullYear() {
+    return this.#fullYear
+  }
 
   /**
    * Personnummer year.
    *
    * @var {string}
    */
-  year = '';
+  #year = '';
+
+  /**
+   * Get age.
+   *
+   * @return {string}
+   */
+  get year() {
+    return this.#year
+  }
 
   /**
    * Personnummer month.
    *
    * @var {string}
    */
-  month = '';
+  #month = '';
+
+  /**
+   * Get month.
+   *
+   * @return {string}
+   */
+  get month() {
+    return this.#month
+  }
 
   /**
    * Personnummer day.
    *
    * @var {string}
    */
-  day = '';
+  #day = '';
+
+  /**
+   * Get day.
+   *
+   * @return {string}
+   */
+  get day() {
+    return this.#day
+  }
 
   /**
    * Personnummer seperator.
    *
    * @var {string}
    */
-  sep = '';
+  #sep = '';
+
+  /**
+   * Get sep.
+   *
+   * @return {string}
+   */
+  get sep() {
+    return this.#sep
+  }
 
   /**
    * Personnumer first three of the last four numbers.
    *
    * @var {string}
    */
-  num = '';
+  #num = '';
+
+  /**
+   * Get num.
+   *
+   * @return {string}
+   */
+  get num() {
+    return this.#num
+  }
 
   /**
    * The last number of the personnummer.
    *
    * @var {string}
    */
-  check = '';
+  #check = '';
+
+  /**
+   * Get check.
+   *
+   * @return {string}
+   */
+  get check() {
+    return this.#check
+  }
 
   /**
    * Personnummer constructor.
@@ -151,14 +232,14 @@ class Personnummer {
       }
     }
 
-    this.century = century;
-    this.year = year;
-    this.fullYear = century + year;
-    this.month = month;
-    this.day = day;
-    this.sep = sep;
-    this.num = num;
-    this.check = check;
+    this.#century = century;
+    this.#year = year;
+    this.#fullYear = century + year;
+    this.#month = month;
+    this.#day = day;
+    this.#sep = sep;
+    this.#num = num;
+    this.#check = check;
 
     let ageDay = +this.day;
     if (ageDay >= 61 && ageDay < 91) {
@@ -166,7 +247,7 @@ class Personnummer {
     }
 
     const ageDate = this.century + this.year + '-' + this.month + '-' + ageDay;
-    this.age = '' + diffInYears(new Date(Date.now()), new Date(ageDate));
+    this.#age = '' + diffInYears(new Date(Date.now()), new Date(ageDate));
 
     if (!this.#valid()) {
       throw new PersonnummerError();
