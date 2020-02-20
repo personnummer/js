@@ -70,7 +70,6 @@ describe('validation', () => {
 describe('parse', () => {
   test('should parse personnummer', () => {
     const p = Personnummer.parse('198507699802');
-    expect(p.age).toEqual('34')
     expect(p.century).toEqual('19')
     expect(p.fullYear).toEqual('1985')
     expect(p.year).toEqual('85')
@@ -109,17 +108,17 @@ describe('format', () => {
 describe('age', () => {
   test('should get age', () => {
     advanceTo(new Date(2019, 7, 13));
-    expect(Personnummer.parse('198507099805').age).toBe('34');
-    expect(Personnummer.parse('198507099813').age).toBe('34');
-    expect(Personnummer.parse('196411139808').age).toBe('54');
-    expect(Personnummer.parse('19121212+1212').age).toBe('106');
+    expect(Personnummer.parse('198507099805').getAge()).toBe(34);
+    expect(Personnummer.parse('198507099813').getAge()).toBe(34);
+    expect(Personnummer.parse('196411139808').getAge()).toBe(54);
+    expect(Personnummer.parse('19121212+1212').getAge()).toBe(106);
     clear();
   });
 
   test('should get age with co-ordination numbers', () => {
     advanceTo(new Date(2019, 7, 13));
-    expect(Personnummer.parse('198507699810').age).toBe('34');
-    expect(Personnummer.parse('198507699802').age).toBe('34');
+    expect(Personnummer.parse('198507699810').getAge()).toBe(34);
+    expect(Personnummer.parse('198507699802').getAge()).toBe(34);
     clear();
   });
 });

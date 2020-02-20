@@ -4,22 +4,6 @@ import { diffInYears, luhn, testDate } from './utils';
 class Personnummer {
 
   /**
-   * Personnummer age.
-   *
-   * @var {string}
-   */
-  #age = '';
-
-  /**
-   * Get age.
-   *
-   * @return {string}
-   */
-  get age() {
-    return this.#age
-  }
-
-  /**
    * Personnummer century.
    *
    * @var {string}
@@ -241,14 +225,6 @@ class Personnummer {
     this.#num = num;
     this.#check = check;
 
-    let ageDay = +this.day;
-    if (ageDay >= 61 && ageDay < 91) {
-      ageDay -= 60;
-    }
-
-    const ageDate = this.century + this.year + '-' + this.month + '-' + ageDay;
-    this.#age = '' + diffInYears(new Date(Date.now()), new Date(ageDate));
-
     if (!this.#valid()) {
       throw new PersonnummerError();
     }
@@ -277,8 +253,6 @@ class Personnummer {
    *
    * @param {boolean} longFormat
    *
-   * @throws Error when input value is not valid.
-   *
    * @return {string}
    */
   format(longFormat = false) {
@@ -287,6 +261,21 @@ class Personnummer {
     }
 
     return `${this.year}${this.month}${this.day}${this.sep}${this.num}${this.check}`;
+  }
+
+  /**
+   * Get age from a Swedish social security number.
+   *
+   * @return {number}
+   */
+  getAge() {
+    let ageDay = +this.day;
+    if (ageDay >= 61 && ageDay < 91) {
+      ageDay -= 60;
+    }
+
+    const ageDate = this.century + this.year + '-' + this.month + '-' + ageDay;
+    return diffInYears(new Date(Date.now()), new Date(ageDate));
   }
 
   /**
@@ -302,8 +291,6 @@ class Personnummer {
   /**
    * Check if a Swedish social security number is for a female.
    *
-   * @throws Error when input value is not valid.
-   *
    * @return {boolean}
    */
   isFemale() {
@@ -312,8 +299,6 @@ class Personnummer {
 
   /**
    * Check if a Swedish social security number is for a male.
-   *
-   * @throws Error when input value is not valid.
    *
    * @return {boolean}
    */
