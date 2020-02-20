@@ -1,6 +1,6 @@
 # personnummer [![Build Status](https://github.com/personnummer/js/workflows/build/badge.svg)](https://github.com/personnummer/js/actions)
 
-Validate Swedish social security numbers.
+Validate Swedish social security numbers. Follows version 3 [specification](https://github.com/personnummer/meta#package-specification-v3).
 
 Install the module with npm:
 
