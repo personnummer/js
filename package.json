@@ -1,7 +1,7 @@
 {
   "name": "personnummer",
   "description": "Validate Swedish social security numbers",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "MIT",
   "homepage": "https://github.com/personnummer/js",
   "author": {
@@ -21,21 +21,19 @@
   },
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
-  "dependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/runtime-corejs3": "^7.8.4",
-    "core-js": "^3.6.4"
-  },
   "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "@babel/runtime-corejs3": "^7.8.4",
     "@jitesoft/babel-preset-main": "^1.8.6",
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
+    "core-js": "^3.6.4",
     "jest": "^24.9.0",
     "jest-date-mock": "^1.0.8",
     "rimraf": "^3.0.2",
-    "rollup": "^1.31.1",
+    "rollup": "^1.32.0",
     "rollup-plugin-babel": "^4.3.3",
     "semistandard": "^14.2.0"
   },
