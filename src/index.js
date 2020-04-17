@@ -270,7 +270,7 @@ class Personnummer {
    */
   getAge() {
     let ageDay = +this.day;
-    if (ageDay >= 61 && ageDay < 91) {
+    if (this.isCoordinationNumber()) {
       ageDay -= 60;
     }
 
@@ -284,8 +284,7 @@ class Personnummer {
    * @return {boolean}
    */
   isCoordinationNumber() {
-    const day = +this.day
-    return day >= 61 && day < 91
+    return testDate(this.century + this.year, +this.month, (+this.day) - 60);
   }
 
   /**
