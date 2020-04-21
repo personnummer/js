@@ -154,7 +154,7 @@ class Personnummer {
   }
 
   /**
-   * Validate a Swedish social security number.
+   * Validate a Swedish personal identity number.
    *
    * @param {string} str
    * @param {object} options
@@ -231,7 +231,7 @@ class Personnummer {
   }
 
   /**
-   * Validate a Swedish social security number.
+   * Validate a Swedish personal identity number.
    *
    * @return {boolean}
    */
@@ -246,7 +246,7 @@ class Personnummer {
   }
 
   /**
-   * Format a Swedish social security number as one of the official formats,
+   * Format a Swedish personal identity number as one of the official formats,
    * A long format or a short format.
    *
    * If the input number could not be parsed a empty string will be returned.
@@ -264,7 +264,7 @@ class Personnummer {
   }
 
   /**
-   * Get age from a Swedish social security number.
+   * Get age from a Swedish personal identity number.
    *
    * @return {number}
    */
@@ -279,7 +279,7 @@ class Personnummer {
   }
 
   /**
-   * Check if a Swedish social security number is a coordination number or not.
+   * Check if a Swedish personal identity number is a coordination number or not.
    *
    * @return {boolean}
    */
@@ -288,7 +288,7 @@ class Personnummer {
   }
 
   /**
-   * Check if a Swedish social security number is for a female.
+   * Check if a Swedish personal identity number is for a female.
    *
    * @return {boolean}
    */
@@ -297,7 +297,7 @@ class Personnummer {
   }
 
   /**
-   * Check if a Swedish social security number is for a male.
+   * Check if a Swedish personal identity number is for a male.
    *
    * @return {boolean}
    */

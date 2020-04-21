@@ -1,5 +1,5 @@
 export class PersonnummerError extends Error {
   constructor () {
-    super('Invalid swedish social security number');
+    super('Invalid swedish personal identity number');
   }
 }
