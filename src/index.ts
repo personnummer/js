@@ -1,22 +1,25 @@
 import { PersonnummerError } from './errors';
 import { diffInYears, luhn, testDate } from './utils';
 
-class Personnummer {
+type OptionsType = {
+  [key: string]: boolean | number | string;
+};
 
+class Personnummer {
   /**
    * Personnummer century.
    *
    * @var {string}
    */
-  #century = '';
+  private _century = '';
 
   /**
    * Get century.
    *
    * @return {string}
    */
-  get century() {
-    return this.#century
+  get century(): string {
+    return this._century;
   }
 
   /**
@@ -24,15 +27,15 @@ class Personnummer {
    *
    * @var {string}
    */
-  #fullYear = '';
+  private _fullYear = '';
 
   /**
    * Get age.
    *
    * @return {string}
    */
-  get fullYear() {
-    return this.#fullYear
+  get fullYear(): string {
+    return this._fullYear;
   }
 
   /**
@@ -40,15 +43,15 @@ class Personnummer {
    *
    * @var {string}
    */
-  #year = '';
+  private _year = '';
 
   /**
    * Get age.
    *
    * @return {string}
    */
-  get year() {
-    return this.#year
+  get year(): string {
+    return this._year;
   }
 
   /**
@@ -56,15 +59,15 @@ class Personnummer {
    *
    * @var {string}
    */
-  #month = '';
+  private _month = '';
 
   /**
    * Get month.
    *
    * @return {string}
    */
-  get month() {
-    return this.#month
+  get month(): string {
+    return this._month;
   }
 
   /**
@@ -72,15 +75,15 @@ class Personnummer {
    *
    * @var {string}
    */
-  #day = '';
+  private _day = '';
 
   /**
    * Get day.
    *
    * @return {string}
    */
-  get day() {
-    return this.#day
+  get day(): string {
+    return this._day;
   }
 
   /**
@@ -88,15 +91,15 @@ class Personnummer {
    *
    * @var {string}
    */
-  #sep = '';
+  private _sep = '';
 
   /**
    * Get sep.
    *
    * @return {string}
    */
-  get sep() {
-    return this.#sep
+  get sep(): string {
+    return this._sep;
   }
 
   /**
@@ -104,15 +107,15 @@ class Personnummer {
    *
    * @var {string}
    */
-  #num = '';
+  private _num = '';
 
   /**
    * Get num.
    *
    * @return {string}
    */
-  get num() {
-    return this.#num
+  get num(): string {
+    return this._num;
   }
 
   /**
@@ -120,15 +123,15 @@ class Personnummer {
    *
    * @var {string}
    */
-  #check = '';
+  private _check = '';
 
   /**
    * Get check.
    *
    * @return {string}
    */
-  get check() {
-    return this.#check
+  get check(): string {
+    return this._check;
   }
 
   /**
@@ -137,8 +140,8 @@ class Personnummer {
    * @param {string} ssn
    * @param {object} options
    */
-  constructor(ssn, options = {}) {
-    this.#parse(ssn, options);
+  constructor(ssn: string, options?: OptionsType) {
+    this.parse(ssn, options);
   }
 
   /**
@@ -149,7 +152,7 @@ class Personnummer {
    *
    * @return {Personnummer}
    */
-  static parse(ssn, options = {}) {
+  static parse(ssn: string, options?: OptionsType): Personnummer {
     return new Personnummer(ssn, options);
   }
 
@@ -161,7 +164,7 @@ class Personnummer {
    *
    * @return {boolean}
    */
-  static valid(ssn, options) {
+  static valid(ssn: string, options?: OptionsType): boolean {
     try {
       Personnummer.parse(ssn, options);
       return true;
@@ -176,56 +179,56 @@ class Personnummer {
    * @param {string} ssn
    * @param {object} options
    */
-  #parse (ssn, options = {}) {
-    if (typeof ssn !== 'string') {
-      throw new PersonnummerError();
-    }
-
-    const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([\-|\+]{0,1})?(\d{3})(\d{0,1})$/;
+  // eslint-disable-next-line
+  private parse(ssn: string, options?: OptionsType) {
+    const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([-|+]{0,1})?(\d{3})(\d{0,1})$/;
     const match = reg.exec(ssn);
 
     if (!match) {
       throw new PersonnummerError();
     }
 
-    let century = match[1];
-    let year = match[2];
-    let month = match[3];
-    let day = match[4];
-    let sep = match[5];
-    let num = match[6];
-    let check = match[7];
+    const century = match[1];
+    const year = match[2];
+    const month = match[3];
+    const day = match[4];
+    const sep = match[5];
+    const num = match[6];
+    const check = match[7];
 
-    if (typeof century === 'undefined' || !century.length) {
-      const d = new Date;
+    if (typeof century === 'undefined' || !century.length) {
+      const d = new Date();
       let baseYear = 0;
 
       if (sep === '+') {
         baseYear = d.getFullYear() - 100;
       } else {
-        sep = '-';
+        this._sep = '-';
         baseYear = d.getFullYear();
       }
 
-      century = ('' + (baseYear - ((baseYear - year) % 100))).substr(0, 2);
+      this._century = (
+        '' +
+        (baseYear - ((baseYear - parseInt(year)) % 100))
+      ).substr(0, 2);
     } else {
-      if ((new Date().getFullYear()) - parseInt(century + year, 10) < 100) {
-        sep = '-';
+      this._century = century;
+
+      if (new Date().getFullYear() - parseInt(century + year, 10) < 100) {
+        this._sep = '-';
       } else {
-        sep = '+';
+        this._sep = '+';
       }
     }
 
-    this.#century = century;
-    this.#year = year;
-    this.#fullYear = century + year;
-    this.#month = month;
-    this.#day = day;
-    this.#sep = sep;
-    this.#num = num;
-    this.#check = check;
+    this._year = year;
+    this._fullYear = century + year;
+    this._month = month;
+    this._day = day;
+    this._num = num;
+    this._check = check;
 
-    if (!this.#valid()) {
+    if (!this.valid()) {
       throw new PersonnummerError();
     }
   }
@@ -235,14 +238,22 @@ class Personnummer {
    *
    * @return {boolean}
    */
-  #valid() {
-    const valid = luhn(this.year + this.month + this.day + this.num) === +this.check && !!this.check;
+  private valid(): boolean {
+    const valid =
+      luhn(this.year + this.month + this.day + this.num) === +this.check &&
+      !!this.check;
 
-    if (valid && testDate(this.century + this.year, +this.month, +this.day)) {
+    if (
+      valid &&
+      testDate(parseInt(this.century + this.year), +this.month, +this.day)
+    ) {
       return valid;
     }
 
-    return valid && testDate(this.century + this.year, +this.month, (+this.day) - 60);
+    return (
+      valid &&
+      testDate(parseInt(this.century + this.year), +this.month, +this.day - 60)
+    );
   }
 
   /**
@@ -255,7 +266,7 @@ class Personnummer {
    *
    * @return {string}
    */
-  format(longFormat = false) {
+  format(longFormat = false): string {
     if (longFormat) {
       return `${this.century}${this.year}${this.month}${this.day}${this.num}${this.check}`;
     }
@@ -268,7 +279,7 @@ class Personnummer {
    *
    * @return {number}
    */
-  getAge() {
+  getAge(): number {
     let ageDay = +this.day;
     if (this.isCoordinationNumber()) {
       ageDay -= 60;
@@ -283,8 +294,12 @@ class Personnummer {
    *
    * @return {boolean}
    */
-  isCoordinationNumber() {
-    return testDate(this.century + this.year, +this.month, (+this.day) - 60);
+  isCoordinationNumber(): boolean {
+    return testDate(
+      parseInt(this.century + this.year),
+      +this.month,
+      +this.day - 60
+    );
   }
 
   /**
@@ -292,8 +307,8 @@ class Personnummer {
    *
    * @return {boolean}
    */
-  isFemale() {
-    return !this.isMale()
+  isFemale(): boolean {
+    return !this.isMale();
   }
 
   /**
@@ -301,8 +316,8 @@ class Personnummer {
    *
    * @return {boolean}
    */
-  isMale() {
-    const sexDigit = this.num.substr(-1);
+  isMale(): boolean {
+    const sexDigit = parseInt(this.num.substr(-1));
 
     return sexDigit % 2 === 1;
   }
