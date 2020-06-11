@@ -2,7 +2,6 @@ import { advanceTo, clear } from 'jest-date-mock';
 import Personnummer from './src';
 
 const invalidNumbers = [
-  null,
   [],
   true,
   false,
@@ -12,7 +11,7 @@ const invalidNumbers = [
   '9999999999',
   '199999999999',
   '199909193776',
-  'Just a string'
+  'Just a string',
 ];
 
 describe('validation', () => {
@@ -22,29 +21,25 @@ describe('validation', () => {
       '198507099805',
       '198507099813',
       '850709-9813',
-      '196411139808'
+      '196411139808',
     ];
 
-    numbers.forEach(n => {
+    numbers.forEach((n) => {
       expect(Personnummer.valid(n)).toBe(true);
     });
   });
 
   test('should not validate personnummer without control digit', () => {
-    const numbers = [
-      '19850709980',
-      '19850709981',
-      '19641113980'
-    ];
+    const numbers = ['19850709980', '19850709981', '19641113980'];
 
-    numbers.forEach(n => {
+    numbers.forEach((n) => {
       expect(Personnummer.valid(n)).toBe(false);
     });
   });
 
   test('should not validate wrong personnummer or wrong types', () => {
-    invalidNumbers.forEach(n => {
-      expect(Personnummer.valid(n)).toBe(false);
+    invalidNumbers.forEach((n) => {
+      expect(Personnummer.valid(n.toString())).toBe(false);
     });
   });
 
@@ -56,9 +51,13 @@ describe('validation', () => {
   });
 
   test('should validate numbers to be co-ordination numbers', () => {
-    expect(Personnummer.parse('198507699802').isCoordinationNumber()).toBe(true);
+    expect(Personnummer.parse('198507699802').isCoordinationNumber()).toBe(
+      true
+    );
     expect(Personnummer.parse('850769-9802').isCoordinationNumber()).toBe(true);
-    expect(Personnummer.parse('198507699810').isCoordinationNumber()).toBe(true);
+    expect(Personnummer.parse('198507699810').isCoordinationNumber()).toBe(
+      true
+    );
     expect(Personnummer.parse('850769-9810').isCoordinationNumber()).toBe(true);
   });
 
@@ -70,33 +69,37 @@ describe('validation', () => {
 describe('parse', () => {
   test('should parse personnummer', () => {
     const p = Personnummer.parse('198507699802');
-    expect(p.century).toEqual('19')
-    expect(p.fullYear).toEqual('1985')
-    expect(p.year).toEqual('85')
-    expect(p.month).toEqual('07')
-    expect(p.sep).toEqual('-')
-    expect(p.num).toEqual('980')
-    expect(p.check).toEqual('2')
+    expect(p.century).toEqual('19');
+    expect(p.fullYear).toEqual('1985');
+    expect(p.year).toEqual('85');
+    expect(p.month).toEqual('07');
+    expect(p.sep).toEqual('-');
+    expect(p.num).toEqual('980');
+    expect(p.check).toEqual('2');
   });
 
   test('should throw errors for bad inputs when parsing', () => {
-    invalidNumbers.forEach(n => {
+    invalidNumbers.forEach((n) => {
       try {
-        Personnummer.parse(n);
+        Personnummer.parse(n.toString());
         expect(false).toBe(true);
       } catch (e) {
         expect(true).toBe(true);
       }
     });
-  })
+  });
 });
 
 describe('format', () => {
   test('should format input values as personnummer', () => {
     expect(Personnummer.parse('19850709-9805').format()).toBe('850709-9805');
     expect(Personnummer.parse('198507099813').format()).toBe('850709-9813');
-    expect(Personnummer.parse('19850709-9805').format(true)).toBe('198507099805');
-    expect(Personnummer.parse('198507099813').format(true)).toBe('198507099813');
+    expect(Personnummer.parse('19850709-9805').format(true)).toBe(
+      '198507099805'
+    );
+    expect(Personnummer.parse('198507099813').format(true)).toBe(
+      '198507099813'
+    );
   });
 
   test('should format input values and replace separator with the right one', () => {

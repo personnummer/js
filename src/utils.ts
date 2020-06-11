@@ -4,9 +4,9 @@
  * @param {Date} dateLeft
  * @param {Date} dateRight
  *
- * @return {numbers}
+ * @return {number}
  */
-const compareAsc = (dateLeft, dateRight) => {
+const compareAsc = (dateLeft: Date, dateRight: Date): number => {
   const diff = dateLeft.getTime() - dateRight.getTime();
   return diff < 0 ? -1 : diff > 0 ? 1 : diff;
 };
@@ -17,16 +17,16 @@ const compareAsc = (dateLeft, dateRight) => {
  * @param {Date} dateLeft
  * @param {Date} dateRight
  *
- * @return {numbers}
+ * @return {number}
  */
-export const diffInYears = (dateLeft, dateRight) => {
+export const diffInYears = (dateLeft: Date, dateRight: Date): number => {
   const sign = compareAsc(dateLeft, dateRight);
   const yearDiff = Math.abs(dateLeft.getFullYear() - dateRight.getFullYear());
 
   dateLeft.setFullYear(dateLeft.getFullYear() - sign * yearDiff);
 
   const isLastYearNotFull = compareAsc(dateLeft, dateRight) === -sign;
-  const result = sign * (yearDiff - isLastYearNotFull);
+  const result = sign * (yearDiff - +isLastYearNotFull);
 
   return result === 0 ? 0 : result;
 };
@@ -38,15 +38,14 @@ export const diffInYears = (dateLeft, dateRight) => {
  *
  * @return {number}
  */
-export const luhn = str => {
-  let v = 0;
+export const luhn = (str: string): number => {
   let sum = 0;
 
   str += '';
 
-  for (var i = 0, l = str.length; i < l; i++) {
-    v = str[i];
-    v *= 2 - i % 2;
+  for (let i = 0, l = str.length; i < l; i++) {
+    let v = parseInt(str[i]);
+    v *= 2 - (i % 2);
     if (v > 9) {
       v -= 9;
     }
@@ -65,8 +64,12 @@ export const luhn = str => {
  *
  * @return {boolean}
  */
-export const testDate = (year, month, day) => {
+export const testDate = (year: number, month: number, day: number): boolean => {
   month -= 1;
   const date = new Date(year, month, day);
-  return !('' + date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day);
+  return !(
+    date.getFullYear() !== year ||
+    date.getMonth() !== month ||
+    date.getDate() !== day
+  );
 };
