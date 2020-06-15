@@ -181,7 +181,7 @@ class Personnummer {
    */
   // eslint-disable-next-line
   private parse(ssn: string, options?: OptionsType) {
-    const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([-|+]{0,1})?(\d{3})(\d{0,1})$/;
+    const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([-|+]{0,1})?(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9])(\d{0,1})$/;
     const match = reg.exec(ssn);
 
     if (!match) {
