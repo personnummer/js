@@ -1,87 +1,72 @@
-import { advanceTo, clear } from 'jest-date-mock';
+import fetch from 'node-fetch';
 import Personnummer from './src';
+import { diffInYears } from './src/utils';
 
-const invalidNumbers = [
-  [],
-  true,
-  false,
-  0,
-  '19112233-4455',
-  '20112233-4455',
-  '9999999999',
-  '199999999999',
-  '199909193776',
-  'Just a string',
+const availableListFormats = [
+  'long_format',
+  'short_format',
+  'separated_format',
+  'separated_long',
 ];
 
-describe('validation', () => {
-  test('should validate personnummer with control digit', () => {
-    const numbers = [
-      '8507099805',
-      '198507099805',
-      '198507099813',
-      '850709-9813',
-      '196411139808',
-    ];
-
-    numbers.forEach((n) => {
-      expect(Personnummer.valid(n)).toBe(true);
+let _testList = [];
+const testList = () => {
+  if (_testList.length) {
+    return new Promise((resolve) => {
+      resolve(_testList.length);
     });
-  });
+  }
 
-  test('should not validate personnummer without control digit', () => {
-    const numbers = ['19850709980', '19850709981', '19641113980'];
+  return fetch(
+    'https://raw.githubusercontent.com/personnummer/meta/master/testdata/list.json'
+  ).then((p) => p.json());
+};
 
-    numbers.forEach((n) => {
-      expect(Personnummer.valid(n)).toBe(false);
+test('should validate personnummer with control digit', async () => {
+  const list = await testList();
+
+  list.forEach((item) => {
+    availableListFormats.forEach((format) => {
+      expect(Personnummer.valid(item[format])).toBe(item.valid);
     });
-  });
-
-  test('should not validate wrong personnummer or wrong types', () => {
-    invalidNumbers.forEach((n) => {
-      expect(Personnummer.valid(n.toString())).toBe(false);
-    });
-  });
-
-  test('should validate co-ordination numbers', () => {
-    expect(Personnummer.valid('198507699802')).toBe(true);
-    expect(Personnummer.valid('850769-9802')).toBe(true);
-    expect(Personnummer.valid('198507699810')).toBe(true);
-    expect(Personnummer.valid('850769-9810')).toBe(true);
-  });
-
-  test('should validate numbers to be co-ordination numbers', () => {
-    expect(Personnummer.parse('198507699802').isCoordinationNumber()).toBe(
-      true
-    );
-    expect(Personnummer.parse('850769-9802').isCoordinationNumber()).toBe(true);
-    expect(Personnummer.parse('198507699810').isCoordinationNumber()).toBe(
-      true
-    );
-    expect(Personnummer.parse('850769-9810').isCoordinationNumber()).toBe(true);
-  });
-
-  test('should not validate wrong co-ordination numbers', () => {
-    expect(Personnummer.valid('198567099805')).toBe(false);
   });
 });
 
-describe('parse', () => {
-  test('should parse personnummer', () => {
-    const p = Personnummer.parse('198507699802');
-    expect(p.century).toEqual('19');
-    expect(p.fullYear).toEqual('1985');
-    expect(p.year).toEqual('85');
-    expect(p.month).toEqual('07');
-    expect(p.sep).toEqual('-');
-    expect(p.num).toEqual('980');
-    expect(p.check).toEqual('2');
-  });
+test('should format personnummer', async () => {
+  const list = await testList();
 
-  test('should throw errors for bad inputs when parsing', () => {
-    invalidNumbers.forEach((n) => {
+  list.forEach((item) => {
+    if (!item.valid) {
+      return;
+    }
+
+    availableListFormats.forEach((format) => {
+      if (
+        format !== 'short_format' &&
+        item.separated_format.indexOf('+') === -1
+      ) {
+        expect(Personnummer.parse(item[format]).format()).toBe(
+          item.separated_format
+        );
+        expect(Personnummer.parse(item[format]).format(true)).toBe(
+          item.long_format
+        );
+      }
+    });
+  });
+});
+
+test('should throw personnummer error', async () => {
+  const list = await testList();
+
+  list.forEach((item) => {
+    if (item.valid) {
+      return;
+    }
+
+    availableListFormats.forEach((format) => {
       try {
-        Personnummer.parse(n.toString());
+        Personnummer.parse(item[format]);
         expect(false).toBe(true);
       } catch (e) {
         expect(true).toBe(true);
@@ -90,49 +75,48 @@ describe('parse', () => {
   });
 });
 
-describe('format', () => {
-  test('should format input values as personnummer', () => {
-    expect(Personnummer.parse('19850709-9805').format()).toBe('850709-9805');
-    expect(Personnummer.parse('198507099813').format()).toBe('850709-9813');
-    expect(Personnummer.parse('19850709-9805').format(true)).toBe(
-      '198507099805'
-    );
-    expect(Personnummer.parse('198507099813').format(true)).toBe(
-      '198507099813'
-    );
-  });
+test('should test personnummer sex', async () => {
+  const list = await testList();
 
-  test('should format input values and replace separator with the right one', () => {
-    expect(Personnummer.parse('19850709+9805').format()).toBe('850709-9805');
-    expect(Personnummer.parse('19121212-1212').format()).toBe('121212+1212');
+  list.forEach((item) => {
+    if (!item.valid) {
+      return;
+    }
+
+    availableListFormats.forEach((format) => {
+      expect(Personnummer.parse(item[format]).isMale()).toBe(item.isMale);
+      expect(Personnummer.parse(item[format]).isFemale()).toBe(item.isFemale);
+    });
   });
 });
 
-describe('age', () => {
-  test('should get age', () => {
-    advanceTo(new Date(2019, 7, 13));
-    expect(Personnummer.parse('198507099805').getAge()).toBe(34);
-    expect(Personnummer.parse('198507099813').getAge()).toBe(34);
-    expect(Personnummer.parse('196411139808').getAge()).toBe(54);
-    expect(Personnummer.parse('19121212+1212').getAge()).toBe(106);
-    clear();
-  });
+test('should test personnummer age', async () => {
+  const list = await testList();
 
-  test('should get age with co-ordination numbers', () => {
-    advanceTo(new Date(2019, 7, 13));
-    expect(Personnummer.parse('198507699810').getAge()).toBe(34);
-    expect(Personnummer.parse('198507699802').getAge()).toBe(34);
-    clear();
-  });
-});
+  list.forEach((item) => {
+    if (!item.valid) {
+      return;
+    }
 
-describe('sex', () => {
-  test('should test sex with co-ordination numbers', () => {
-    advanceTo(new Date(2019, 7, 13));
-    expect(Personnummer.parse('198507099813').isMale()).toBe(true);
-    expect(Personnummer.parse('198507099813').isFemale()).toBe(false);
-    expect(Personnummer.parse('198507699802').isFemale()).toBe(true);
-    expect(Personnummer.parse('198507699802').isMale()).toBe(false);
-    clear();
+    availableListFormats.forEach((format) => {
+      if (
+        format !== 'short_format' &&
+        item.separated_format.indexOf('+') === -1
+      ) {
+        const pin = item.separated_long;
+        const year = pin.slice(0, 4);
+        const month = pin.slice(4, 6);
+        let day = pin.slice(6, 8);
+        if (item.type == 'con') {
+          day = '' + (parseInt(day) - 60);
+        }
+
+        const date = new Date(year, month, day);
+        const now = new Date();
+        const expected = diffInYears(now, date);
+
+        expect(Personnummer.parse(item[format]).getAge()).toBe(expected);
+      }
+    });
   });
 });
