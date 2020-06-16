@@ -1,7 +1,7 @@
 {
   "name": "personnummer",
   "description": "Validate Swedish personal identity numbers",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "license": "MIT",
   "homepage": "https://github.com/personnummer/js",
   "author": {
