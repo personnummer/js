@@ -10,7 +10,7 @@ const availableListFormats = [
 ];
 
 let _testList = [];
-const testList = () => {
+const testList = (): Promise<any> => {
   if (_testList.length) {
     return new Promise((resolve) => {
       resolve(_testList.length);
@@ -18,7 +18,8 @@ const testList = () => {
   }
 
   return fetch(
-    'https://raw.githubusercontent.com/personnummer/meta/master/testdata/list.json'
+    'https://raw.githubusercontent.com/personnummer/meta/master/testdata/list.json',
+    {}
   ).then((p) => p.json());
 };
 
