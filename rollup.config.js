@@ -11,7 +11,12 @@ export default {
   plugins: [
     resolve({ extensions }),
     commonjs(),
-    babel({ extensions, babelHelpers: 'bundled', include: ['src/**/*'] }),
+    babel({
+      extensions,
+      babelHelpers: 'bundled',
+      include: ['src/**/*'],
+      presets: [['@jitesoft/main', { exclude: ['transform-runtime'] }]],
+    }),
   ],
   output: [
     {

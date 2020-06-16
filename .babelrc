@@ -1,11 +1,3 @@
 {
-  "presets": [
-    [
-      "@jitesoft/main",
-      {
-        "exclude": ["transform-runtime"]
-      }
-    ],
-    "@babel/preset-typescript"
-  ]
+  "presets": ["@jitesoft/main", "@babel/preset-typescript"]
 }
