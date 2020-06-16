@@ -15,7 +15,6 @@ export default {
       extensions,
       babelHelpers: 'bundled',
       include: ['src/**/*'],
-      presets: [['@jitesoft/main', { exclude: ['transform-runtime'] }]],
     }),
   ],
   output: [

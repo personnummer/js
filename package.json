@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build:types": "tsc --emitDeclarationOnly",
-    "build:js": "rollup -c",
+    "build:js": "NODE_ENV=production rollup -c",
     "build": "rimraf dist && npm run build:types && npm run build:js",
     "format": "prettier --write 'src/**/*.ts' test.ts",
     "lint": "eslint src --ext .ts",

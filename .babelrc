@@ -1,3 +1,0 @@
-{
-  "presets": ["@jitesoft/main", "@babel/preset-typescript"]
-}
