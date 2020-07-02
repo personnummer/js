@@ -17,7 +17,7 @@ Personnummer.valid('198507099805')
 //=> true
 ```
 
-See [test.js](test.js) for more examples.
+See [test.ts](test.ts) for more examples.
 
 ## License
 
