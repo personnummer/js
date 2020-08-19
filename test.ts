@@ -112,8 +112,9 @@ test('should test personnummer age', async () => {
           day = '' + (parseInt(day) - 60);
         }
 
-        const date = new Date(year, month, day);
-        const now = new Date();
+        const ageDate = `${year}-${month}-${day}`;
+        const date = new Date(ageDate);
+        const now = new Date(Date.now());
         const expected = diffInYears(now, date);
 
         expect(Personnummer.parse(item[format]).getAge()).toBe(expected);
