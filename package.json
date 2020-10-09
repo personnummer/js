@@ -35,7 +35,7 @@
     "@babel/preset-typescript": "^7.10.4",
     "@jitesoft/babel-preset-main": "^2.5.1",
     "@rollup/plugin-babel": "^5.2.0",
-    "@rollup/plugin-commonjs": "^13.0.2",
+    "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/jest": "^26.0.10",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
