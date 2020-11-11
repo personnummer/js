@@ -201,6 +201,7 @@ class Personnummer {
       let baseYear = 0;
 
       if (sep === '+') {
+        this._sep = '+';
         baseYear = d.getFullYear() - 100;
       } else {
         this._sep = '-';
@@ -222,7 +223,7 @@ class Personnummer {
     }
 
     this._year = year;
-    this._fullYear = century + year;
+    this._fullYear = this._century + year;
     this._month = month;
     this._day = day;
     this._num = num;
