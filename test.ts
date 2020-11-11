@@ -57,6 +57,35 @@ test('should format personnummer', async () => {
   });
 });
 
+test('should parse personnummer', async () => {
+  const list = await testList();
+
+  list.forEach((item) => {
+    if (!item.valid) {
+      return;
+    }
+
+    availableListFormats
+      .filter((f) => f !== 'separated_long' && f !== 'short_format')
+      .forEach((format) => {
+        const parsed = Personnummer.parse(item[format]);
+        const pin = item.separated_long;
+        const expected = {
+          _century: pin.slice(0, 2),
+          _fullYear: pin.slice(0, 4),
+          _year: pin.slice(2, 4),
+          _month: pin.slice(4, 6),
+          _day: pin.slice(6, 8),
+          _sep: pin.slice(8, 9),
+          _num: pin.slice(9, 12),
+          _check: pin.slice(12),
+        };
+
+        expect(parsed).toEqual(expected);
+      });
+  });
+});
+
 test('should throw personnummer error', async () => {
   const list = await testList();
 
