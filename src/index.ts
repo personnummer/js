@@ -292,7 +292,7 @@ class Personnummer {
       '-' +
       this.month +
       '-' +
-      (ageDay < 9 ? '0' + ageDay : ageDay);
+      (ageDay < 10 ? '0' + ageDay : ageDay);
 
     return diffInYears(new Date(Date.now()), new Date(ageDate));
   }
