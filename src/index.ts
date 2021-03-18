@@ -286,7 +286,14 @@ class Personnummer {
       ageDay -= 60;
     }
 
-    const ageDate = this.century + this.year + '-' + this.month + '-' + ageDay;
+    const ageDate =
+      this.century +
+      this.year +
+      '-' +
+      this.month +
+      '-' +
+      (ageDay < 9 ? '0' + ageDay : ageDay);
+
     return diffInYears(new Date(Date.now()), new Date(ageDate));
   }
 
