@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { PersonnummerError } from './src/errors';
 import Personnummer from './src';
 import { diffInYears } from './src/utils';
 
@@ -10,7 +11,7 @@ const availableListFormats = [
 ];
 
 let _testList = [];
-const testList = (): Promise<any> => {
+const testList = (file = 'list'): Promise<any> => {
   if (_testList.length) {
     return new Promise((resolve) => {
       resolve(_testList.length);
@@ -18,7 +19,7 @@ const testList = (): Promise<any> => {
   }
 
   return fetch(
-    'https://raw.githubusercontent.com/personnummer/meta/master/testdata/list.json',
+    `https://raw.githubusercontent.com/personnummer/meta/master/testdata/${file}.json`,
     {}
   ).then((p) => p.json());
 };
@@ -148,6 +149,18 @@ test('should test personnummer age', async () => {
 
         expect(Personnummer.parse(item[format]).getAge()).toBe(expected);
       }
+    });
+  });
+});
+
+test('should test organization numbers and throw error', async () => {
+  const list = await testList('orgnumber');
+
+  list.forEach((item) => {
+    availableListFormats.forEach((format) => {
+      expect(() => {
+        Personnummer.parse(item[format]);
+      }).toThrow(PersonnummerError);
     });
   });
 });
