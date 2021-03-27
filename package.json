@@ -18,8 +18,7 @@
   ],
   "scripts": {
     "build:types": "tsc --emitDeclarationOnly",
-    "build:js": "NODE_ENV=production rollup -c",
-    "build": "rimraf dist && npm run build:types && npm run build:js",
+    "build": "rimraf dist && npm run build:types && FORMAT=esm node esbuild.js &&  FORMAT=cjs node esbuild.js",
     "format": "prettier --write 'src/**/*.ts' test.ts",
     "lint": "eslint src --ext .ts",
     "prepublishOnly": "npm run build",
@@ -29,26 +28,16 @@
   "module": "dist/esm/index.js",
   "types": "dist/types",
   "devDependencies": {
-    "@babel/cli": "^7.13.10",
-    "@babel/core": "^7.13.10",
-    "@babel/eslint-parser": "^7.13.10",
-    "@babel/preset-typescript": "^7.13.0",
-    "@jitesoft/babel-preset-main": "^2.8.1",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^17.1.0",
-    "@rollup/plugin-node-resolve": "^11.2.0",
     "@types/jest": "^26.0.21",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
-    "babel-loader": "^8.2.2",
     "core-js": "^3.9.1",
+    "esbuild": "^0.10.2",
     "eslint": "^7.22.0",
     "jest": "^26.6.3",
     "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.41.5",
-    "tslib": "^2.1.0",
     "typescript": "^4.2.3"
   },
   "keywords": [
@@ -58,5 +47,8 @@
     "social",
     "security",
     "numbers"
-  ]
+  ],
+  "dependencies": {
+    "esbuild-jest": "^0.5.0"
+  }
 }

@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import { PersonnummerError } from './src/errors';
 import Personnummer from './src';
 import { diffInYears } from './src/utils';
 
@@ -160,7 +159,7 @@ test('should test organization numbers and throw error', async () => {
     availableListFormats.forEach((format) => {
       expect(() => {
         Personnummer.parse(item[format]);
-      }).toThrow(PersonnummerError);
+      }).toThrow(Error);
     });
   });
 });
