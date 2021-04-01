@@ -17,23 +17,24 @@
     "dist/**/*"
   ],
   "scripts": {
-    "build:types": "tsc --emitDeclarationOnly",
-    "build": "rimraf dist && npm run build:types && FORMAT=esm node esbuild.js &&  FORMAT=cjs node esbuild.js",
+    "build": "pine build",
     "format": "prettier --write 'src/**/*.ts' test.ts",
     "lint": "eslint src --ext .ts",
     "prepublishOnly": "npm run build",
-    "test": "jest"
+    "test": "pine test"
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types",
   "devDependencies": {
+    "@pinefile/pine": "^1.0.0-alpha.14",
     "@types/jest": "^26.0.22",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
     "core-js": "^3.10.0",
     "esbuild": "^0.11.2",
     "eslint": "^7.23.0",
+    "is-ci": "^2.0.0",
     "jest": "^26.6.3",
     "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",

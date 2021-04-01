@@ -1,6 +1,8 @@
 import fetch from 'node-fetch';
-import Personnummer from './src';
 import { diffInYears } from './src/utils';
+
+const lib = require(process.env.FILE);
+const Personnummer = lib.default ? lib.default : lib;
 
 const availableListFormats = [
   'long_format',
