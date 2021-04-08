@@ -27,7 +27,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/types",
   "devDependencies": {
-    "@pinefile/pine": "^1.0.0-alpha.15",
+    "@pinefile/pine": "^1.0.0-alpha.17",
     "@types/jest": "^26.0.22",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
