@@ -181,7 +181,7 @@ class Personnummer {
    */
   // eslint-disable-next-line
   private parse(ssn: string, options?: OptionsType) {
-    const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+\-\s]?)((?!000)\d{3})(\d)$/;
+    const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+\-\s]?)((?!000)\d{3}|T\d{2})(\d)$/;
     const match = reg.exec(ssn);
 
     if (!match) {
@@ -241,8 +241,8 @@ class Personnummer {
    */
   private valid(): boolean {
     const valid =
-      luhn(this.year + this.month + this.day + this.num) === +this.check &&
-      !!this.check;
+      luhn(this.year + this.month + this.day + this.num.replace('T', '1')) ===
+        +this.check && !!this.check;
 
     if (
       valid &&
