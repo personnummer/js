@@ -181,7 +181,8 @@ class Personnummer {
    */
   // eslint-disable-next-line
   private parse(ssn: string, options?: OptionsType) {
-    const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+\-\s]?)((?!000)\d{3}|T\d{2})(\d)$/;
+    const reg =
+      /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+\-\s]?)((?!000)\d{3}|T\d{2})(\d)$/;
     const match = reg.exec(ssn);
 
     if (!match) {
@@ -295,6 +296,15 @@ class Personnummer {
       (ageDay < 10 ? '0' + ageDay : ageDay);
 
     return diffInYears(new Date(Date.now()), new Date(ageDate));
+  }
+
+  /**
+   * Check if a Swedish personal identity number is a tp-number or not.
+   *
+   * @return {boolean}
+   */
+  isTPNumber(): boolean {
+    return this.num[0] === 'T';
   }
 
   /**

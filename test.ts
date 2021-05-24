@@ -11,6 +11,21 @@ const availableListFormats = [
   'separated_long',
 ];
 
+const specialList = {
+  tp: [
+    {
+      long_format: '20000101T220',
+      short_format: '000101T220',
+      separated_format: '000101-T220',
+      separated_long: '20000101-T220',
+      valid: true,
+      type: 'tp',
+      isMale: false,
+      isFemale: true,
+    },
+  ],
+};
+
 let _testList = [];
 const testList = (file = 'list'): Promise<any> => {
   if (_testList.length) {
@@ -162,6 +177,16 @@ test('should test organization numbers and throw error', async () => {
       expect(() => {
         Personnummer.parse(item[format]);
       }).toThrow(Error);
+    });
+  });
+});
+
+test('should test tp-numbers', async () => {
+  specialList.tp.forEach((tp) => {
+    availableListFormats.forEach((format) => {
+      const p = Personnummer.parse(tp[format]);
+      expect(p.valid()).toBeTruthy();
+      expect(p.isTPNumber()).toBeTruthy();
     });
   });
 });
