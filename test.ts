@@ -44,10 +44,7 @@ test('should format personnummer', async () => {
     }
 
     availableListFormats.forEach((format) => {
-      if (
-        format !== 'short_format' &&
-        item.separated_format.indexOf('+') === -1
-      ) {
+      if (format !== 'short_format') {
         expect(Personnummer.parse(item[format]).format()).toBe(
           item.separated_format
         );
@@ -68,7 +65,7 @@ test('should parse personnummer', async () => {
     }
 
     availableListFormats
-      .filter((f) => f !== 'separated_long' && f !== 'short_format')
+      .filter((f) => f !== 'short_format')
       .forEach((format) => {
         const parsed = Personnummer.parse(item[format]);
         const pin = item.separated_long;
@@ -130,24 +127,21 @@ test('should test personnummer age', async () => {
       return;
     }
 
+    const pin = item.separated_long;
+    const year = pin.slice(0, 4);
+    const month = pin.slice(4, 6);
+    let day = pin.slice(6, 8);
+    if (item.type == 'con') {
+      day = '' + (parseInt(day) - 60);
+    }
+
+    const ageDate = `${year}-${month}-${day}`;
+    const date = new Date(ageDate);
+    const now = new Date(Date.now());
+    const expected = diffInYears(now, date);
+
     availableListFormats.forEach((format) => {
-      if (
-        format !== 'short_format' &&
-        item.separated_format.indexOf('+') === -1
-      ) {
-        const pin = item.separated_long;
-        const year = pin.slice(0, 4);
-        const month = pin.slice(4, 6);
-        let day = pin.slice(6, 8);
-        if (item.type == 'con') {
-          day = '' + (parseInt(day) - 60);
-        }
-
-        const ageDate = `${year}-${month}-${day}`;
-        const date = new Date(ageDate);
-        const now = new Date(Date.now());
-        const expected = diffInYears(now, date);
-
+      if (format !== 'short_format') {
         expect(Personnummer.parse(item[format]).getAge()).toBe(expected);
       }
     });
