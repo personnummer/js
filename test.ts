@@ -1,4 +1,4 @@
-import { fetch } from 'undici';
+import { request } from 'undici';
 import { diffInYears } from './src/utils';
 
 const lib = require(process.env.FILE);
@@ -19,10 +19,10 @@ const testList = (file = 'list'): Promise<any> => {
     });
   }
 
-  return fetch(
+  return request(
     `https://raw.githubusercontent.com/personnummer/meta/master/testdata/${file}.json`,
     {}
-  ).then((p) => p.json());
+  ).then((p) => p.body.json());
 };
 
 test('should validate personnummer with control digit', async () => {
