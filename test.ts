@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import { fetch } from 'undici';
 import { diffInYears } from './src/utils';
 
 const lib = require(process.env.FILE);
