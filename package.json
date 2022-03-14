@@ -27,19 +27,19 @@
   "module": "dist/esm/index.js",
   "types": "dist/types",
   "devDependencies": {
-    "@pinefile/pine": "^1.5.0",
+    "@pinefile/pine": "^1.6.2",
     "@types/jest": "^27.4.1",
-    "@typescript-eslint/eslint-plugin": "^5.12.1",
-    "@typescript-eslint/parser": "^5.12.1",
-    "esbuild": "^0.14.23",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "esbuild": "^0.14.26",
     "esbuild-jest": "^0.5.0",
-    "eslint": "^8.9.0",
+    "eslint": "^8.11.0",
     "is-ci": "^3.0.1",
     "jest": "^27.5.1",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.5.5",
-    "undici": "^4.14.1"
+    "typescript": "^4.6.2",
+    "undici": "^4.15.1"
   },
   "keywords": [
     "personnummer",
