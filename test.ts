@@ -45,12 +45,29 @@ test('should format personnummer', async () => {
 
     availableListFormats.forEach((format) => {
       if (format !== 'short_format') {
+        // Old version
         expect(Personnummer.parse(item[format]).format()).toBe(
           item.separated_format
         );
         expect(Personnummer.parse(item[format]).format(true)).toBe(
           item.long_format
         );
+
+
+        // New version
+        expect(Personnummer.parse(item[format]).format("long")).toBe(
+          item.long_format
+        );
+        expect(Personnummer.parse(item[format]).format("short")).toBe(
+          item.short_format
+        );
+        expect(Personnummer.parse(item[format]).format("separatedShort")).toBe(
+          item.separated_format
+        );
+        expect(Personnummer.parse(item[format]).format("separatedLong")).toBe(
+          item.separated_long
+        );
+
       }
     });
   });
