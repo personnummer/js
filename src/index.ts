@@ -278,18 +278,18 @@ class Personnummer {
     // To support older version of this function
     if (typeof type === "boolean") {
       // This function used to take a boolean as an input and
-      return this.format(type ? "long" : "short");
+      return this.format(type ? "long" : "separatedShort");
     }
 
     switch (type) {
       case "long":
         return `${this.century}${this.year}${this.month}${this.day}${this.num}${this.check}`;
       case "short":
-        return `${this.year}${this.month}${this.day}${this.sep}${this.num}${this.check}`;
+        return `${this.year}${this.month}${this.day}${this.num}${this.check}`;
       case "separatedLong":
-        return `${this.century}${this.year}${this.month}${this.day}${this.getAge() >= 100 ? "+" : "-"}${this.num}${this.check}`;
+        return `${this.century}${this.year}${this.month}${this.day}${this.sep}${this.num}${this.check}`;
       case "separatedShort":
-        return `${this.year}${this.month}${this.day}${this.getAge() >= 100 ? "+" : "-"}${this.num}${this.check}`;
+        return `${this.year}${this.month}${this.day}${this.sep}${this.num}${this.check}`;
     }
 
     // Falltrough case if someone uses JavaScript instead of TypeScript.
