@@ -1,9 +1,16 @@
-import { PersonnummerError } from './errors';
+import { PersonnumerFormatError, PersonnummerError } from './errors';
 import { diffInYears, luhn, testDate } from './utils';
 
 type OptionsType = {
   [key: string]: boolean | number | string;
 };
+
+type FormatTypes =
+  "long" |
+  "short" |
+  "separatedShort" |
+  "separatedLong"
+
 
 class Personnummer {
   /**
@@ -166,7 +173,7 @@ class Personnummer {
    */
   static valid(ssn: string, options?: OptionsType): boolean {
     try {
-      Personnummer.parse(ssn, options);
+      new Personnummer(ssn, options);
       return true;
     } catch (e) {
       return false;
@@ -263,16 +270,30 @@ class Personnummer {
    *
    * If the input number could not be parsed a empty string will be returned.
    *
-   * @param {boolean} longFormat
+   * @param {string} type
    *
    * @return {string}
    */
-  format(longFormat = false): string {
-    if (longFormat) {
-      return `${this.century}${this.year}${this.month}${this.day}${this.num}${this.check}`;
+  format(type: boolean | FormatTypes = false): string {
+    // To support older version of this function
+    if (typeof type === "boolean") {
+      // This function used to take a boolean as an input and
+      return this.format(type ? "long" : "short");
     }
 
-    return `${this.year}${this.month}${this.day}${this.sep}${this.num}${this.check}`;
+    switch (type) {
+      case "long":
+        return `${this.century}${this.year}${this.month}${this.day}${this.num}${this.check}`;
+      case "short":
+        return `${this.year}${this.month}${this.day}${this.sep}${this.num}${this.check}`;
+      case "separatedLong":
+        return `${this.century}${this.year}${this.month}${this.day}${this.getAge() >= 100 ? "+" : "-"}${this.num}${this.check}`;
+      case "separatedShort":
+        return `${this.year}${this.month}${this.day}${this.getAge() >= 100 ? "+" : "-"}${this.num}${this.check}`;
+    }
+
+    // Falltrough case if someone uses JavaScript instead of TypeScript.
+    throw new PersonnumerFormatError();
   }
 
   /**
