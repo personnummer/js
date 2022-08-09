@@ -29,8 +29,8 @@
   "devDependencies": {
     "@pinefile/pine": "^1.6.2",
     "@types/jest": "^28.1.6",
-    "@typescript-eslint/eslint-plugin": "^5.32.0",
-    "@typescript-eslint/parser": "^5.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
     "esbuild": "^0.14.54",
     "esbuild-jest": "^0.5.0",
     "eslint": "^8.21.0",
