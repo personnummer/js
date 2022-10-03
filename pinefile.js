@@ -1,6 +1,6 @@
-const isCI = require('is-ci');
-const { run, log, series } = require('@pinefile/pine');
-const { build } = require('esbuild');
+import { run, log, series } from '@pinefile/pine';
+import isCI from 'is-ci';
+import { build } from 'esbuild';
 
 const buildOptions = (format) => ({
   entryPoints: ['./src/index.ts'],
@@ -9,7 +9,7 @@ const buildOptions = (format) => ({
   outfile: `./dist/${format}/index.js`,
 });
 
-module.exports = {
+export default {
   build: async () => {
     await run('rimraf dist');
 
