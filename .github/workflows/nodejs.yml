@@ -9,13 +9,39 @@ on:
   pull_request:
 
 jobs:
-  build:
+  node12:
+    runs-on: ubuntu-latest
 
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3.5.0
+      with:
+        node-version: 12
+    - name: npm install
+      run: npm install
+    - name: npm run lint
+      run: npm run lint
+    - name: npm run build
+      run: npm run build
+    - name: npm run test
+      run: FILE=./dist/cjs npm run test
+      env:
+        CI: true
+    - name: npm run test
+      run: FILE=./dist/esm npm run test
+      env:
+        CI: true
+
+  build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x,16.x]
+        node-version:
+          - 14
+          - 16
+          - 18
 
     steps:
     - uses: actions/checkout@v3
