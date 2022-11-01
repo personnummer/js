@@ -28,7 +28,7 @@
   "types": "dist/types",
   "devDependencies": {
     "@pinefile/pine": "^2.0.2",
-    "@types/jest": "^29.2.0",
+    "@types/jest": "^29.2.1",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
     "esbuild": "^0.15.12",
