@@ -1,4 +1,4 @@
-# personnummer [![Build Status]([https://img.shields.io/github/workflow/status/personnummer/js/build](https://img.shields.io/github/actions/workflow/status/personnummer/js/nodejs.yml?branch=master))](https://github.com/personnummer/js/actions) [![NPM Downloads](https://img.shields.io/npm/dm/personnummer.svg)](https://www.npmjs.com/package/personnummer)
+# personnummer [![Build Status]([https://img.shields.io/github/workflow/status/personnummer/js/build)](https://img.shields.io/github/actions/workflow/status/personnummer/js/nodejs.yml?branch=master))](https://github.com/personnummer/js/actions) [![NPM Downloads](https://img.shields.io/npm/dm/personnummer.svg)](https://www.npmjs.com/package/personnummer)
 
 Validate Swedish personal identity numbers. Follows version 3 of the [specification](https://github.com/personnummer/meta#package-specification-v3).
 
