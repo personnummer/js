@@ -2,7 +2,7 @@ import { request } from 'undici';
 import { diffInYears } from './src/utils';
 
 const lib = require(process.env.FILE);
-const Personnummer = lib.default ? lib.default : lib;
+const Personnummer = process.env.FILE?.includes('esm') ? lib.default : lib;
 
 const availableListFormats = [
   'long_format',
@@ -11,7 +11,7 @@ const availableListFormats = [
   'separated_long',
 ];
 
-let _testList = [];
+const _testList = [];
 const testList = (file = 'list'): Promise<any> => {
   if (_testList.length) {
     return new Promise((resolve) => {
