@@ -2,7 +2,7 @@ import { request } from 'undici';
 import { diffInYears } from './src/utils';
 
 const lib = require(process.env.FILE);
-const Personnummer = process.env.FILE?.includes('esm') ? lib.default : lib;
+const Personnummer = process.env.FILE?.includes('cjs') ? lib : lib.default;
 
 const availableListFormats = [
   'long_format',
