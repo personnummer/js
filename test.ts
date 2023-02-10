@@ -1,8 +1,10 @@
+import { it, expect } from 'vitest';
 import { request } from 'undici';
 import { diffInYears } from './src/utils';
 
-const lib = require(process.env.FILE);
-const Personnummer = process.env.FILE?.includes('cjs') ? lib : lib.default;
+const Personnummer = process.env.FILE?.includes('cjs')
+  ? require(process.env.FILE)
+  : (await import(process.env.FILE)).default;
 
 const availableListFormats = [
   'long_format',
@@ -25,7 +27,7 @@ const testList = (file = 'list'): Promise<any> => {
   ).then((p) => p.body.json());
 };
 
-test('should validate personnummer with control digit', async () => {
+it('should validate personnummer with control digit', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -35,7 +37,7 @@ test('should validate personnummer with control digit', async () => {
   });
 });
 
-test('should format personnummer', async () => {
+it('should format personnummer', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -56,7 +58,7 @@ test('should format personnummer', async () => {
   });
 });
 
-test('should parse personnummer', async () => {
+it('should parse personnummer', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -85,7 +87,7 @@ test('should parse personnummer', async () => {
   });
 });
 
-test('should throw personnummer error', async () => {
+it('should throw personnummer error', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -104,7 +106,7 @@ test('should throw personnummer error', async () => {
   });
 });
 
-test('should test personnummer sex', async () => {
+it('should test personnummer sex', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -119,7 +121,7 @@ test('should test personnummer sex', async () => {
   });
 });
 
-test('should test personnummer age', async () => {
+it('should test personnummer age', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -148,7 +150,7 @@ test('should test personnummer age', async () => {
   });
 });
 
-test('should test organization numbers and throw error', async () => {
+it('should test organization numbers and throw error', async () => {
   const list = await testList('orgnumber');
 
   list.forEach((item) => {

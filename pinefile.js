@@ -27,7 +27,7 @@ export default {
     await series(
       files.map((file) => async () => {
         log.info(`Running tests with ${file}\n`);
-        await run(`FILE=${file} jest`);
+        await run(`FILE=${file} vitest`);
       })
     );
   },
