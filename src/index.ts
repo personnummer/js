@@ -281,6 +281,14 @@ class Personnummer {
    * @return {number}
    */
   getAge(): number {
+    const date = this.getDate();
+    return diffInYears(new Date(Date.now()), date);
+  }
+
+  /**
+   * Get date from a Swedish personal identity number.
+   */
+  getDate(): Date {
     let ageDay = +this.day;
     if (this.isCoordinationNumber()) {
       ageDay -= 60;
@@ -294,7 +302,7 @@ class Personnummer {
       '-' +
       (ageDay < 10 ? '0' + ageDay : ageDay);
 
-    return diffInYears(new Date(Date.now()), new Date(ageDate));
+    return new Date(ageDate);
   }
 
   /**

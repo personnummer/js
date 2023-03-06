@@ -150,6 +150,35 @@ it('should test personnummer age', async () => {
   });
 });
 
+it('should test personnummer date', async () => {
+  const list = await testList();
+
+  list.forEach((item) => {
+    if (!item.valid) {
+      return;
+    }
+
+    const pin = item.separated_long;
+    const year = pin.slice(0, 4);
+    const month = pin.slice(4, 6);
+    let day = pin.slice(6, 8);
+    if (item.type == 'con') {
+      day = '' + (parseInt(day) - 60);
+    }
+
+    const ageDate = `${year}-${month}-${day}`;
+    const personnummerDate = new Date(ageDate);
+
+    availableListFormats.forEach((format) => {
+      if (format !== 'short_format') {
+        expect(Personnummer.parse(item[format]).getDate()).toStrictEqual(
+          personnummerDate
+        );
+      }
+    });
+  });
+});
+
 it('should test organization numbers and throw error', async () => {
   const list = await testList('orgnumber');
 
