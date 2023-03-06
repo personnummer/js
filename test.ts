@@ -13,34 +13,9 @@ const availableListFormats = [
   'separated_long',
 ];
 
-const specialList = {
-  tp: [
-    {
-      long_format: '20000101T220',
-      short_format: '000101T220',
-      separated_format: '000101-T220',
-      separated_long: '20000101-T220',
-      valid: true,
-      type: 'tp',
-      isMale: false,
-      isFemale: true,
-    },
-    {
-      long_format: '20000101A220',
-      short_format: '000101A220',
-      separated_format: '000101-A220',
-      separated_long: '20000101-A220',
-      valid: false,
-      type: 'tp',
-      isMale: false,
-      isFemale: false,
-    },
-  ],
-};
-
 const _testList = [];
 
-const testList = (file = 'list'): Promise<any> => {
+const testList = (file = '3.1/list'): Promise<any> => {
   if (_testList.length) {
     return new Promise((resolve) => {
       resolve(_testList.length);
@@ -56,18 +31,20 @@ const testList = (file = 'list'): Promise<any> => {
 it('should validate personnummer with control digit', async () => {
   const list = await testList();
 
-  list.forEach((item) => {
-    availableListFormats.forEach((format) => {
-      expect(Personnummer.valid(item[format])).toBe(item.valid);
+  list
+    .filter((item) => item.valid)
+    .forEach((item) => {
+      availableListFormats.forEach((format) => {
+        expect(Personnummer.valid(item[format])).toBe(item.valid);
+      });
     });
-  });
 });
 
 it('should format personnummer', async () => {
   const list = await testList();
 
   list
-    .filter((item) => !item.valid)
+    .filter((item) => item.valid)
     .forEach((item) => {
       availableListFormats.forEach((format) => {
         if (format !== 'short_format') {
@@ -86,7 +63,7 @@ it('should parse personnummer', async () => {
   const list = await testList();
 
   list
-    .filter((item) => !item.valid)
+    .filter((item) => item.valid)
     .forEach((item) => {
       availableListFormats
         .filter((f) => f !== 'short_format')
@@ -103,7 +80,6 @@ it('should parse personnummer', async () => {
             _num: pin.slice(9, 12),
             _check: pin.slice(12),
           };
-
           expect(parsed).toEqual(expected);
         });
     });
@@ -130,7 +106,7 @@ it('should test personnummer sex', async () => {
   const list = await testList();
 
   list
-    .filter((item) => !item.valid)
+    .filter((item) => item.valid)
     .forEach((item) => {
       availableListFormats.forEach((format) => {
         expect(Personnummer.parse(item[format]).isMale()).toBe(item.isMale);
@@ -143,7 +119,7 @@ it('should test personnummer age', async () => {
   const list = await testList();
 
   list
-    .filter((item) => !item.valid)
+    .filter((item) => item.valid)
     .forEach((item) => {
       const pin = item.separated_long;
       const year = pin.slice(0, 4);
@@ -170,7 +146,7 @@ it('should test personnummer date', async () => {
   const list = await testList();
 
   list
-    .filter((item) => !item.valid)
+    .filter((item) => item.valid)
     .forEach((item) => {
       const pin = item.separated_long;
       const year = pin.slice(0, 4);
@@ -206,11 +182,14 @@ it('should test organization numbers and throw error', async () => {
 });
 
 it('should test valid interim numbers and not throw error if valid', async () => {
-  specialList.tp
-    .filter((x) => x.valid)
-    .forEach((tp) => {
+  const list = await testList();
+
+  list
+    .filter((item) => item.type === 'interim')
+    .filter((item) => item.valid)
+    .forEach((item) => {
       availableListFormats.forEach((format) => {
-        const p = Personnummer.parse(tp[format]);
+        const p = Personnummer.parse(item[format]);
         expect(p.valid()).toBeTruthy();
         expect(p.isInterimNumber()).toBeTruthy();
       });
@@ -218,12 +197,15 @@ it('should test valid interim numbers and not throw error if valid', async () =>
 });
 
 it('should test interim numbers and throw error if invalid', async () => {
-  specialList.tp
-    .filter((x) => !x.valid)
-    .forEach((tp) => {
+  const list = await testList();
+
+  list
+    .filter((item) => item.type === 'interim')
+    .filter((item) => !item.valid)
+    .forEach((item) => {
       availableListFormats.forEach((format) => {
         expect(() => {
-          Personnummer.parse(tp[format]);
+          Personnummer.parse(item[format]);
         }).toThrow(Error);
       });
     });
