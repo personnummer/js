@@ -281,8 +281,8 @@ class Personnummer {
    * @return {number}
    */
   getAge(): number {
-    const dateOfBirth = this.getDate();
-    return diffInYears(new Date(Date.now()), dateOfBirth);
+    const date = this.getDate();
+    return diffInYears(new Date(Date.now()), date);
   }
 
   /**
