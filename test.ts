@@ -80,6 +80,7 @@ it('should parse personnummer', async () => {
             _num: pin.slice(9, 12),
             _check: pin.slice(12),
           };
+
           expect(parsed).toEqual(expected);
         });
     });
