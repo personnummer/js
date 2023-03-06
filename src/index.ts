@@ -2,10 +2,18 @@ import { PersonnummerError } from './errors';
 import { diffInYears, luhn, testDate } from './utils';
 
 type OptionsType = {
-  [key: string]: boolean | number | string;
+  allowCoordinationNumber: boolean;
+  allowInterimNumber: boolean;
 };
 
 class Personnummer {
+  /**
+   * Options.
+   *
+   * @var {OptionsType}
+   */
+  private _options: OptionsType;
+
   /**
    * Personnummer century.
    *
@@ -141,7 +149,11 @@ class Personnummer {
    * @param {object} options
    */
   constructor(pin: string, options?: OptionsType) {
-    this.parse(pin, options);
+    this.parse(pin, {
+      allowCoordinationNumber: true,
+      allowInterimNumber: false,
+      ...options,
+    });
   }
 
   /**
@@ -182,7 +194,7 @@ class Personnummer {
   // eslint-disable-next-line
   private parse(pin: string, options?: OptionsType) {
     const reg =
-      /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-]?)((?!000)\d{3}|T\d{2})(\d)$/;
+      /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-]?)((?!000)\d{3}|[PTRSUWXJKLMN]\d{2})(\d)$/;
 
     const match = reg.exec(pin);
 
@@ -232,6 +244,16 @@ class Personnummer {
     this._check = check;
 
     if (!this.valid()) {
+      throw new PersonnummerError();
+    }
+
+    // throw error if allow coordination numbers is not allowed.
+    if (!options?.allowCoordinationNumber && this.isCoordinationNumber()) {
+      throw new PersonnummerError();
+    }
+
+    // throw error if allow interim numbers is not allowed.
+    if (!options?.allowInterimNumber && this.isInterimNumber()) {
       throw new PersonnummerError();
     }
   }
@@ -316,7 +338,7 @@ class Personnummer {
    * @return {boolean}
    */
   isInterimNumber(): boolean {
-    return /[A-Z]/.test(this.num[0]);
+    return /[PTRSUWXJKLMN]/.test(this.num[0]);
   }
 
   /**
