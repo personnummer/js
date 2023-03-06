@@ -1,8 +1,10 @@
-import fetch from 'node-fetch';
+import { it, expect } from 'vitest';
+import { request } from 'undici';
 import { diffInYears } from './src/utils';
 
-const lib = require(process.env.FILE);
-const Personnummer = lib.default ? lib.default : lib;
+const Personnummer = process.env.FILE?.includes('cjs')
+  ? require(process.env.FILE)
+  : (await import(process.env.FILE)).default;
 
 const availableListFormats = [
   'long_format',
@@ -26,7 +28,8 @@ const specialList = {
   ],
 };
 
-let _testList = [];
+const _testList = [];
+
 const testList = (file = 'list'): Promise<any> => {
   if (_testList.length) {
     return new Promise((resolve) => {
@@ -34,13 +37,13 @@ const testList = (file = 'list'): Promise<any> => {
     });
   }
 
-  return fetch(
+  return request(
     `https://raw.githubusercontent.com/personnummer/meta/master/testdata/${file}.json`,
     {}
-  ).then((p) => p.json());
+  ).then((p) => p.body.json());
 };
 
-test('should validate personnummer with control digit', async () => {
+it('should validate personnummer with control digit', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -50,7 +53,7 @@ test('should validate personnummer with control digit', async () => {
   });
 });
 
-test('should format personnummer', async () => {
+it('should format personnummer', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -59,10 +62,7 @@ test('should format personnummer', async () => {
     }
 
     availableListFormats.forEach((format) => {
-      if (
-        format !== 'short_format' &&
-        item.separated_format.indexOf('+') === -1
-      ) {
+      if (format !== 'short_format') {
         expect(Personnummer.parse(item[format]).format()).toBe(
           item.separated_format
         );
@@ -74,7 +74,7 @@ test('should format personnummer', async () => {
   });
 });
 
-test('should parse personnummer', async () => {
+it('should parse personnummer', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -83,7 +83,7 @@ test('should parse personnummer', async () => {
     }
 
     availableListFormats
-      .filter((f) => f !== 'separated_long' && f !== 'short_format')
+      .filter((f) => f !== 'short_format')
       .forEach((format) => {
         const parsed = Personnummer.parse(item[format]);
         const pin = item.separated_long;
@@ -103,7 +103,7 @@ test('should parse personnummer', async () => {
   });
 });
 
-test('should throw personnummer error', async () => {
+it('should throw personnummer error', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -122,7 +122,7 @@ test('should throw personnummer error', async () => {
   });
 });
 
-test('should test personnummer sex', async () => {
+it('should test personnummer sex', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -137,7 +137,7 @@ test('should test personnummer sex', async () => {
   });
 });
 
-test('should test personnummer age', async () => {
+it('should test personnummer age', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -145,31 +145,57 @@ test('should test personnummer age', async () => {
       return;
     }
 
+    const pin = item.separated_long;
+    const year = pin.slice(0, 4);
+    const month = pin.slice(4, 6);
+    let day = pin.slice(6, 8);
+    if (item.type == 'con') {
+      day = '' + (parseInt(day) - 60);
+    }
+
+    const ageDate = `${year}-${month}-${day}`;
+    const date = new Date(ageDate);
+    const now = new Date(Date.now());
+    const expected = diffInYears(now, date);
+
     availableListFormats.forEach((format) => {
-      if (
-        format !== 'short_format' &&
-        item.separated_format.indexOf('+') === -1
-      ) {
-        const pin = item.separated_long;
-        const year = pin.slice(0, 4);
-        const month = pin.slice(4, 6);
-        let day = pin.slice(6, 8);
-        if (item.type == 'con') {
-          day = '' + (parseInt(day) - 60);
-        }
-
-        const ageDate = `${year}-${month}-${day}`;
-        const date = new Date(ageDate);
-        const now = new Date(Date.now());
-        const expected = diffInYears(now, date);
-
+      if (format !== 'short_format') {
         expect(Personnummer.parse(item[format]).getAge()).toBe(expected);
       }
     });
   });
 });
 
-test('should test organization numbers and throw error', async () => {
+it('should test personnummer date', async () => {
+  const list = await testList();
+
+  list.forEach((item) => {
+    if (!item.valid) {
+      return;
+    }
+
+    const pin = item.separated_long;
+    const year = pin.slice(0, 4);
+    const month = pin.slice(4, 6);
+    let day = pin.slice(6, 8);
+    if (item.type == 'con') {
+      day = '' + (parseInt(day) - 60);
+    }
+
+    const ageDate = `${year}-${month}-${day}`;
+    const personnummerDate = new Date(ageDate);
+
+    availableListFormats.forEach((format) => {
+      if (format !== 'short_format') {
+        expect(Personnummer.parse(item[format]).getDate()).toStrictEqual(
+          personnummerDate
+        );
+      }
+    });
+  });
+});
+
+it('should test organization numbers and throw error', async () => {
   const list = await testList('orgnumber');
 
   list.forEach((item) => {
@@ -181,12 +207,12 @@ test('should test organization numbers and throw error', async () => {
   });
 });
 
-test('should test tp-numbers', async () => {
+it('should test tp-numbers', async () => {
   specialList.tp.forEach((tp) => {
     availableListFormats.forEach((format) => {
       const p = Personnummer.parse(tp[format]);
       expect(p.valid()).toBeTruthy();
-      expect(p.isTPNumber()).toBeTruthy();
+      expect(p.isInterimNumber()).toBeTruthy();
     });
   });
 });

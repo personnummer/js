@@ -1,4 +1,4 @@
-# personnummer [![Build Status](https://github.com/personnummer/js/workflows/build/badge.svg)](https://github.com/personnummer/js/actions)
+# personnummer [![Build Status](https://img.shields.io/github/actions/workflow/status/personnummer/js/nodejs.yml?branch=master)](https://github.com/personnummer/js/actions) [![NPM Downloads](https://img.shields.io/npm/dm/personnummer.svg)](https://www.npmjs.com/package/personnummer)
 
 Validate Swedish personal identity numbers. Follows version 3 of the [specification](https://github.com/personnummer/meta#package-specification-v3).
 
@@ -11,7 +11,7 @@ npm install --save personnummer
 ## Example
 
 ```javascript
-const Personnummer = require('personnummer');
+import Personnummer from 'personnummer';
 
 Personnummer.valid('198507099805')
 //=> true

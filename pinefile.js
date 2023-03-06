@@ -1,15 +1,14 @@
-const isCI = require('is-ci');
-const { run, log, series } = require('@pinefile/pine');
-const { build } = require('esbuild');
+import { run, log, series } from '@pinefile/pine';
+import isCI from 'is-ci';
+import { build } from '@frozzare/pkg';
 
 const buildOptions = (format) => ({
-  entryPoints: ['./src/index.ts'],
-  bundle: true,
+  entry: './src/index.ts',
   format,
   outfile: `./dist/${format}/index.js`,
 });
 
-module.exports = {
+export default {
   build: async () => {
     await run('rimraf dist');
 
@@ -28,7 +27,7 @@ module.exports = {
     await series(
       files.map((file) => async () => {
         log.info(`Running tests with ${file}\n`);
-        await run(`FILE=${file} jest`);
+        await run(`FILE=${file} vitest`);
       })
     );
   },
