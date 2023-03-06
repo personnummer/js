@@ -8,13 +8,6 @@ type OptionsType = {
 
 class Personnummer {
   /**
-   * Options.
-   *
-   * @var {OptionsType}
-   */
-  private _options: OptionsType;
-
-  /**
    * Personnummer century.
    *
    * @var {string}
