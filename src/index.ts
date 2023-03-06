@@ -287,6 +287,8 @@ class Personnummer {
 
   /**
    * Get date from a Swedish personal identity number.
+   *
+   * @return {Date}
    */
   getDate(): Date {
     let ageDay = +this.day;
