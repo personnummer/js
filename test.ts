@@ -25,6 +25,16 @@ const specialList = {
       isMale: false,
       isFemale: true,
     },
+    {
+      long_format: '20000101A220',
+      short_format: '000101A220',
+      separated_format: '000101-A220',
+      separated_long: '20000101-A220',
+      valid: false,
+      type: 'tp',
+      isMale: false,
+      isFemale: false,
+    },
   ],
 };
 
@@ -207,12 +217,26 @@ it('should test organization numbers and throw error', async () => {
   });
 });
 
-it('should test tp-numbers', async () => {
-  specialList.tp.forEach((tp) => {
-    availableListFormats.forEach((format) => {
-      const p = Personnummer.parse(tp[format]);
-      expect(p.valid()).toBeTruthy();
-      expect(p.isInterimNumber()).toBeTruthy();
+it('should test valid interim numbers and not throw error if valid', async () => {
+  specialList.tp
+    .filter((x) => x.valid)
+    .forEach((tp) => {
+      availableListFormats.forEach((format) => {
+        const p = Personnummer.parse(tp[format]);
+        expect(p.valid()).toBeTruthy();
+        expect(p.isInterimNumber()).toBeTruthy();
+      });
     });
-  });
+});
+
+it('should test interim numbers and throw error if invalid', async () => {
+  specialList.tp
+    .filter((x) => !x.valid)
+    .forEach((tp) => {
+      availableListFormats.forEach((format) => {
+        expect(() => {
+          Personnummer.parse(tp[format]);
+        }).toThrow(Error);
+      });
+    });
 });
