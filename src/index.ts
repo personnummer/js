@@ -310,7 +310,7 @@ class Personnummer {
   }
 
   /**
-   * Check if a Swedish personal identity number is a iterim number or not.
+   * Check if a Swedish personal identity number is a interim number or not.
    *
    * @return {boolean}
    */
