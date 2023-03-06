@@ -137,23 +137,23 @@ class Personnummer {
   /**
    * Personnummer constructor.
    *
-   * @param {string} ssn
+   * @param {string} pin
    * @param {object} options
    */
-  constructor(ssn: string, options?: OptionsType) {
-    this.parse(ssn, options);
+  constructor(pin: string, options?: OptionsType) {
+    this.parse(pin, options);
   }
 
   /**
    * Parse personnummer.
    *
-   * @param {string} ssn
+   * @param {string} pin
    * @param {object} options
    *
    * @return {Personnummer}
    */
-  static parse(ssn: string, options?: OptionsType): Personnummer {
-    return new Personnummer(ssn, options);
+  static parse(pin: string, options?: OptionsType): Personnummer {
+    return new Personnummer(pin, options);
   }
 
   /**
@@ -164,9 +164,9 @@ class Personnummer {
    *
    * @return {boolean}
    */
-  static valid(ssn: string, options?: OptionsType): boolean {
+  static valid(pin: string, options?: OptionsType): boolean {
     try {
-      Personnummer.parse(ssn, options);
+      Personnummer.parse(pin, options);
       return true;
     } catch (e) {
       return false;
@@ -176,15 +176,15 @@ class Personnummer {
   /**
    * Parse personnummer and set class properties.
    *
-   * @param {string} ssn
+   * @param {string} pin
    * @param {object} options
    */
   // eslint-disable-next-line
-  private parse(ssn: string, options?: OptionsType) {
+  private parse(pin: string, options?: OptionsType) {
     const reg =
       /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-s]?)((?!000)\d{3}|T\d{2})(\d)$/;
 
-    const match = reg.exec(ssn);
+    const match = reg.exec(pin);
 
     if (!match) {
       throw new PersonnummerError();
