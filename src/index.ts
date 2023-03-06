@@ -243,8 +243,9 @@ class Personnummer {
    */
   private valid(): boolean {
     const valid =
-      luhn(this.year + this.month + this.day + this.num.replace('T', '1')) ===
-        +this.check && !!this.check;
+      luhn(
+        this.year + this.month + this.day + this.num.replace(/[A-Z]/, '1')
+      ) === +this.check && !!this.check;
 
     if (
       valid &&
@@ -315,7 +316,7 @@ class Personnummer {
    * @return {boolean}
    */
   isInterimNumber(): boolean {
-    return this.num[0] === 'T';
+    return /[A-Z]/.test(this.num[0]);
   }
 
   /**
