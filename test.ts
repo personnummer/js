@@ -150,7 +150,7 @@ it('should test personnummer age', async () => {
   });
 });
 
-it('should test personnummer date of birth', async () => {
+it('should test personnummer date', async () => {
   const list = await testList();
 
   list.forEach((item) => {
@@ -167,12 +167,12 @@ it('should test personnummer date of birth', async () => {
     }
 
     const ageDate = `${year}-${month}-${day}`;
-    const dateOfBirth = new Date(ageDate);
+    const personnummerDate = new Date(ageDate);
 
     availableListFormats.forEach((format) => {
       if (format !== 'short_format') {
-        expect(Personnummer.parse(item[format]).getDateOfBirth()).toStrictEqual(
-          dateOfBirth
+        expect(Personnummer.parse(item[format]).getDate()).toStrictEqual(
+          personnummerDate
         );
       }
     });

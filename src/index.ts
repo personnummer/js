@@ -281,14 +281,14 @@ class Personnummer {
    * @return {number}
    */
   getAge(): number {
-    const dateOfBirth = this.getDateOfBirth();
+    const dateOfBirth = this.getDate();
     return diffInYears(new Date(Date.now()), dateOfBirth);
   }
 
   /**
-   * Get date of birth from a Swedish personal identity number.
+   * Get date from a Swedish personal identity number.
    */
-  getDateOfBirth(): Date {
+  getDate(): Date {
     let ageDay = +this.day;
     if (this.isCoordinationNumber()) {
       ageDay -= 60;
