@@ -186,6 +186,10 @@ class Personnummer {
    */
   // eslint-disable-next-line
   private parse(pin: string, options?: OptionsType) {
+    if (pin.length < 10 || pin.length > 13) {
+      throw new PersonnummerError();
+    }
+
     const reg =
       /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-]?)((?!000)\d{3}|[PTRSUWXJKLMN]\d{2})(\d)$/;
 
