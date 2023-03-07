@@ -184,7 +184,6 @@ class Personnummer {
    * @param {string} pin
    * @param {object} options
    */
-  // eslint-disable-next-line
   private parse(pin: string, options?: OptionsType) {
     if (pin.length < 10 || pin.length > 13) {
       throw new PersonnummerError();
