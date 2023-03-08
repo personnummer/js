@@ -243,12 +243,12 @@ class Personnummer {
       throw new PersonnummerError();
     }
 
-    // throw error if allow coordination numbers is not allowed.
+    // throw error if coordination numbers is not allowed.
     if (!options?.allowCoordinationNumber && this.isCoordinationNumber()) {
       throw new PersonnummerError();
     }
 
-    // throw error if allow interim numbers is not allowed.
+    // throw error if interim numbers is not allowed.
     if (!options?.allowInterimNumber && this.isInterimNumber()) {
       throw new PersonnummerError();
     }
