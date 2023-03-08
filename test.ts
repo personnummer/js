@@ -41,7 +41,6 @@ describe('personnummer', () => {
       .forEach((item) => {
         availableListFormats.forEach((format) => {
           expect(Personnummer.valid(item[format])).toBe(item.valid);
-          expect(Personnummer.valid(item[format])).toBe(item.valid);
         });
       });
   });
