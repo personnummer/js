@@ -262,7 +262,10 @@ class Personnummer {
   private valid(): boolean {
     const valid =
       luhn(
-        this.year + this.month + this.day + this.num.replace(/[A-Z]/, '1')
+        this.year +
+          this.month +
+          this.day +
+          this.num.replace(/[TRSUWXJKLMN]/, '1')
       ) === +this.check && !!this.check;
 
     if (
