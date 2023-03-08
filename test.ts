@@ -41,6 +41,7 @@ describe('personnummer', () => {
       .forEach((item) => {
         availableListFormats.forEach((format) => {
           expect(Personnummer.valid(item[format])).toBe(item.valid);
+          expect(Personnummer.valid(item[format])).toBe(item.valid);
         });
       });
   });
@@ -137,7 +138,7 @@ describe('personnummer', () => {
           day = '' + (parseInt(day) - 60);
         }
 
-        const ageDate = `${year}-${month}-${day}`;
+        const ageDate = `${year}-${month}-${day < 10 ? '0' : ''}${day}`;
         const date = new Date(ageDate);
         const now = new Date(Date.now());
         const expected = diffInYears(now, date);
@@ -164,7 +165,7 @@ describe('personnummer', () => {
           day = '' + (parseInt(day) - 60);
         }
 
-        const ageDate = `${year}-${month}-${day}`;
+        const ageDate = `${year}-${month}-${day < 10 ? '0' : ''}${day}`;
         const personnummerDate = new Date(ageDate);
 
         availableListFormats.forEach((format) => {
