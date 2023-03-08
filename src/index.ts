@@ -190,7 +190,7 @@ class Personnummer {
     }
 
     const reg =
-      /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-]?)((?!000)\d{3}|[PTRSUWXJKLMN]\d{2})(\d)$/;
+      /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-]?)((?!000)\d{3}|[TRSUWXJKLMN]\d{2})(\d)$/;
 
     const match = reg.exec(pin);
 
@@ -334,7 +334,7 @@ class Personnummer {
    * @return {boolean}
    */
   isInterimNumber(): boolean {
-    return /[PTRSUWXJKLMN]/.test(this.num[0]);
+    return /[TRSUWXJKLMN]/.test(this.num[0]);
   }
 
   /**
