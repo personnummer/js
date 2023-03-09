@@ -1,4 +1,4 @@
-import { it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { request } from 'undici';
 import { diffInYears } from './src/utils';
 
@@ -13,180 +13,258 @@ const availableListFormats = [
   'separated_long',
 ];
 
-const _testList = [];
+const _testList = {};
+
 const testList = (file = 'list'): Promise<any> => {
-  if (_testList.length) {
+  if (Array.isArray(_testList[file]) && _testList[file].length) {
     return new Promise((resolve) => {
-      resolve(_testList.length);
+      resolve(_testList[file].length);
     });
   }
 
-  return request(
+  const res = request(
     `https://raw.githubusercontent.com/personnummer/meta/master/testdata/${file}.json`,
     {}
   ).then((p) => p.body.json());
+
+  _testList[file] = res;
+
+  return res;
 };
 
-it('should validate personnummer with control digit', async () => {
-  const list = await testList();
+describe('personnummer', () => {
+  it('should validate personnummer with control digit', async () => {
+    const list = await testList();
 
-  list.forEach((item) => {
-    availableListFormats.forEach((format) => {
-      expect(Personnummer.valid(item[format])).toBe(item.valid);
-    });
+    list
+      .filter((item) => item.valid)
+      .forEach((item) => {
+        availableListFormats.forEach((format) => {
+          expect(Personnummer.valid(item[format])).toBe(item.valid);
+        });
+      });
   });
-});
 
-it('should format personnummer', async () => {
-  const list = await testList();
+  it('should format personnummer', async () => {
+    const list = await testList();
 
-  list.forEach((item) => {
-    if (!item.valid) {
-      return;
-    }
-
-    availableListFormats.forEach((format) => {
-      if (format !== 'short_format') {
-        expect(Personnummer.parse(item[format]).format()).toBe(
-          item.separated_format
-        );
-        expect(Personnummer.parse(item[format]).format(true)).toBe(
-          item.long_format
-        );
-      }
-    });
+    list
+      .filter((item) => item.valid)
+      .forEach((item) => {
+        availableListFormats.forEach((format) => {
+          if (format !== 'short_format') {
+            expect(Personnummer.parse(item[format]).format()).toBe(
+              item.separated_format
+            );
+            expect(Personnummer.parse(item[format]).format(true)).toBe(
+              item.long_format
+            );
+          }
+        });
+      });
   });
-});
 
-it('should parse personnummer', async () => {
-  const list = await testList();
+  it('should parse personnummer', async () => {
+    const list = await testList();
 
-  list.forEach((item) => {
-    if (!item.valid) {
-      return;
-    }
+    list
+      .filter((item) => item.valid)
+      .forEach((item) => {
+        availableListFormats
+          .filter((f) => f !== 'short_format')
+          .forEach((format) => {
+            const parsed = Personnummer.parse(item[format]);
+            const pin = item.separated_long;
+            const expected = {
+              _century: pin.slice(0, 2),
+              _fullYear: pin.slice(0, 4),
+              _year: pin.slice(2, 4),
+              _month: pin.slice(4, 6),
+              _day: pin.slice(6, 8),
+              _sep: pin.slice(8, 9),
+              _num: pin.slice(9, 12),
+              _check: pin.slice(12),
+            };
 
-    availableListFormats
-      .filter((f) => f !== 'short_format')
-      .forEach((format) => {
-        const parsed = Personnummer.parse(item[format]);
+            expect(parsed).toEqual(expected);
+          });
+      });
+  });
+
+  it('should throw personnummer error if not valid', async () => {
+    const list = await testList();
+
+    list
+      .filter((item) => !item.valid)
+      .forEach((item) => {
+        availableListFormats.forEach((format) => {
+          try {
+            Personnummer.parse(item[format]);
+            expect(false).toBe(true);
+          } catch (e) {
+            expect(true).toBe(true);
+          }
+        });
+      });
+  });
+
+  it('should test personnummer sex', async () => {
+    const list = await testList();
+
+    list
+      .filter((item) => item.valid)
+      .forEach((item) => {
+        availableListFormats.forEach((format) => {
+          expect(Personnummer.parse(item[format]).isMale()).toBe(item.isMale);
+          expect(Personnummer.parse(item[format]).isFemale()).toBe(
+            item.isFemale
+          );
+        });
+      });
+  });
+
+  it('should test personnummer age', async () => {
+    const list = await testList();
+
+    list
+      .filter((item) => item.valid)
+      .forEach((item) => {
         const pin = item.separated_long;
-        const expected = {
-          _century: pin.slice(0, 2),
-          _fullYear: pin.slice(0, 4),
-          _year: pin.slice(2, 4),
-          _month: pin.slice(4, 6),
-          _day: pin.slice(6, 8),
-          _sep: pin.slice(8, 9),
-          _num: pin.slice(9, 12),
-          _check: pin.slice(12),
-        };
+        const year = pin.slice(0, 4);
+        const month = pin.slice(4, 6);
+        let day = pin.slice(6, 8);
+        if (item.type == 'con') {
+          day = '' + (parseInt(day) - 60);
+        }
 
-        expect(parsed).toEqual(expected);
+        const ageDate = `${year}-${month}-${day < 10 ? '0' : ''}${day}`;
+        const date = new Date(ageDate);
+        const now = new Date(Date.now());
+        const expected = diffInYears(now, date);
+
+        availableListFormats.forEach((format) => {
+          if (format !== 'short_format') {
+            expect(Personnummer.parse(item[format]).getAge()).toBe(expected);
+          }
+        });
+      });
+  });
+
+  it('should test personnummer date', async () => {
+    const list = await testList();
+
+    list
+      .filter((item) => item.valid)
+      .forEach((item) => {
+        const pin = item.separated_long;
+        const year = pin.slice(0, 4);
+        const month = pin.slice(4, 6);
+        let day = pin.slice(6, 8);
+        if (item.type == 'con') {
+          day = '' + (parseInt(day) - 60);
+        }
+
+        const ageDate = `${year}-${month}-${day < 10 ? '0' : ''}${day}`;
+        const personnummerDate = new Date(ageDate);
+
+        availableListFormats.forEach((format) => {
+          if (format !== 'short_format') {
+            expect(Personnummer.parse(item[format]).getDate()).toStrictEqual(
+              personnummerDate
+            );
+          }
+        });
       });
   });
 });
 
-it('should throw personnummer error', async () => {
-  const list = await testList();
+// organization numbers
 
-  list.forEach((item) => {
-    if (item.valid) {
-      return;
-    }
+describe('organization numbers', () => {
+  it('should test organization numbers and throw error', async () => {
+    const list = await testList('orgnumber');
 
-    availableListFormats.forEach((format) => {
-      try {
-        Personnummer.parse(item[format]);
-        expect(false).toBe(true);
-      } catch (e) {
-        expect(true).toBe(true);
-      }
+    list.forEach((item) => {
+      availableListFormats.forEach((format) => {
+        expect(() => {
+          Personnummer.parse(item[format]);
+        }).toThrow(Error);
+      });
     });
   });
 });
 
-it('should test personnummer sex', async () => {
-  const list = await testList();
+// interim numbers
 
-  list.forEach((item) => {
-    if (!item.valid) {
-      return;
-    }
+describe('interim numbers', () => {
+  it('should validate interim numbers', async () => {
+    const list = await testList('interim');
 
-    availableListFormats.forEach((format) => {
-      expect(Personnummer.parse(item[format]).isMale()).toBe(item.isMale);
-      expect(Personnummer.parse(item[format]).isFemale()).toBe(item.isFemale);
-    });
+    list
+      .filter((item) => item.valid)
+      .forEach((item) => {
+        availableListFormats.forEach((format) => {
+          const p = Personnummer.parse(item[format], {
+            allowInterimNumber: true,
+          });
+          expect(p.valid()).toBeTruthy();
+          expect(p.isInterimNumber()).toBeTruthy();
+          expect(p.isMale()).toBe(item.isMale);
+          expect(p.isFemale()).toBe(item.isFemale);
+        });
+      });
   });
-});
 
-it('should test personnummer age', async () => {
-  const list = await testList();
+  it('should format interim numbers', async () => {
+    const list = await testList('interim');
 
-  list.forEach((item) => {
-    if (!item.valid) {
-      return;
-    }
-
-    const pin = item.separated_long;
-    const year = pin.slice(0, 4);
-    const month = pin.slice(4, 6);
-    let day = pin.slice(6, 8);
-    if (item.type == 'con') {
-      day = '' + (parseInt(day) - 60);
-    }
-
-    const ageDate = `${year}-${month}-${day}`;
-    const date = new Date(ageDate);
-    const now = new Date(Date.now());
-    const expected = diffInYears(now, date);
-
-    availableListFormats.forEach((format) => {
-      if (format !== 'short_format') {
-        expect(Personnummer.parse(item[format]).getAge()).toBe(expected);
-      }
-    });
+    list
+      .filter((item) => item.valid)
+      .forEach((item) => {
+        availableListFormats.forEach((format) => {
+          if (format !== 'short_format') {
+            const p = Personnummer.parse(item[format], {
+              allowInterimNumber: true,
+            });
+            expect(p.format()).toBe(item.separated_format);
+            expect(p.format(true)).toBe(item.long_format);
+          }
+        });
+      });
   });
-});
 
-it('should test personnummer date', async () => {
-  const list = await testList();
+  it('should throw personnummer error if not valid', async () => {
+    const list = await testList('interim');
 
-  list.forEach((item) => {
-    if (!item.valid) {
-      return;
-    }
-
-    const pin = item.separated_long;
-    const year = pin.slice(0, 4);
-    const month = pin.slice(4, 6);
-    let day = pin.slice(6, 8);
-    if (item.type == 'con') {
-      day = '' + (parseInt(day) - 60);
-    }
-
-    const ageDate = `${year}-${month}-${day}`;
-    const personnummerDate = new Date(ageDate);
-
-    availableListFormats.forEach((format) => {
-      if (format !== 'short_format') {
-        expect(Personnummer.parse(item[format]).getDate()).toStrictEqual(
-          personnummerDate
-        );
-      }
-    });
+    list
+      .filter((item) => !item.valid)
+      .forEach((item) => {
+        availableListFormats.forEach((format) => {
+          expect(() => {
+            Personnummer.parse(item[format], {
+              allowInterimNumber: true,
+            });
+          }).toThrow(Error);
+        });
+      });
   });
-});
 
-it('should test organization numbers and throw error', async () => {
-  const list = await testList('orgnumber');
+  it('should throw personnummer error if interim numbers is not allowed', async () => {
+    const list = await testList('interim');
 
-  list.forEach((item) => {
-    availableListFormats.forEach((format) => {
-      expect(() => {
-        Personnummer.parse(item[format]);
-      }).toThrow(Error);
-    });
+    list
+      .filter((item) => !item.valid)
+      .forEach((item) => {
+        availableListFormats.forEach((format) => {
+          try {
+            Personnummer.parse(item[format], {
+              allowInterimNumber: false,
+            });
+            expect(false).toBe(true);
+          } catch (e) {
+            expect(true).toBe(true);
+          }
+        });
+      });
   });
 });

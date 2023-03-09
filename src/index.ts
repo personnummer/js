@@ -2,7 +2,8 @@ import { PersonnummerError } from './errors';
 import { diffInYears, luhn, testDate } from './utils';
 
 type OptionsType = {
-  [key: string]: boolean | number | string;
+  allowCoordinationNumber: boolean;
+  allowInterimNumber: boolean;
 };
 
 class Personnummer {
@@ -137,23 +138,27 @@ class Personnummer {
   /**
    * Personnummer constructor.
    *
-   * @param {string} ssn
+   * @param {string} pin
    * @param {object} options
    */
-  constructor(ssn: string, options?: OptionsType) {
-    this.parse(ssn, options);
+  constructor(pin: string, options?: OptionsType) {
+    this.parse(pin, {
+      allowCoordinationNumber: true,
+      allowInterimNumber: false,
+      ...options,
+    });
   }
 
   /**
    * Parse personnummer.
    *
-   * @param {string} ssn
+   * @param {string} pin
    * @param {object} options
    *
    * @return {Personnummer}
    */
-  static parse(ssn: string, options?: OptionsType): Personnummer {
-    return new Personnummer(ssn, options);
+  static parse(pin: string, options?: OptionsType): Personnummer {
+    return new Personnummer(pin, options);
   }
 
   /**
@@ -164,9 +169,9 @@ class Personnummer {
    *
    * @return {boolean}
    */
-  static valid(ssn: string, options?: OptionsType): boolean {
+  static valid(pin: string, options?: OptionsType): boolean {
     try {
-      Personnummer.parse(ssn, options);
+      Personnummer.parse(pin, options);
       return true;
     } catch (e) {
       return false;
@@ -176,13 +181,18 @@ class Personnummer {
   /**
    * Parse personnummer and set class properties.
    *
-   * @param {string} ssn
+   * @param {string} pin
    * @param {object} options
    */
-  // eslint-disable-next-line
-  private parse(ssn: string, options?: OptionsType) {
-    const reg = /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-]?)((?!000)\d{3})(\d)$/;
-    const match = reg.exec(ssn);
+  private parse(pin: string, options?: OptionsType) {
+    if (pin.length < 10 || pin.length > 13) {
+      throw new PersonnummerError();
+    }
+
+    const reg =
+      /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-]?)((?!000)\d{3}|[TRSUWXJKLMN]\d{2})(\d)$/;
+
+    const match = reg.exec(pin);
 
     if (!match) {
       throw new PersonnummerError();
@@ -232,6 +242,16 @@ class Personnummer {
     if (!this.valid()) {
       throw new PersonnummerError();
     }
+
+    // throw error if coordination numbers is not allowed.
+    if (!options?.allowCoordinationNumber && this.isCoordinationNumber()) {
+      throw new PersonnummerError();
+    }
+
+    // throw error if interim numbers is not allowed.
+    if (!options?.allowInterimNumber && this.isInterimNumber()) {
+      throw new PersonnummerError();
+    }
   }
 
   /**
@@ -241,8 +261,12 @@ class Personnummer {
    */
   private valid(): boolean {
     const valid =
-      luhn(this.year + this.month + this.day + this.num) === +this.check &&
-      !!this.check;
+      luhn(
+        this.year +
+          this.month +
+          this.day +
+          this.num.replace(/[TRSUWXJKLMN]/, '1')
+      ) === +this.check && !!this.check;
 
     if (
       valid &&
@@ -305,6 +329,15 @@ class Personnummer {
       (ageDay < 10 ? '0' + ageDay : ageDay);
 
     return new Date(ageDate);
+  }
+
+  /**
+   * Check if a Swedish personal identity number is a interim number or not.
+   *
+   * @return {boolean}
+   */
+  isInterimNumber(): boolean {
+    return /[TRSUWXJKLMN]/.test(this.num[0]);
   }
 
   /**

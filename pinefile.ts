@@ -21,13 +21,13 @@ export default {
     log.info('Building esm');
     await build(buildOptions('esm'));
   },
-  test: async () => {
+  test: async (args) => {
     const files = isCI ? ['./dist/cjs', './dist/esm'] : ['./src'];
 
     await series(
       files.map((file) => async () => {
         log.info(`Running tests with ${file}\n`);
-        await run(`FILE=${file} vitest`);
+        await run(`FILE=${file} vitest ${args._}`);
       })
     );
   },
