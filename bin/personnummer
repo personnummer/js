@@ -14,7 +14,8 @@ const main = () => {
 
   try {
     const pnr = Personnummer.parse(argv[0]);
-    console.log(`       Short format: ${pnr.format()}
+    console.log(`              Valid: true
+       Short format: ${pnr.format()}
         Long format: ${pnr.format(true)}
                 Age: ${pnr.getAge()}
                 Sex: ${pnr.isMale() ? "male" : "female"}
