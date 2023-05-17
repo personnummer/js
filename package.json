@@ -41,7 +41,7 @@
     "rimraf": "^5.0.0",
     "typescript": "^5.0.4",
     "undici": "^5.22.1",
-    "vitest": "^0.31.0"
+    "vitest": "^0.31.1"
   },
   "keywords": [
     "personnummer",
