@@ -38,7 +38,7 @@
     "eslint": "^8.40.0",
     "is-ci": "^3.0.1",
     "prettier": "^2.8.8",
-    "rimraf": "^5.0.0",
+    "rimraf": "^5.0.1",
     "typescript": "^5.0.4",
     "undici": "^5.22.1",
     "vitest": "^0.31.1"
