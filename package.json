@@ -37,7 +37,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.47.0",
     "is-ci": "^3.0.1",
-    "prettier": "^3.0.1",
+    "prettier": "^3.0.2",
     "rimraf": "^5.0.1",
     "typescript": "^5.1.6",
     "undici": "^5.23.0",
