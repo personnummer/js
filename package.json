@@ -19,6 +19,9 @@
   "files": [
     "dist/**/*"
   ],
+  "engines": {
+    "node": "^18.18.0 || >=20.0.0"
+  },
   "scripts": {
     "build": "pine build",
     "format": "prettier --write 'src/**/*.ts' test.ts",
