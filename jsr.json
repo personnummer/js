@@ -3,6 +3,6 @@
   "version": "3.2.1",
   "exports": "./src/index.ts",
   "publish": {
-    "include": ["LICENSE", "README.md", "src/*.ts"]
+    "include": ["LICENSE", "README.md", "src/*.ts", "jsr.json"]
   }
 }
