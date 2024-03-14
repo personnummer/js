@@ -2,6 +2,18 @@ import { describe, it, expect } from 'vitest';
 import { request } from 'undici';
 import { diffInYears } from './utils';
 
+type TestList = {
+  integer: number;
+  long_format: string;
+  short_format: string;
+  separated_format: string;
+  separated_long: string;
+  valid: boolean;
+  type: string;
+  isMale: boolean;
+  isFemale: boolean;
+};
+
 const file = process.env.FILE || '.';
 const Personnummer = file.includes('cjs')
   ? require(file)
@@ -16,7 +28,7 @@ const availableListFormats = [
 
 const _testList = {};
 
-const testList = (file = 'list'): Promise<any> => {
+const testList = (file = 'list'): Promise<TestList> => {
   if (Array.isArray(_testList[file]) && _testList[file].length) {
     return new Promise((resolve) => {
       resolve(_testList[file].length);
@@ -25,7 +37,7 @@ const testList = (file = 'list'): Promise<any> => {
 
   const res = request(
     `https://raw.githubusercontent.com/personnummer/meta/master/testdata/${file}.json`,
-    {}
+    {},
   ).then((p) => p.body.json());
 
   _testList[file] = res;
@@ -55,10 +67,10 @@ describe('personnummer', () => {
         availableListFormats.forEach((format) => {
           if (format !== 'short_format') {
             expect(Personnummer.parse(item[format]).format()).toBe(
-              item.separated_format
+              item.separated_format,
             );
             expect(Personnummer.parse(item[format]).format(true)).toBe(
-              item.long_format
+              item.long_format,
             );
           }
         });
@@ -118,7 +130,7 @@ describe('personnummer', () => {
         availableListFormats.forEach((format) => {
           expect(Personnummer.parse(item[format]).isMale()).toBe(item.isMale);
           expect(Personnummer.parse(item[format]).isFemale()).toBe(
-            item.isFemale
+            item.isFemale,
           );
         });
       });
@@ -173,7 +185,7 @@ describe('personnummer', () => {
         availableListFormats.forEach((format) => {
           if (format !== 'short_format') {
             expect(Personnummer.parse(item[format]).getDate()).toStrictEqual(
-              personnummerDate
+              personnummerDate,
             );
           }
         });

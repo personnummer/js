@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import { compareAsc } from 'date-fns';
 import { diffInYears, luhn, testDate } from './utils';
 
 describe('diffInYears', () => {
@@ -59,7 +58,7 @@ describe('luhn', () => {
   it('should return the correct check digit for a long valid number', () => {
     expect(luhn('1234567812345670')).toBe(0);
   });
-})
+});
 
 describe('testDate', () => {
   it('should return true for a valid date', () => {
@@ -101,4 +100,4 @@ describe('testDate', () => {
   it('should return true for a valid date in a leap year February', () => {
     expect(testDate(2024, 2, 29)).toBe(true);
   });
-})
+});

@@ -265,7 +265,7 @@ class Personnummer {
         this.year +
           this.month +
           this.day +
-          this.num.replace(/[TRSUWXJKLMN]/, '1')
+          this.num.replace(/[TRSUWXJKLMN]/, '1'),
       ) === +this.check && !!this.check;
 
     if (
@@ -349,7 +349,7 @@ class Personnummer {
     return testDate(
       parseInt(this.century + this.year),
       +this.month,
-      +this.day - 60
+      +this.day - 60,
     );
   }
 

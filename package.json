@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "pine build",
-    "format": "prettier --write 'src/**/*.ts' test.ts",
+    "format": "prettier --write 'src/**/*.ts'",
     "lint": "eslint src --ext .ts",
     "prepublishOnly": "npm run build",
     "test": "pine test"
