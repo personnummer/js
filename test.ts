@@ -164,7 +164,9 @@ describe('personnummer', () => {
           day = '' + (parseInt(day) - 60);
         }
 
-        const ageDate = `${year}-${month}-${day < 10 ? '0' : ''}${day}`;
+        const ageDate = `${year}-${month}-${
+          ('' + day).length < 2 ? '0' : ''
+        }${day}`;
         const personnummerDate = new Date(ageDate);
 
         availableListFormats.forEach((format) => {
