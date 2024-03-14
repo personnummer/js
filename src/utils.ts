@@ -52,7 +52,7 @@ export const luhn = (str: string): number => {
     sum += v;
   }
 
-  return Math.ceil(sum / 10) * 10 - sum;
+  return Math.ceil(sum / 10) * 10 - sum || 0;
 };
 
 /**

@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { request } from 'undici';
-import { diffInYears } from './src/utils';
+import { diffInYears } from './utils';
 
-const Personnummer = process.env.FILE?.includes('cjs')
-  ? require(process.env.FILE)
-  : (await import(process.env.FILE)).default;
+const file = process.env.FILE || '.';
+const Personnummer = file.includes('cjs')
+  ? require(file)
+  : (await import(file)).default;
 
 const availableListFormats = [
   'long_format',
