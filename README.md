@@ -13,7 +13,7 @@ npm install --save personnummer
 ```javascript
 import Personnummer from 'personnummer';
 
-Personnummer.valid('198507099805')
+Personnummer.valid('191212121212')
 //=> true
 ```
 
