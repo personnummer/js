@@ -374,4 +374,7 @@ class Personnummer {
   }
 }
 
+export const valid = Personnummer.valid;
+export const parse = Personnummer.parse;
+
 export default Personnummer;
