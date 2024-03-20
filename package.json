@@ -42,7 +42,7 @@
     "is-ci": "^3.0.1",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
-    "typescript": "^5.4.2",
+    "typescript": "^5.4.3",
     "undici": "^6.9.0",
     "vitest": "^1.4.0"
   },
