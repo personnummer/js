@@ -43,7 +43,7 @@
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "typescript": "^5.4.5",
-    "undici": "^6.15.0",
+    "undici": "^6.16.0",
     "vitest": "^1.6.0"
   },
   "keywords": [
