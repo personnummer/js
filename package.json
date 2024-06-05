@@ -40,7 +40,7 @@
     "@typescript-eslint/parser": "^7.11.0",
     "eslint": "^8.57.0",
     "is-ci": "^3.0.1",
-    "prettier": "^3.3.0",
+    "prettier": "^3.3.1",
     "rimraf": "^5.0.7",
     "typescript": "^5.4.5",
     "undici": "^6.18.2",
