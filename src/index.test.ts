@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import { request } from 'undici';
 import { diffInYears } from './utils';
 
 type TestList = {
@@ -35,10 +34,10 @@ const testList = (file = 'list'): Promise<TestList> => {
     });
   }
 
-  const res = request(
+  const res = fetch(
     `https://raw.githubusercontent.com/personnummer/meta/master/testdata/${file}.json`,
     {},
-  ).then((p) => p.body.json());
+  ).then((p) => p.json());
 
   _testList[file] = res;
 
