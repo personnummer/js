@@ -15,7 +15,8 @@ type TestList = {
 
 const file = process.env.FILE || '.';
 const Personnummer = file.includes('cjs')
-  ? require(file)
+  ? // eslint-disable-next-line
+    require(file)
   : (await import(file)).default;
 
 const availableListFormats = [
@@ -113,7 +114,7 @@ describe('personnummer', () => {
           try {
             Personnummer.parse(item[format]);
             expect(false).toBe(true);
-          } catch (e) {
+          } catch (_err) {
             expect(true).toBe(true);
           }
         });
@@ -275,7 +276,7 @@ describe('interim numbers', () => {
               allowInterimNumber: false,
             });
             expect(false).toBe(true);
-          } catch (e) {
+          } catch (_err) {
             expect(true).toBe(true);
           }
         });

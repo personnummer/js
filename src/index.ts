@@ -173,7 +173,7 @@ class Personnummer {
     try {
       Personnummer.parse(pin, options);
       return true;
-    } catch (e) {
+    } catch (_err) {
       return false;
     }
   }
