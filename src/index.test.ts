@@ -16,7 +16,7 @@ type TestList = {
 const file = process.env.FILE || '.';
 const Personnummer = file.includes('cjs')
   ? // eslint-disable-next-line
-    require(file)
+  require(file)
   : (await import(file)).default;
 
 const availableListFormats = [
@@ -28,7 +28,7 @@ const availableListFormats = [
 
 const _testList = {};
 
-const testList = (file = 'list'): Promise<TestList> => {
+const testList = (file = 'list'): Promise<TestList[]> => {
   if (Array.isArray(_testList[file]) && _testList[file].length) {
     return new Promise((resolve) => {
       resolve(_testList[file].length);
@@ -150,7 +150,7 @@ describe('personnummer', () => {
           day = '' + (parseInt(day) - 60);
         }
 
-        const ageDate = `${year}-${month}-${day < 10 ? '0' : ''}${day}`;
+        const ageDate = `${year}-${month}-${+day < 10 ? '0' : ''}${day}`;
         const date = new Date(ageDate);
         const now = new Date(Date.now());
         const expected = diffInYears(now, date);
@@ -177,9 +177,8 @@ describe('personnummer', () => {
           day = '' + (parseInt(day) - 60);
         }
 
-        const ageDate = `${year}-${month}-${
-          ('' + day).length < 2 ? '0' : ''
-        }${day}`;
+        const ageDate = `${year}-${month}-${('' + day).length < 2 ? '0' : ''
+          }${day}`;
         const personnummerDate = new Date(ageDate);
 
         availableListFormats.forEach((format) => {

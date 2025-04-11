@@ -17,7 +17,13 @@ Personnummer.valid('191212121212')
 //=> true
 ```
 
-See [test.ts](test.ts) for more examples.
+See [index.test.ts](src/index.test.ts) for more examples.
+
+## Options
+| Option                  | Type                     | Default                 | Description                       |
+|-------------------------|:-------------------------|:------------------------|:----------------------------------|
+| allowCoordinationNumber | bool                     | true                    | Accept coordination numbers       |
+| allowInterimNumber      | bool                     | false                   | Accept interim/T numbers          |
 
 ## License
 
