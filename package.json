@@ -33,10 +33,10 @@
   "module": "dist/esm/index.js",
   "types": "dist/types",
   "devDependencies": {
-    "@eslint/js": "^9.26.0",
+    "@eslint/js": "^9.27.0",
     "@frozzare/pkg": "^1.0.7",
     "@pinefile/pine": "^2.0.3",
-    "eslint": "^9.26.0",
+    "eslint": "^9.27.0",
     "is-ci": "^4.1.0",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
