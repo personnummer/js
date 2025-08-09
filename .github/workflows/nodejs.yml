@@ -19,18 +19,18 @@ jobs:
           - latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.4.0
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install
-      run: npm install
-    - name: npm run lint
-      run: npm run lint
-    - name: npm run build
-      run: npm run build
-    - name: npm run test
-      run: npm run test
-      env:
-        CI: true
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm ci
+        run: npm ci
+      - name: npm run lint
+        run: npm run lint
+      - name: npm run build
+        run: npm run build
+      - name: npm run test
+        run: npm run test
+        env:
+          CI: true
