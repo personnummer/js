@@ -34,7 +34,7 @@
   "types": "dist/types",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@frozzare/pkg": "^1.0.7",
+    "@frozzare/pkg": "^1.1.0",
     "@pinefile/pine": "^2.0.3",
     "eslint": "^9.39.2",
     "is-ci": "^4.1.0",
