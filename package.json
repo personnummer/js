@@ -33,16 +33,16 @@
   "module": "dist/esm/index.js",
   "types": "dist/types",
   "devDependencies": {
-    "@eslint/js": "^9.27.0",
+    "@eslint/js": "^9.39.2",
     "@frozzare/pkg": "^1.0.7",
     "@pinefile/pine": "^2.0.3",
-    "eslint": "^9.27.0",
+    "eslint": "^9.39.2",
     "is-ci": "^4.1.0",
-    "prettier": "^3.5.3",
-    "rimraf": "^6.0.1",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.32.1",
-    "vitest": "^3.1.4"
+    "prettier": "^3.8.0",
+    "rimraf": "^6.1.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.0",
+    "vitest": "^4.0.17"
   },
   "keywords": [
     "personnummer",
@@ -55,5 +55,8 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/sweidproject"
+  },
+  "dependencies": {
+    "@types/node": "^25.0.8"
   }
 }

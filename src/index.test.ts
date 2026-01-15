@@ -16,7 +16,7 @@ type TestList = {
 const file = process.env.FILE || '.';
 const Personnummer = file.includes('cjs')
   ? // eslint-disable-next-line
-  require(file)
+    require(file)
   : (await import(file)).default;
 
 const availableListFormats = [
@@ -24,18 +24,18 @@ const availableListFormats = [
   'short_format',
   'separated_format',
   'separated_long',
-];
+] as const;
 
-const _testList = {};
+const _testList: Record<string, TestList[]> = {};
 
-const testList = (file = 'list'): Promise<TestList[]> => {
+const testList = async (file = 'list'): Promise<TestList[]> => {
   if (Array.isArray(_testList[file]) && _testList[file].length) {
     return new Promise((resolve) => {
-      resolve(_testList[file].length);
+      resolve(_testList[file]);
     });
   }
 
-  const res = fetch(
+  const res = await fetch(
     `https://raw.githubusercontent.com/personnummer/meta/master/testdata/${file}.json`,
     {},
   ).then((p) => p.json());
@@ -177,8 +177,9 @@ describe('personnummer', () => {
           day = '' + (parseInt(day) - 60);
         }
 
-        const ageDate = `${year}-${month}-${('' + day).length < 2 ? '0' : ''
-          }${day}`;
+        const ageDate = `${year}-${month}-${
+          ('' + day).length < 2 ? '0' : ''
+        }${day}`;
         const personnummerDate = new Date(ageDate);
 
         availableListFormats.forEach((format) => {
