@@ -8,7 +8,12 @@
  */
 const compareAsc = (dateLeft: Date, dateRight: Date): number => {
   const diff = dateLeft.getTime() - dateRight.getTime();
-  return diff < 0 ? -1 : diff > 0 ? 1 : diff;
+
+  if (diff < 0) {
+    return -1;
+  }
+
+  return diff > 0 ? 1 : 0;
 };
 
 /**
@@ -34,17 +39,16 @@ export const diffInYears = (dateLeft: Date, dateRight: Date): number => {
 /**
  * Calculates the Luhn checksum of a string of digits.
  *
- * @param {string|number} str
+ * @param {string|number} input
  *
  * @return {number}
  */
-export const luhn = (str: string): number => {
+export const luhn = (input: string): number => {
+  const str = `${input}`;
+
   let sum = 0;
-
-  str += '';
-
   for (let i = 0, l = str.length; i < l; i++) {
-    let v = parseInt(str[i]);
+    let v = Number.parseInt(str[i], 10);
     v *= 2 - (i % 2);
     if (v > 9) {
       v -= 9;
@@ -65,11 +69,10 @@ export const luhn = (str: string): number => {
  * @return {boolean}
  */
 export const testDate = (year: number, month: number, day: number): boolean => {
-  month -= 1;
-  const date = new Date(year, month, day);
+  const date = new Date(year, month - 1, day);
   return !(
     date.getFullYear() !== year ||
-    date.getMonth() !== month ||
+    date.getMonth() !== month - 1 ||
     date.getDate() !== day
   );
 };

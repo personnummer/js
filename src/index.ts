@@ -1,10 +1,14 @@
 import { PersonnummerError } from './errors';
 import { diffInYears, luhn, testDate } from './utils';
 
-type OptionsType = {
+const INTERIM_REGEX = /[TRSUWXJKLMN]/;
+const PERSONNUMMER_REGEX =
+  /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-]?)((?!000)\d{3}|[TRSUWXJKLMN]\d{2})(\d)$/;
+
+interface OptionsType {
   allowCoordinationNumber: boolean;
   allowInterimNumber: boolean;
-};
+}
 
 class Personnummer {
   /**
@@ -162,23 +166,6 @@ class Personnummer {
   }
 
   /**
-   * Validate a Swedish personal identity number.
-   *
-   * @param {string} str
-   * @param {object} options
-   *
-   * @return {boolean}
-   */
-  static valid(pin: string, options?: OptionsType): boolean {
-    try {
-      Personnummer.parse(pin, options);
-      return true;
-    } catch (_err) {
-      return false;
-    }
-  }
-
-  /**
    * Parse personnummer and set class properties.
    *
    * @param {string} pin
@@ -189,10 +176,7 @@ class Personnummer {
       throw new PersonnummerError();
     }
 
-    const reg =
-      /^(\d{2}){0,1}(\d{2})(\d{2})(\d{2})([+-]?)((?!000)\d{3}|[TRSUWXJKLMN]\d{2})(\d)$/;
-
-    const match = reg.exec(pin);
+    const match = PERSONNUMMER_REGEX.exec(pin);
 
     if (!match) {
       throw new PersonnummerError();
@@ -220,12 +204,15 @@ class Personnummer {
 
       this._century = (
         '' +
-        (baseYear - ((baseYear - parseInt(year)) % 100))
-      ).substr(0, 2);
+        (baseYear - ((baseYear - Number.parseInt(year, 10)) % 100))
+      ).substring(0, 2);
     } else {
       this._century = century;
 
-      if (new Date().getFullYear() - parseInt(century + year, 10) < 100) {
+      if (
+        new Date().getFullYear() - Number.parseInt(century + year, 10) <
+        100
+      ) {
         this._sep = '-';
       } else {
         this._sep = '+';
@@ -257,27 +244,49 @@ class Personnummer {
   /**
    * Validate a Swedish personal identity number.
    *
+   * @param {string} str
+   * @param {object} options
+   *
+   * @return {boolean}
+   */
+  static valid(pin: string, options?: OptionsType): boolean {
+    try {
+      Personnummer.parse(pin, options);
+      return true;
+    } catch (_err) {
+      return false;
+    }
+  }
+
+  /**
+   * Validate a Swedish personal identity number.
+   *
    * @return {boolean}
    */
   private valid(): boolean {
     const valid =
       luhn(
-        this.year +
-          this.month +
-          this.day +
-          this.num.replace(/[TRSUWXJKLMN]/, '1'),
+        this.year + this.month + this.day + this.num.replace(INTERIM_REGEX, '1')
       ) === +this.check && !!this.check;
 
     if (
       valid &&
-      testDate(parseInt(this.century + this.year), +this.month, +this.day)
+      testDate(
+        Number.parseInt(this.century + this.year, 10),
+        +this.month,
+        +this.day
+      )
     ) {
       return valid;
     }
 
     return (
       valid &&
-      testDate(parseInt(this.century + this.year), +this.month, +this.day - 60)
+      testDate(
+        Number.parseInt(this.century + this.year, 10),
+        +this.month,
+        +this.day - 60
+      )
     );
   }
 
@@ -326,7 +335,7 @@ class Personnummer {
       '-' +
       this.month +
       '-' +
-      (ageDay < 10 ? '0' + ageDay : ageDay);
+      (ageDay < 10 ? `0${ageDay}` : ageDay);
 
     return new Date(ageDate);
   }
@@ -337,7 +346,7 @@ class Personnummer {
    * @return {boolean}
    */
   isInterimNumber(): boolean {
-    return /[TRSUWXJKLMN]/.test(this.num[0]);
+    return INTERIM_REGEX.test(this.num[0]);
   }
 
   /**
@@ -347,9 +356,9 @@ class Personnummer {
    */
   isCoordinationNumber(): boolean {
     return testDate(
-      parseInt(this.century + this.year),
+      Number.parseInt(this.century + this.year, 10),
       +this.month,
-      +this.day - 60,
+      +this.day - 60
     );
   }
 
@@ -368,7 +377,10 @@ class Personnummer {
    * @return {boolean}
    */
   isMale(): boolean {
-    const sexDigit = parseInt(this.num.substr(-1));
+    const sexDigit = Number.parseInt(
+      this.num.substring(this.num.length - 1),
+      10
+    );
 
     return sexDigit % 2 === 1;
   }
