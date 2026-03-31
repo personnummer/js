@@ -208,7 +208,7 @@ class Personnummer {
 
     if (typeof century === 'undefined' || !century.length) {
       const d = new Date();
-      let baseYear = 0;
+      let baseYear: number;
 
       if (sep === '+') {
         this._sep = '+';
