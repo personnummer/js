@@ -25,6 +25,10 @@ See [index.test.ts](src/index.test.ts) for more examples.
 | allowCoordinationNumber | bool                     | true                    | Accept coordination numbers       |
 | allowInterimNumber      | bool                     | false                   | Accept interim/T numbers          |
 
+## In memoriam
+
+Fredrik "Frozzare" Forsmo (1991-2026) was the initiator, co-founder and a core contributor of the personnummer project. This library carries his work. He is missed.
+
 ## License
 
 MIT
