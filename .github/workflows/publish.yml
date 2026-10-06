@@ -20,5 +20,5 @@ jobs:
       - run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version
       - run: jq --arg v "${GITHUB_REF_NAME#v}" '.version = $v' jsr.json > jsr.tmp && mv jsr.tmp jsr.json
       - run: npm test
-      - run: npm publish
+      - run: npm stage publish
       - run: npx jsr publish --allow-dirty
