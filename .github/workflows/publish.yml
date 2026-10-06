@@ -2,22 +2,23 @@ name: Publish
 on:
   release:
     types: [published]
+permissions:
+  contents: read
+  id-token: write
 jobs:
-  npm:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: lts/*
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing requires npm >= 11.5
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version
+      - run: jq --arg v "${GITHUB_REF_NAME#v}" '.version = $v' jsr.json > jsr.tmp && mv jsr.tmp jsr.json
+      - run: npm test
       - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  jsr:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@v6
-      - run: npx jsr publish
+      - run: npx jsr publish --allow-dirty
