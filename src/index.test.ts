@@ -36,7 +36,7 @@ const testList = async (file = 'list'): Promise<TestList[]> => {
   }
 
   const res = await fetch(
-    `https://raw.githubusercontent.com/personnummer/meta/master/testdata/${file}.json`,
+    `https://raw.githubusercontent.com/personnummer/meta/HEAD/testdata/${file}.json`,
     {},
   ).then((p) => p.json());
 
