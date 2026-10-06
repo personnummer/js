@@ -6,7 +6,7 @@ permissions:
   contents: read
   id-token: write
 jobs:
-  publish:
+  npm:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -18,8 +18,14 @@ jobs:
       - run: npm install -g npm@latest
       - run: npm ci
       - run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version
-      - run: jq --arg v "${GITHUB_REF_NAME#v}" '.version = $v' jsr.json > jsr.tmp && mv jsr.tmp jsr.json
       - run: npm run build
       - run: npm test
       - run: npm stage publish
+  # Separate job so it can be re-run on its own if JSR publishing fails
+  jsr:
+    needs: npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: jq --arg v "${GITHUB_REF_NAME#v}" '.version = $v' jsr.json > jsr.tmp && mv jsr.tmp jsr.json
       - run: npx jsr publish --allow-dirty
