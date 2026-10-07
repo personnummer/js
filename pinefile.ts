@@ -1,11 +1,16 @@
 import { run, log, series } from '@pinefile/pine';
 import isCI from 'is-ci';
-import { build } from '@frozzare/pkg';
+import { build } from 'esbuild';
 
 const buildOptions = (format: 'cjs' | 'esm') => ({
-  entry: './src/index.ts',
+  entryPoints: ['./src/index.ts'],
+  bundle: true,
   format,
   outfile: `./dist/${format}/index.js`,
+  // Keep `require('personnummer')` returning the class, not `{ default }`.
+  ...(format === 'cjs' && {
+    footer: { js: 'module.exports = module.exports.default;' },
+  }),
 });
 
 export default {
