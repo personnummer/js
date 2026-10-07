@@ -33,9 +33,9 @@
   "types": "dist/types",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@frozzare/pkg": "^1.1.0",
     "@pinefile/pine": "^3.0.0",
     "@types/node": "^25.9.9",
+    "esbuild": "^0.27.7",
     "eslint": "^10.12.0",
     "is-ci": "^4.1.0",
     "prettier": "^3.9.9",
