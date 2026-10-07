@@ -10,5 +10,14 @@
   "minor": {
     "automerge": false
   },
-  "separateMultipleMajor": true
+  "separateMultipleMajor": true,
+  "packageRules": [
+    {
+      "description": "Workflows pin Node to a major version only; skip minor and patch bumps",
+      "matchManagers": ["github-actions"],
+      "matchDepNames": ["node"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    }
+  ]
 }
