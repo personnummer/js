@@ -45,7 +45,7 @@
     "esbuild": "^0.28.2",
     "eslint": "^10.12.0",
     "is-ci": "^4.1.0",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "rimraf": "^6.1.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.1",
