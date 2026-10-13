@@ -1,22 +1,21 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "local>personnummer/.github:renovate-config"
   ],
-  "rangeStrategy": "bump",
-  "automerge": true,
-  "major": {
-    "automerge": false
-  },
-  "minor": {
-    "automerge": false
-  },
-  "separateMultipleMajor": true,
   "packageRules": [
     {
       "description": "Workflows pin Node to a major version only; skip minor and patch bumps",
-      "matchManagers": ["github-actions"],
-      "matchDepNames": ["node"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchDepNames": [
+        "node"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "enabled": false
     }
   ]
