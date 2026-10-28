@@ -19,7 +19,7 @@
     "dist/**/*"
   ],
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": ">=22.0.0"
   },
   "scripts": {
     "build": "pine build",
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@pinefile/pine": "^3.0.0",
-    "@types/node": "^25.9.9",
+    "@types/node": "^22.20.5",
     "esbuild": "^0.28.2",
     "eslint": "^10.12.0",
     "is-ci": "^4.1.0",
