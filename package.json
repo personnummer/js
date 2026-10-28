@@ -21,6 +21,9 @@
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
   },
+  "browserslist": [
+    "defaults"
+  ],
   "scripts": {
     "build": "pine build",
     "format": "prettier --write 'src/**/*.ts'",
@@ -44,6 +47,7 @@
     "@types/node": "^25.9.9",
     "esbuild": "^0.28.2",
     "eslint": "^10.12.0",
+    "eslint-plugin-compat": "^7.0.2",
     "is-ci": "^4.1.0",
     "prettier": "^3.9.10",
     "rimraf": "^6.1.3",

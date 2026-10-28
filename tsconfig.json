@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2018",
-    "lib": ["es2018", "dom"],
+    "target": "es2022",
+    "lib": ["es2022"],
     "allowJs": false,
     "declaration": true,
     "emitDeclarationOnly": true,
