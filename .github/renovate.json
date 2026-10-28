@@ -17,6 +17,13 @@
         "patch"
       ],
       "enabled": false
+    },
+    {
+      "description": "Keep @types/node on the lowest supported Node major (engines.node)",
+      "matchPackageNames": [
+        "@types/node"
+      ],
+      "allowedVersions": "<23"
     }
   ]
 }

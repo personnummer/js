@@ -15,6 +15,7 @@ jobs:
     strategy:
       matrix:
         node-version:
+          - 22
           - lts/*
           - latest
 
