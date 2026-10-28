@@ -24,6 +24,16 @@
         "@types/node"
       ],
       "allowedVersions": "<23"
+    },
+    {
+      "description": "Keep the tsconfig base on the lowest supported Node major (engines.node)",
+      "matchPackageNames": [
+        "@tsconfig/node22"
+      ],
+      "matchUpdateTypes": [
+        "replacement"
+      ],
+      "enabled": false
     }
   ]
 }
