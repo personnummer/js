@@ -1,7 +1,7 @@
 import { run, log, series } from '@pinefile/pine';
 import isCI from 'is-ci';
 import { build } from 'esbuild';
-import { copyFileSync, readFileSync, writeFileSync } from 'fs';
+import { copyFileSync, readFileSync, rmSync, writeFileSync } from 'fs';
 
 const buildOptions = (format: 'cjs' | 'esm') => ({
   entryPoints: ['./src/index.ts'],
@@ -16,7 +16,7 @@ const buildOptions = (format: 'cjs' | 'esm') => ({
 
 export default {
   build: async () => {
-    await run('rimraf dist');
+    rmSync('./dist', { recursive: true, force: true });
 
     log.info('Building types');
     await run('tsc --emitDeclarationOnly');
