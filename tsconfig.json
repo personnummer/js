@@ -1,4 +1,5 @@
 {
+  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     "target": "es2018",
     "lib": ["es2018", "dom"],
@@ -8,15 +9,9 @@
     "outDir": "dist/types",
     "rootDir": "src",
     "noEmit": false,
-    "strict": true,
-    "module": "nodenext",
     "moduleResolution": "nodenext",
-    "types": ["node"],
+    "types": [],
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true
