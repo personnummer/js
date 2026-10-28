@@ -7,6 +7,7 @@ const buildOptions = (format: 'cjs' | 'esm') => ({
   entryPoints: ['./src/index.ts'],
   bundle: true,
   format,
+  target: 'es2022',
   outfile: `./dist/${format}/index.${format === 'esm' ? 'mjs' : 'js'}`,
   // Keep `require('personnummer')` returning the class, not `{ default }`.
   ...(format === 'cjs' && {

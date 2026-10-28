@@ -221,7 +221,7 @@ class Personnummer {
       this._century = (
         '' +
         (baseYear - ((baseYear - parseInt(year)) % 100))
-      ).substr(0, 2);
+      ).slice(0, 2);
     } else {
       this._century = century;
 
@@ -326,7 +326,7 @@ class Personnummer {
       '-' +
       this.month +
       '-' +
-      (ageDay < 10 ? '0' + ageDay : ageDay);
+      String(ageDay).padStart(2, '0');
 
     return new Date(ageDate);
   }
@@ -368,7 +368,7 @@ class Personnummer {
    * @return {boolean}
    */
   isMale(): boolean {
-    const sexDigit = parseInt(this.num.substr(-1));
+    const sexDigit = parseInt(this.num.slice(-1));
 
     return sexDigit % 2 === 1;
   }
