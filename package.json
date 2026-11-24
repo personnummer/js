@@ -25,11 +25,11 @@
     "defaults"
   ],
   "scripts": {
-    "build": "pine build",
+    "build": "node scripts/build.mjs",
     "format": "prettier --write 'src/**/*.ts'",
     "lint": "eslint src",
     "prepublishOnly": "npm run build",
-    "test": "pine test"
+    "test": "node scripts/test.mjs"
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",
@@ -43,13 +43,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@pinefile/pine": "^3.0.0",
     "@tsconfig/node22": "^22.0.6",
     "@types/node": "^22.20.5",
     "esbuild": "^0.28.2",
     "eslint": "^10.12.0",
     "eslint-plugin-compat": "^7.0.2",
-    "is-ci": "^4.1.0",
     "prettier": "^3.9.10",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.2",
